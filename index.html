@@ -13,7 +13,23 @@
 <title>Drive CKD</title>
 <style>
 :root{color-scheme:light dark;--bg:light-dark(#f3f8f5,#101713);--surface:light-dark(#fff,#171b20);--surface2:light-dark(#edf5f0,#1d2922);--text:light-dark(#17202a,#f2f5f7);--muted:light-dark(#5d6875,#aab4bf);--border:light-dark(#dce2e8,#303943);--accent:light-dark(#008f4c,#35bd78);--green:light-dark(#087443,#57d59b);--amber:light-dark(#a15c00,#ffbe63);--red:light-dark(#b42318,#ff7b72)}
-*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}#app{min-height:100vh;background:var(--bg)}.wrap{max-width:1120px;margin:auto;padding:28px 20px 44px}.top{display:flex;justify-content:space-between;gap:20px;align-items:flex-end;margin-bottom:22px}.eyebrow{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}h1{font-size:30px;line-height:1.1;margin:6px 0}.sub{color:var(--muted);max-width:760px;line-height:1.5}.badge{border:1px solid var(--border);background:var(--surface);padding:9px 12px;border-radius:999px;font-size:12px;color:var(--muted)}.grid{display:grid;grid-template-columns:360px 1fr;gap:18px}.card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:18px;box-shadow:0 6px 22px rgba(0,0,0,.04)}.card h2{font-size:16px;margin:0 0 14px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field.full{grid-column:1/-1}label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px}input,select{width:100%;border:1px solid var(--border);background:var(--surface2);color:var(--text);border-radius:10px;padding:10px 11px;font-size:14px;outline:none}input:focus,select:focus{border-color:var(--accent)}.check{display:flex;align-items:center;gap:8px;padding:7px 0;font-size:13px}.check input{width:auto}.actions{display:flex;gap:9px;margin-top:15px}.btn{border:0;border-radius:10px;padding:10px 13px;font-weight:800;cursor:pointer}.primary{background:var(--accent);color:white}.secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border)}.result-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:16px}.result-hero{padding:18px;border:1px solid var(--border);border-radius:16px;background:linear-gradient(135deg,var(--surface2),var(--surface));margin-bottom:16px}.stage{font-weight:900;font-size:32px;letter-spacing:-.03em}.hero-label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:800;color:var(--muted);margin-bottom:4px}.hero-sub{font-size:13px;color:var(--muted);margin-top:4px}.risk-pills{justify-content:flex-end;margin-top:0}.section-title{font-size:13px;font-weight:900;margin:20px 0 8px;display:flex;align-items:center;gap:6px}.recommend{border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:12px;padding:12px 14px;margin:8px 0;background:var(--surface2)}.recommend h3{font-size:13px;margin:0 0 4px}.recommend p{font-size:12.5px;line-height:1.45;margin:0;color:var(--muted)}.small{font-size:12px;color:var(--muted)}.recommend{border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:12px;padding:13px 14px;margin:10px 0;background:var(--surface2)}.recommend.green{border-left-color:var(--green)}.recommend.tele{border-left-color:#d6a6b5;background:light-dark(#fbf1f4,#302126)}.recommend.normal{border-left-color:#d4b800;background:light-dark(#fffbe0,#302d16)}.recommend.urgent{border-left-color:#e8872f;background:light-dark(#fff0df,#332316)}.recommend.very{border-left-color:#d93025;background:light-dark(#fff0f0,#351616)}.recommend.amber{border-left-color:var(--amber)}.recommend.red{border-left-color:var(--red)}.summary-card{border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:12px;padding:13px 14px;margin:10px 0;background:var(--surface2)}.summary-card p{font-size:13px;line-height:1.55;margin:0;color:var(--text)}.recommend h3{font-size:14px;margin:0 0 5px}.recommend p{font-size:13px;line-height:1.5;margin:0;color:var(--muted)}.table{width:100%;border-collapse:collapse;font-size:12px}.table th,.table td{padding:9px 7px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}.table th{color:var(--muted);font-size:11px}.note{font-size:11px;color:var(--muted);line-height:1.5}.footer{margin-top:18px}.app-credit{margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:11px;line-height:1.5;color:var(--muted)}.app-update{margin-top:3px;font-style:italic}.source{padding:10px 0;border-bottom:1px solid var(--border);font-size:12px}.source a{color:var(--accent);text-decoration:none}.hidden{display:none}.alert{padding:11px 13px;border-radius:10px;background:light-dark(#fff7e6,#30250f);border:1px solid light-dark(#f5d18b,#66501e);font-size:12px;line-height:1.45;margin-bottom:12px}.pillrow{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.pill{padding:6px 8px;border-radius:999px;background:var(--surface2);font-size:11px;font-weight:800}.section-title{font-size:13px;font-weight:900;margin:18px 0 7px}.install-banner{position:sticky;top:0;z-index:20;margin:0 auto;padding:10px 14px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:center;gap:10px}.install-banner small{color:var(--muted)}.install-banner .btn{padding:7px 10px}.install-banner .secondary{font-size:18px;line-height:1}@media(max-width:850px){.grid{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}.fields{grid-template-columns:1fr}.field.full{grid-column:auto}}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}#app{min-height:100vh;background:var(--bg)}.wrap{max-width:1120px;margin:auto;padding:28px 20px 44px}.top{display:flex;justify-content:space-between;gap:20px;align-items:flex-end;margin-bottom:22px}.eyebrow{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}h1{font-size:30px;line-height:1.1;margin:6px 0}.sub{color:var(--muted);max-width:760px;line-height:1.5}.badge{border:1px solid var(--border);background:var(--surface);padding:9px 12px;border-radius:999px;font-size:12px;color:var(--muted)}.grid{display:grid;grid-template-columns:360px 1fr;gap:18px}.card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:18px;box-shadow:0 6px 22px rgba(0,0,0,.04)}.card h2{font-size:16px;margin:0 0 14px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field.full{grid-column:1/-1}label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px}input,select{width:100%;border:1px solid var(--border);background:var(--surface2);color:var(--text);border-radius:10px;padding:10px 11px;font-size:14px;outline:none}input:focus,select:focus{border-color:var(--accent)}.check{display:flex;align-items:center;gap:8px;padding:7px 0;font-size:13px}.check input{width:auto}.actions{display:flex;gap:9px;margin-top:15px}.btn{border:0;border-radius:10px;padding:10px 13px;font-weight:800;cursor:pointer}.primary{background:var(--accent);color:white}.secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border)}.result-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:16px}.result-hero{padding:18px;border:1px solid var(--border);border-radius:16px;background:linear-gradient(135deg,var(--surface2),var(--surface));margin-bottom:16px}.stage{font-weight:900;font-size:32px;letter-spacing:-.03em}.hero-label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:800;color:var(--muted);margin-bottom:4px}.hero-sub{font-size:13px;color:var(--muted);margin-top:4px}.risk-pills{justify-content:flex-end;margin-top:0}.section-title{font-size:13px;font-weight:900;margin:20px 0 8px;display:flex;align-items:center;gap:6px}.recommend{border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:12px;padding:12px 14px;margin:8px 0;background:var(--surface2)}.recommend h3{font-size:13px;margin:0 0 4px}.recommend p{font-size:12.5px;line-height:1.45;margin:0;color:var(--muted)}.small{font-size:12px;color:var(--muted)}.recommend{border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:12px;padding:13px 14px;margin:10px 0;background:var(--surface2)}.recommend.green{border-left-color:var(--green)}.recommend.tele{border-left-color:#d6a6b5;background:light-dark(#fbf1f4,#302126)}.recommend.normal{border-left-color:#d4b800;background:light-dark(#fffbe0,#302d16)}.recommend.urgent{border-left-color:#e8872f;background:light-dark(#fff0df,#332316)}.recommend.very{border-left-color:#d93025;background:light-dark(#fff0f0,#351616)}.recommend.amber{border-left-color:var(--amber)}.recommend.red{border-left-color:var(--red)}.summary-card{border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:12px;padding:13px 14px;margin:10px 0;background:var(--surface2)}.summary-card p{font-size:13px;line-height:1.55;margin:0;color:var(--text)}.recommend h3{font-size:14px;margin:0 0 5px}.recommend p{font-size:13px;line-height:1.5;margin:0;color:var(--muted)}.table{width:100%;border-collapse:collapse;font-size:12px}.table th,.table td{padding:9px 7px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}.table th{color:var(--muted);font-size:11px}.note{font-size:11px;color:var(--muted);line-height:1.5}.footer{margin-top:18px}.app-credit{margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:11px;line-height:1.5;color:var(--muted)}.app-update{margin-top:3px;font-style:italic}.source{padding:10px 0;border-bottom:1px solid var(--border);font-size:12px}.source a{color:var(--accent);text-decoration:none}.hidden{display:none}.alert{padding:11px 13px;border-radius:10px;background:light-dark(#fff7e6,#30250f);border:1px solid light-dark(#f5d18b,#66501e);font-size:12px;line-height:1.45;margin-bottom:12px}.pillrow{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.pill{padding:6px 8px;border-radius:999px;background:var(--surface2);font-size:11px;font-weight:800}.section-title{font-size:13px;font-weight:900;margin:18px 0 7px}.install-banner{position:sticky;top:0;z-index:20;margin:0 auto;padding:10px 14px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:center;gap:10px}.install-banner small{color:var(--muted)}.install-banner .btn{padding:7px 10px}.install-banner .secondary{font-size:18px;line-height:1}
+.other-referral-panel{margin:14px 0 2px;border:1px solid #d7e6dc;border-radius:13px;background:var(--surface);overflow:hidden}
+.other-referral-panel summary{cursor:pointer;list-style:none;padding:11px 12px;font-size:12px;font-weight:900;color:var(--text);display:flex;justify-content:space-between;align-items:center;background:linear-gradient(180deg,var(--surface),#edf8f1)}
+.other-referral-panel summary::-webkit-details-marker{display:none}
+.other-referral-panel summary::after{content:'⌄';font-size:16px;color:var(--accent);transition:transform .2s ease}
+.other-referral-panel[open] summary::after{transform:rotate(180deg)}
+.other-referral-panel summary span{margin-left:auto;margin-right:8px;font-size:10px;font-weight:700;color:var(--muted)}
+.other-referral-inner{padding:4px 12px 10px}
+.other-referral-group{padding:10px 0;border-bottom:1px solid var(--border)}
+.other-referral-group:last-of-type{border-bottom:0}
+.other-referral-group>strong{display:block;font-size:11.5px;margin-bottom:5px;color:var(--text)}
+.other-referral-group .check{padding:5px 0;font-size:11.5px;line-height:1.3;align-items:flex-start}
+.other-referral-group .check input{margin-top:2px;flex:0 0 auto}
+.other-referral-note{font-size:10px;line-height:1.4;color:var(--muted);margin:5px 0 2px;padding:7px 8px;border-radius:8px;background:var(--surface2)}
+.other-referral-note.final-note{border-left:3px solid var(--accent)}
+.other-referral-group .urgent-check{color:#a52a22}
+@media(max-width:850px){.grid{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}.fields{grid-template-columns:1fr}.field.full{grid-column:auto}}
 
  
 .referral-matrix-wrap{margin-top:14px;border:1px solid #d7e6dc;border-radius:16px;overflow:hidden;background:var(--surface);box-shadow:0 5px 18px rgba(0,96,48,.08)}
@@ -68,6 +84,48 @@
 <div class="section-title">Diabetes</div>
 <div class="check"><input id="dm1" type="checkbox" onchange="toggleDiabetes('dm1')"><label for="dm1">DM tipo 1</label></div><div class="check"><input id="dm2" type="checkbox" onchange="toggleDiabetes('dm2')"><label for="dm2">DM tipo 2</label></div>
 <div class="section-title">Comorbilidades</div><div class="check"><input id="hf" type="checkbox"><label for="hf">Insuficiência cardíaca</label></div><div class="check"><input id="ascvd" type="checkbox"><label for="ascvd">Doença cardiovascular aterosclerótica</label></div><div class="check"><input id="htn" type="checkbox"><label for="htn">Hipertensão arterial</label></div>
+<details id="other-referral-panel" class="other-referral-panel">
+<summary>➕ Outros critérios de referenciação <span>opcional</span></summary>
+<div class="other-referral-inner">
+  <div class="other-referral-group"><strong>1. Progressão rápida da função renal</strong>
+    <label class="check"><input id="refRapidEgfr" type="checkbox"><span>Diminuição &gt;30% da TFGe em &lt;6 meses</span></label>
+    <label class="check"><input id="refHemaProtein" type="checkbox"><span>Hematoproteinúria associada à deterioração renal</span></label>
+  </div>
+  <div class="other-referral-group"><strong>2. Alterações urinárias</strong>
+    <label class="check"><input id="refMicroHematuria" type="checkbox"><span>Hematúria microscópica de causa não urológica</span></label>
+    <label class="check"><input id="refNormoglyGlyco" type="checkbox"><span>Glicosúria normoglicémica de causa não esclarecida</span></label>
+    <label class="check"><input id="refAminoaciduria" type="checkbox"><span>Aminoacidúria de causa não esclarecida</span></label>
+    <label class="check"><input id="refCystinuria" type="checkbox"><span>Cistinúria de causa não esclarecida</span></label>
+    <div class="other-referral-note">Não selecionar glicosúria explicada por iSGLT2. Hematúria não persistente/episódica sem outros critérios não constitui indicação nefrológica.</div>
+  </div>
+  <div class="other-referral-group"><strong>3. Alterações hidro-eletrolíticas / ácido-base</strong>
+    <label class="check"><input id="refHydroStable" type="checkbox"><span>Alteração relevante, não grave e sem sintomas de alarme</span></label>
+    <label class="check urgent-check"><input id="refHydroUrgent" type="checkbox"><span>Alteração grave e/ou sintomática → Serviço de Urgência</span></label>
+  </div>
+  <div class="other-referral-group"><strong>4. Alterações renais morfológicas</strong>
+    <label class="check"><input id="refCysticDisease" type="checkbox"><span>Suspeita de ADPKD / doença renal quística familiar-genética</span></label>
+    <label class="check"><input id="refNephrocalcinosis" type="checkbox"><span>Nefrocalcinose</span></label>
+    <div class="other-referral-note"><strong>Critérios diagnósticos ADPKD:</strong> 15–39 anos: ≥3 quistos renais (uni/bilaterais); 40–59 anos: ≥2 em cada rim; ≥60 anos: ≥4 em cada rim. Quistos simples isolados/múltiplos, por si só, não são critério de referenciação.</div>
+  </div>
+  <div class="other-referral-group"><strong>5. Suspeita de doença renal hereditária</strong>
+    <label class="check"><input id="refHereditary" type="checkbox"><span>Outra doença renal hereditária não quística</span></label>
+  </div>
+  <div class="other-referral-group"><strong>6. Litíase renal</strong>
+    <label class="check"><input id="refStoneRecurrent" type="checkbox"><span>≥2 episódios de cólica renal nos últimos 2 anos</span></label>
+    <label class="check"><input id="refStoneSolitary" type="checkbox"><span>Litíase em doente com rim único</span></label>
+    <label class="check urgent-check"><input id="refStoneObstructive" type="checkbox"><span>Litíase obstrutiva → Urgência / Urologia</span></label>
+  </div>
+  <div class="other-referral-group"><strong>7. Hipertensão arterial</strong>
+    <label class="check"><input id="refResistantHTN" type="checkbox"><span>HTA não controlada sob 4 hipotensores em dose adequada</span></label>
+    <label class="check"><input id="refYoungHTN" type="checkbox"><span>HTA de causa não esclarecida em indivíduo &lt;35 anos</span></label>
+    <label class="check"><input id="refHTNHypoK" type="checkbox"><span>HTA associada a hipocaliemia</span></label>
+    <label class="check"><input id="refHTNCrRise" type="checkbox"><span>HTA + subida da creatinina &gt;0,4 mg/dL nos primeiros 2 meses após IECA/ARA</span></label>
+    <label class="check"><input id="refHTNAbdBruit" type="checkbox"><span>HTA + sopro arterial abdominal ou lombar</span></label>
+    <label class="check urgent-check"><input id="refMalignantHTN" type="checkbox"><span>HTA maligna → Serviço de Urgência</span></label>
+  </div>
+  <div class="other-referral-note final-note"><strong>Nota:</strong> estes critérios são complementares à matriz TFGe + ACR + idade. A prioridade pode ser aumentada, mas nunca reduzida. Situações explicitamente dirigidas à Urgência não são tratadas como referenciação nefrológica programada.</div>
+</div>
+</details>
 <div class="section-title">Terapêutica atual</div>
 <div class="check"><input id="sglt2" type="checkbox"><label for="sglt2">SGLT2i</label></div><div class="check"><input id="raas" type="checkbox"><label for="raas">IECA/ARA</label></div><div class="check"><input id="finer" type="checkbox"><label for="finer">Finerenona</label></div><div class="check"><input id="statin" type="checkbox"><label for="statin">Estatina</label></div><div class="check"><input id="glp1" type="checkbox"><label for="glp1">GLP-1 RA</label></div>
 <div class="actions"><button class="btn primary" onclick="calculate()">Avaliar</button><button class="btn secondary" onclick="resetForm()">Repor</button></div>
@@ -177,60 +235,97 @@ function calculateReferral(){
  sec.classList.remove('hidden');
  if(a<0||g<0||r<0){box.className='recommend';box.innerHTML='<h3>Referenciação · fora da matriz</h3><p>A matriz do Serviço aplica-se a idade ≥19 anos, TFGe >0 e ACR/RAC ≥0.</p>';return;}
 
- // Matriz de base: TFGe + ACR + idade.
  const matrixIdx=referralMatrix[g][a*3+r];
  let finalIdx=matrixIdx;
- let extraText='';
- let extraIdx=null;
  const diabetic=get('dm1').checked || get('dm2').checked;
 
- // Critérios adicionais do Serviço: albuminúria/proteinúria relevante.
- // DM1 e DM2 são tratados simplesmente como diabetes para estes critérios.
- // A distinção "apresentação de novo"/"crónica" não é inferida automaticamente.
- if(acr>3000 && !diabetic){
-   extraIdx=4;
-   extraText='ACR >3000 mg/g em doente não diabético: critério de referenciação muito urgente. Se houver apresentação de novo, este mesmo nível é aplicável; em apresentação crónica diabética, orientar pela tabela.';
- }else if(acr>=700 && acr<=3000 && !diabetic){
-   extraIdx=3;
-   extraText='ACR 700–3000 mg/g em doente não diabético: critério de referenciação urgente. Se diabético, orientar pela tabela de TFGe + albuminúria + idade.';
- }else if(acr>3000 && diabetic){
-   extraText='ACR >3000 mg/g em doente diabético: orientar pela tabela de TFGe + albuminúria + idade. Se houver apresentação de novo, considerar referenciação muito urgente.';
- }else if(acr>=700 && acr<=3000 && diabetic){
-   extraText='ACR 700–3000 mg/g em doente diabético: orientar pela tabela de TFGe + albuminúria + idade.';
- }else{
-   extraText='Sem critério adicional de albuminúria relevante: orientar pela tabela de TFGe + albuminúria + idade.';
- }
+ // Critérios adicionais de albuminúria.
+ let albuminExtraIdx=null;
+ if(acr>3000 && !diabetic) albuminExtraIdx=4;
+ else if(acr>=700 && acr<=3000 && !diabetic) albuminExtraIdx=3;
+ if(albuminExtraIdx!==null) finalIdx=Math.max(finalIdx,albuminExtraIdx);
 
- if(extraIdx!==null) finalIdx=Math.max(matrixIdx,extraIdx);
- box.className='recommend '+referralClasses[finalIdx];
+ // Outros critérios de referenciação selecionados pelo utilizador.
+ const otherCriteria=[];
+ const addOther=(id,label,priority,type='referral')=>{
+   if(get(id)?.checked) otherCriteria.push({id,label,priority,type});
+ };
+ addOther('refRapidEgfr','Diminuição >30% da TFGe em <6 meses',3);
+ addOther('refHemaProtein','Hematoproteinúria associada à deterioração renal',4);
+ addOther('refMicroHematuria','Hematúria microscópica de causa não urológica',2);
+ if(!get('sglt2').checked) addOther('refNormoglyGlyco','Glicosúria normoglicémica de causa não esclarecida',2);
+ addOther('refAminoaciduria','Aminoacidúria de causa não esclarecida',2);
+ addOther('refCystinuria','Cistinúria de causa não esclarecida',2);
+ addOther('refHydroStable','Alteração hidro-eletrolítica/ácido-base relevante, não grave e sem sintomas de alarme',2);
+ addOther('refCysticDisease','Suspeita de ADPKD / doença renal quística familiar-genética',2);
+ addOther('refNephrocalcinosis','Nefrocalcinose',2);
+ addOther('refHereditary','Suspeita de doença renal hereditária não quística',2);
+ addOther('refStoneRecurrent','≥2 episódios de cólica renal nos últimos 2 anos',2);
+ addOther('refStoneSolitary','Litíase em doente com rim único',2);
+ addOther('refResistantHTN','HTA não controlada sob 4 hipotensores em dose adequada',2);
+ addOther('refYoungHTN','HTA de causa não esclarecida em indivíduo <35 anos',2);
+ addOther('refHTNHypoK','HTA associada a hipocaliemia',2);
+ addOther('refHTNCrRise','HTA + subida da creatinina >0,4 mg/dL nos primeiros 2 meses após IECA/ARA',2);
+ addOther('refHTNAbdBruit','HTA + sopro arterial abdominal ou lombar',2);
+
+ const emergencyCriteria=[];
+ const addEmergency=(id,label)=>{
+   if(get(id)?.checked) emergencyCriteria.push({id,label});
+ };
+ addEmergency('refHydroUrgent','Alteração hidro-eletrolítica/ácido-base grave e/ou sintomática');
+ addEmergency('refStoneObstructive','Litíase obstrutiva');
+ addEmergency('refMalignantHTN','HTA maligna');
+
+ const otherMax=otherCriteria.reduce((m,x)=>Math.max(m,x.priority),-1);
+ if(otherMax>=0) finalIdx=Math.max(finalIdx,otherMax);
+
  const matrixName=referralLabels[matrixIdx];
  const finalName=referralLabels[finalIdx];
- const escalated=finalIdx>matrixIdx;
+ const albuminReason=albuminExtraIdx===4
+   ? 'ACR >3000 mg/g em doente não diabético.'
+   : albuminExtraIdx===3
+     ? 'ACR 700–3000 mg/g em doente não diabético.'
+     : null;
+
+ // Situações da tabela explicitamente dirigidas à Urgência.
+ if(emergencyCriteria.length){
+   box.className='recommend very';
+   box.innerHTML='<h3>🔴 Serviço de Urgência</h3>'
+     +'<p><strong>Motivo:</strong> '+emergencyCriteria.map(x=>x.label).join('; ')+'.</p>'
+     +'<p style="margin-top:7px;font-size:11px">Esta situação não é tratada como referenciação nefrológica programada.</p>';
+   currentReferralDecision={egfr,acr,age,matrixIdx,finalIdx,matrixName,finalName,albuminExtraIdx,albuminReason,otherCriteria,emergencyCriteria,extraIdx:albuminExtraIdx};
+   renderReferralMatrix(-1,-1);
+   return;
+ }
+
+ const allAdditionalReasons=[];
+ if(albuminReason) allAdditionalReasons.push(albuminReason);
+ otherCriteria.forEach(x=>allAdditionalReasons.push(x.label));
+
  const over80Caveat=(age>80 && (matrixIdx===1 || matrixIdx===2))
    ? '<p style="margin-top:9px;font-size:11px"><strong>Nota em doentes &gt;80 anos:</strong> perante elevada dependência nas atividades da vida diária, síndromes demenciais avançadas ou elevada fragilidade, deve ser ponderado o benefício da referenciação à Nefrologia face ao estado basal do doente, apesar da indicação da matriz.</p>'
    : '';
- currentReferralDecision={egfr,acr,age,matrixIdx,finalIdx,matrixName,finalName,extraIdx,extraText,escalated,over80Caveat};
+
  let referralHtml='<h3>'+finalName+'</h3>';
- if(extraIdx!==null){
-   const reason = acr>3000
-     ? 'ACR &gt;3000 mg/g em doente não diabético.'
-     : 'ACR 700–3000 mg/g em doente não diabético.';
-   referralHtml+='<p><strong>Motivo:</strong> '+reason+'</p>';
+ if(allAdditionalReasons.length){
+   referralHtml+='<p><strong>Motivo adicional:</strong> '+allAdditionalReasons.join(' · ')+'</p>';
    referralHtml+='<p style="margin-top:7px;font-size:12px"><strong>Matriz de base:</strong> '+matrixName+'.</p>';
-   if(escalated){
-     referralHtml+='<p style="margin-top:7px;font-size:11px"><strong>A prioridade é elevada pelo critério adicional.</strong></p>';
+   if(finalIdx>matrixIdx){
+     referralHtml+='<p style="margin-top:7px;font-size:11px"><strong>A prioridade é elevada pelo(s) critério(s) adicional(is).</strong></p>';
    }
- }else{
-   referralHtml+='<p><strong>Matriz TFGe + ACR + idade:</strong> TFGe '+egfr+' mL/min/1,73 m² · ACR '+acr+' mg/g · idade '+age+' anos.</p>';
    if(diabetic && acr>3000){
      referralHtml+='<p style="margin-top:7px;font-size:11px"><strong>Nota:</strong> em doente diabético, ACR &gt;3000 mg/g é orientado pela matriz; se houver apresentação de novo, considerar referenciação muito urgente.</p>';
    }else if(diabetic && acr>=700){
      referralHtml+='<p style="margin-top:7px;font-size:11px"><strong>Nota:</strong> em doente diabético, ACR 700–3000 mg/g é orientado pela matriz.</p>';
    }
+ }else{
+   referralHtml+='<p><strong>Matriz TFGe + ACR + idade:</strong> TFGe '+egfr+' mL/min/1,73 m² · ACR '+acr+' mg/g · idade '+age+' anos.</p>';
  }
  referralHtml+=over80Caveat;
+ box.className='recommend '+referralClasses[finalIdx];
  box.innerHTML=referralHtml;
- renderReferralMatrix(extraIdx===null ? g : -1, extraIdx===null ? a*3+r : -1);
+ currentReferralDecision={egfr,acr,age,matrixIdx,finalIdx,matrixName,finalName,albuminExtraIdx,albuminReason,otherCriteria,emergencyCriteria,extraIdx:albuminExtraIdx};
+ renderReferralMatrix(allAdditionalReasons.length ? -1 : g, allAdditionalReasons.length ? -1 : a*3+r);
 }
 
 function calculate(){
@@ -399,11 +494,16 @@ if(!statin&&age>=50&&!hasCkdPattern&&priorities.length<3) priorities.push('avali
 if(priorities.length) summary.push('Prioridades: '+priorities.slice(0,3).join('; ')+'.');
 if(currentReferralDecision){
   const rd=currentReferralDecision;
-  summary.push(`Referenciação / seguimento nefrológico: ${rd.finalName}.`);
-  if(rd.extraIdx!==null){
-    summary.push(`Motivo: ${rd.acr>3000?'ACR >3000 mg/g em doente não diabético.':'ACR 700–3000 mg/g em doente não diabético.'}`);
+  if(rd.emergencyCriteria && rd.emergencyCriteria.length){
+    summary.push(`Referenciação / seguimento nefrológico: Serviço de Urgência — ${rd.emergencyCriteria.map(x=>x.label).join('; ')}.`);
+  }else{
+    summary.push(`Referenciação / seguimento nefrológico: ${rd.finalName}.`);
+    const reasons=[];
+    if(rd.albuminReason) reasons.push(rd.albuminReason);
+    (rd.otherCriteria||[]).forEach(x=>reasons.push(x.label));
+    if(reasons.length) summary.push(`Motivo adicional: ${reasons.join(' · ')}.`);
   }
-  if(rd.age>80 && (rd.matrixIdx===1 || rd.matrixIdx===2)){
+  if(rd.age>80 && (rd.matrixIdx===1 || rd.matrixIdx===2) && !(rd.emergencyCriteria&&rd.emergencyCriteria.length)){
     summary.push('Em doentes >80 anos com elevada dependência nas atividades da vida diária, síndromes demenciais avançadas ou elevada fragilidade, ponderar o benefício da referenciação à Nefrologia face ao estado basal, apesar da indicação da matriz.');
   }
 }else if(egfr<15){
@@ -415,7 +515,7 @@ const rows=[['Progressão renal',`TFGe ${egfr} + ACR ${acr} mg/g`,'Repetir tend�
 get('checklist').innerHTML=rows.map(r=>`<tr><td><strong>${esc(r[0])}</strong></td><td>${esc(r[1])}</td><td>${esc(r[2])}</td></tr>`).join('');
 get('evidence').innerHTML=`<div class="source"><strong>KFRE 4 variáveis:</strong> equação validada para DRC G3–G5, utilizando idade, sexo, TFGe e ACR. A calculadora oficial permite selecionar a região e informa que existe um fator de calibração para coortes não norte-americanas. <a href="https://kidneyfailurerisk.com/" target="_blank">Kidney Failure Risk Equation</a></div><div class="source"><strong>Fórmula aplicada:</strong> LP = −0,2201×(idade/10−7,036) + 0,2467×(sexo−0,5642) − 0,5567×(TFGe/5−7,222) + 0,4510×(ln ACR−5,137). Para a calibração norte-americana: risco 2 anos = 1−0,9750^exp(LP); risco 5 anos = 1−0,9240^exp(LP). Para a calibração não norte-americana: risco 2 anos = 1−0,9832^exp(LP); risco 5 anos = 1−0,9365^exp(LP).</div><div class="source"><strong>KDIGO 2024 · referenciação:</strong> risco de falência renal de 3–5% a 5 anos pode ser usado para determinar necessidade de referenciação; >10% a 2 anos pode orientar timing de cuidados multidisciplinares; >40% a 2 anos pode orientar preparação para terapêutica de substituição renal. <a href="https://kdigo.org/guidelines/ckd-evaluation-and-management/" target="_blank">KDIGO</a></div>`;
 }
-function resetForm(){['egfr','acr','age','k'].forEach(id=>get(id).value='');get('sex').value='';get('kfreCalibration').value='non-na';['dm1','dm2','hf','ascvd','htn','sglt2','raas','finer','statin','glp1'].forEach(id=>get(id).checked=false);get('stage').textContent='—';get('heroSub').textContent='Introduza os dados para classificar a DRC';get('riskPills').innerHTML='';get('urgent').classList.add('hidden');get('recommendations').innerHTML='';get('therapyTitle').classList.add('hidden');get('initialMessage').classList.remove('hidden');get('resultsContent').classList.add('hidden');get('referralSection').classList.add('hidden');get('summarySection').classList.add('hidden');get('clinicalSummary').innerHTML=''}
+function resetForm(){['egfr','acr','age','k'].forEach(id=>get(id).value='');get('sex').value='';get('kfreCalibration').value='non-na';['dm1','dm2','hf','ascvd','htn','sglt2','raas','finer','statin','glp1','refRapidEgfr','refHemaProtein','refMicroHematuria','refNormoglyGlyco','refAminoaciduria','refCystinuria','refHydroStable','refHydroUrgent','refCysticDisease','refNephrocalcinosis','refHereditary','refStoneRecurrent','refStoneSolitary','refStoneObstructive','refResistantHTN','refYoungHTN','refHTNHypoK','refHTNCrRise','refHTNAbdBruit','refMalignantHTN'].forEach(id=>get(id).checked=false);get('other-referral-panel')?.removeAttribute('open');get('stage').textContent='—';get('heroSub').textContent='Introduza os dados para classificar a DRC';get('riskPills').innerHTML='';get('urgent').classList.add('hidden');get('recommendations').innerHTML='';get('therapyTitle').classList.add('hidden');get('initialMessage').classList.remove('hidden');get('resultsContent').classList.add('hidden');get('referralSection').classList.add('hidden');get('summarySection').classList.add('hidden');get('clinicalSummary').innerHTML=''}
 </script>
 </body>
 </html>
