@@ -135,7 +135,7 @@
 <div id="initialMessage" class="recommend"><h3>Introduza os dados clínicos</h3><p>Preencha os campos necessários e selecione <strong>Avaliar</strong> para obter a classificação da DRC, o KFRE e as recomendações clínicas.</p></div>
 <div id="urgent" class="alert hidden"></div><div id="recommendations"></div>
 <div id="resultsContent" class="hidden">
-<div id="referralSection" class="hidden"><div class="section-title">🩺 Referenciação / seguimento nefrológico</div><div id="referral" class="recommend"></div><details class="referral-matrix-wrap"><summary>📊 Consultar matriz de referenciação do Serviço</summary><div id="referralMatrixView" class="referral-matrix-inner"></div></details></div>
+<div id="referralSection" class="hidden"><div id="referralTitle" class="section-title">🩺 Referenciação / seguimento nefrológico</div><div id="referral" class="recommend"></div><details class="referral-matrix-wrap"><summary>📊 Consultar matriz de referenciação do Serviço</summary><div id="referralMatrixView" class="referral-matrix-inner"></div></details></div>
 <div id="summarySection" class="hidden"><div class="section-title">🩺 Resumo clínico</div><div id="clinicalSummary" class="summary-card"></div></div>
 <div class="section-title">🩺 Risco de falência renal · KFRE</div><div id="kfre" class="recommend"></div>
 <div class="section-title hidden" id="therapyTitle">💊 Otimização terapêutica</div>
@@ -291,14 +291,17 @@ function calculateReferral(){
 
  // Situações da tabela explicitamente dirigidas à Urgência.
  if(emergencyCriteria.length){
+   get('referralTitle').textContent='🚨 Serviço de Urgência';
    box.className='recommend very';
    box.innerHTML='<h3>🔴 Serviço de Urgência</h3>'
      +'<p><strong>Motivo:</strong> '+emergencyCriteria.map(x=>x.label).join('; ')+'.</p>'
-     +'<p style="margin-top:7px;font-size:11px">Esta situação não é tratada como referenciação nefrológica programada.</p>';
+     +'<p style="margin-top:7px;font-size:11px"><strong>Encaminhar de imediato para o Serviço de Urgência.</strong> Esta situação não é tratada como referenciação nefrológica programada.</p>';
    currentReferralDecision={egfr,acr,age,matrixIdx,finalIdx,matrixName,finalName,albuminExtraIdx,albuminReason,otherCriteria,emergencyCriteria,extraIdx:albuminExtraIdx};
    renderReferralMatrix(-1,-1);
    return;
  }
+
+ get('referralTitle').textContent='🩺 Referenciação / seguimento nefrológico';
 
  const allAdditionalReasons=[];
  if(albuminReason) allAdditionalReasons.push(albuminReason);
@@ -310,7 +313,7 @@ function calculateReferral(){
 
  let referralHtml='<h3>'+finalName+'</h3>';
  if(allAdditionalReasons.length){
-   referralHtml+='<p><strong>Outro critério de referenciação:</strong> '+allAdditionalReasons.join(' · ')+'</p>';
+   referralHtml+='<p><strong>Motivo adicional:</strong> '+allAdditionalReasons.join(' · ')+'</p>';
    referralHtml+='<p style="margin-top:7px;font-size:12px"><strong>Matriz de base:</strong> '+matrixName+'.</p>';
    if(finalIdx>matrixIdx){
      referralHtml+='<p style="margin-top:7px;font-size:11px"><strong>A prioridade é elevada pelo(s) critério(s) adicional(is).</strong></p>';
@@ -503,7 +506,7 @@ if(currentReferralDecision){
     const reasons=[];
     if(rd.albuminReason) reasons.push(rd.albuminReason);
     (rd.otherCriteria||[]).forEach(x=>reasons.push(x.label));
-    if(reasons.length) summary.push(`Outro critério de referenciação: ${reasons.join(' · ')}.`);
+    if(reasons.length) summary.push(`Motivo adicional: ${reasons.join(' · ')}.`);
   }
   if(rd.age>80 && (rd.matrixIdx===1 || rd.matrixIdx===2) && !(rd.emergencyCriteria&&rd.emergencyCriteria.length)){
     summary.push('Em doentes >80 anos com elevada dependência nas atividades da vida diária, síndromes demenciais avançadas ou elevada fragilidade, ponderar o benefício da referenciação à Nefrologia face ao estado basal, apesar da indicação da matriz.');
@@ -517,7 +520,7 @@ const rows=[['Progressão renal',`TFGe ${egfr} + ACR ${acr} mg/g`,'Repetir tend�
 get('checklist').innerHTML=rows.map(r=>`<tr><td><strong>${esc(r[0])}</strong></td><td>${esc(r[1])}</td><td>${esc(r[2])}</td></tr>`).join('');
 get('evidence').innerHTML=`<div class="source"><strong>KFRE 4 variáveis:</strong> equação validada para DRC G3–G5, utilizando idade, sexo, TFGe e ACR. A calculadora oficial permite selecionar a região e informa que existe um fator de calibração para coortes não norte-americanas. <a href="https://kidneyfailurerisk.com/" target="_blank">Kidney Failure Risk Equation</a></div><div class="source"><strong>Fórmula aplicada:</strong> LP = −0,2201×(idade/10−7,036) + 0,2467×(sexo−0,5642) − 0,5567×(TFGe/5−7,222) + 0,4510×(ln ACR−5,137). Para a calibração norte-americana: risco 2 anos = 1−0,9750^exp(LP); risco 5 anos = 1−0,9240^exp(LP). Para a calibração não norte-americana: risco 2 anos = 1−0,9832^exp(LP); risco 5 anos = 1−0,9365^exp(LP).</div><div class="source"><strong>KDIGO 2024 · referenciação:</strong> risco de falência renal de 3–5% a 5 anos pode ser usado para determinar necessidade de referenciação; >10% a 2 anos pode orientar timing de cuidados multidisciplinares; >40% a 2 anos pode orientar preparação para terapêutica de substituição renal. <a href="https://kdigo.org/guidelines/ckd-evaluation-and-management/" target="_blank">KDIGO</a></div>`;
 }
-function resetForm(){['egfr','acr','age','k'].forEach(id=>get(id).value='');get('sex').value='';get('kfreCalibration').value='non-na';['dm1','dm2','hf','ascvd','htn','sglt2','raas','finer','statin','glp1','refRapidEgfr','refHemaProtein','refMicroHematuria','refNormoglyGlyco','refAminoaciduria','refCystinuria','refHydroStable','refHydroUrgent','refCysticDisease','refNephrocalcinosis','refHereditary','refStoneRecurrent','refStoneSolitary','refStoneObstructive','refResistantHTN','refYoungHTN','refHTNHypoK','refHTNCrRise','refHTNAbdBruit','refMalignantHTN'].forEach(id=>get(id).checked=false);get('other-referral-panel')?.removeAttribute('open');get('stage').textContent='—';get('heroSub').textContent='Introduza os dados para classificar a DRC';get('riskPills').innerHTML='';get('urgent').classList.add('hidden');get('recommendations').innerHTML='';get('therapyTitle').classList.add('hidden');get('initialMessage').classList.remove('hidden');get('resultsContent').classList.add('hidden');get('referralSection').classList.add('hidden');get('summarySection').classList.add('hidden');get('clinicalSummary').innerHTML=''}
+function resetForm(){['egfr','acr','age','k'].forEach(id=>get(id).value='');get('sex').value='';get('kfreCalibration').value='non-na';['dm1','dm2','hf','ascvd','htn','sglt2','raas','finer','statin','glp1','refRapidEgfr','refHemaProtein','refMicroHematuria','refNormoglyGlyco','refAminoaciduria','refCystinuria','refHydroStable','refHydroUrgent','refCysticDisease','refNephrocalcinosis','refHereditary','refStoneRecurrent','refStoneSolitary','refStoneObstructive','refResistantHTN','refYoungHTN','refHTNHypoK','refHTNCrRise','refHTNAbdBruit','refMalignantHTN'].forEach(id=>get(id).checked=false);get('other-referral-panel')?.removeAttribute('open');get('referralTitle').textContent='🩺 Referenciação / seguimento nefrológico';get('stage').textContent='—';get('heroSub').textContent='Introduza os dados para classificar a DRC';get('riskPills').innerHTML='';get('urgent').classList.add('hidden');get('recommendations').innerHTML='';get('therapyTitle').classList.add('hidden');get('initialMessage').classList.remove('hidden');get('resultsContent').classList.add('hidden');get('referralSection').classList.add('hidden');get('summarySection').classList.add('hidden');get('clinicalSummary').innerHTML=''}
 </script>
 </body>
 </html>
