@@ -157,9 +157,42 @@ function calculateReferral(){
  const a=referralAgeCol(age), g=referralEgfrRow(egfr), r=referralAcrCol(acr);
  sec.classList.remove('hidden');
  if(a<0||g<0||r<0){box.className='recommend';box.innerHTML='<h3>Referenciação · fora da matriz</h3><p>A matriz do Serviço aplica-se a idade ≥19 anos, TFGe >0 e ACR/RAC ≥0.</p>';return;}
- const idx=referralMatrix[g][a*3+r];
- box.className='recommend '+referralClasses[idx];
- box.innerHTML='<h3>'+referralLabels[idx]+'</h3><p>Prioridade determinada pela matriz do Serviço com base em <strong>TFGe '+egfr+' mL/min/1,73 m²</strong>, <strong>ACR '+acr+' mg/g</strong> e <strong>idade '+age+' anos</strong>.</p><p style="margin-top:7px;font-size:11px">Critério de referenciação: TFGe + albuminúria + idade. O KFRE não determina esta decisão.</p>';
+
+ // Matriz de base: TFGe + ACR + idade.
+ const matrixIdx=referralMatrix[g][a*3+r];
+ let finalIdx=matrixIdx;
+ let extraText='';
+ let extraIdx=null;
+ const diabetic=get('dm1').checked || get('dm2').checked;
+
+ // Critérios adicionais do Serviço: albuminúria/proteinúria relevante.
+ // DM1 e DM2 são tratados simplesmente como diabetes para estes critérios.
+ // A distinção "apresentação de novo"/"crónica" não é inferida automaticamente.
+ if(acr>3000 && !diabetic){
+   extraIdx=4;
+   extraText='ACR >3000 mg/g em doente não diabético: critério de referenciação muito urgente. Se houver apresentação de novo, este mesmo nível é aplicável; em apresentação crónica diabética, orientar pela tabela.';
+ }else if(acr>=700 && acr<=3000 && !diabetic){
+   extraIdx=3;
+   extraText='ACR 700–3000 mg/g em doente não diabético: critério de referenciação urgente. Se diabético, orientar pela tabela de TFGe + albuminúria + idade.';
+ }else if(acr>3000 && diabetic){
+   extraText='ACR >3000 mg/g em doente diabético: orientar pela tabela de TFGe + albuminúria + idade. Se houver apresentação de novo, considerar referenciação muito urgente.';
+ }else if(acr>=700 && acr<=3000 && diabetic){
+   extraText='ACR 700–3000 mg/g em doente diabético: orientar pela tabela de TFGe + albuminúria + idade.';
+ }else{
+   extraText='Sem critério adicional de albuminúria relevante: orientar pela tabela de TFGe + albuminúria + idade.';
+ }
+
+ if(extraIdx!==null) finalIdx=Math.max(matrixIdx,extraIdx);
+ box.className='recommend '+referralClasses[finalIdx];
+ const matrixName=referralLabels[matrixIdx];
+ const finalName=referralLabels[finalIdx];
+ const escalated=finalIdx>matrixIdx;
+ box.innerHTML='<h3>'+finalName+'</h3>'
+   +'<p><strong>Resultado final:</strong> '+finalName+'.</p>'
+   +'<p><strong>Matriz TFGe + albuminúria + idade:</strong> '+matrixName+' — TFGe '+egfr+' mL/min/1,73 m², ACR '+acr+' mg/g, idade '+age+' anos.</p>'
+   +'<p style="margin-top:7px;font-size:11px"><strong>Critério adicional:</strong> '+extraText+'</p>'
+   +(escalated?'<p style="margin-top:7px;font-size:11px"><strong>Prioridade elevada</strong> pelo critério adicional; a prioridade nunca é reduzida face à matriz.</p>':'')
+   +'<p style="margin-top:7px;font-size:11px">O KFRE continua a ser apresentado como estimativa de risco, mas não determina a prioridade de referenciação.</p>';
  renderReferralMatrix(g,a*3+r);
 }
 
