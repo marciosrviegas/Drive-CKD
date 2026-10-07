@@ -1,4 +1,4 @@
-const CACHE_NAME = "quick-ckd-new-app-v1";
+const CACHE_NAME = "drive-ckd-v6-green-table";
 
 self.addEventListener("install", event => {
   self.skipWaiting();
