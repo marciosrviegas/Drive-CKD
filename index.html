@@ -310,7 +310,7 @@ function calculateReferral(){
 
  let referralHtml='<h3>'+finalName+'</h3>';
  if(allAdditionalReasons.length){
-   referralHtml+='<p><strong>Motivo adicional:</strong> '+allAdditionalReasons.join(' · ')+'</p>';
+   referralHtml+='<p><strong>Outro critério de referenciação:</strong> '+allAdditionalReasons.join(' · ')+'</p>';
    referralHtml+='<p style="margin-top:7px;font-size:12px"><strong>Matriz de base:</strong> '+matrixName+'.</p>';
    if(finalIdx>matrixIdx){
      referralHtml+='<p style="margin-top:7px;font-size:11px"><strong>A prioridade é elevada pelo(s) critério(s) adicional(is).</strong></p>';
@@ -503,7 +503,7 @@ if(currentReferralDecision){
     const reasons=[];
     if(rd.albuminReason) reasons.push(rd.albuminReason);
     (rd.otherCriteria||[]).forEach(x=>reasons.push(x.label));
-    if(reasons.length) summary.push(`Motivo adicional: ${reasons.join(' · ')}.`);
+    if(reasons.length) summary.push(`Outro critério de referenciação: ${reasons.join(' · ')}.`);
   }
   if(rd.age>80 && (rd.matrixIdx===1 || rd.matrixIdx===2) && !(rd.emergencyCriteria&&rd.emergencyCriteria.length)){
     summary.push('Em doentes >80 anos com elevada dependência nas atividades da vida diária, síndromes demenciais avançadas ou elevada fragilidade, ponderar o benefício da referenciação à Nefrologia face ao estado basal, apesar da indicação da matriz.');
