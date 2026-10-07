@@ -122,6 +122,7 @@ function toggleDiabetes(selected){
 // Referenciação à Nefrologia: matriz do Serviço baseada exclusivamente em TFGe + ACR + idade.
 const referralLabels=['Não referenciar','Teleconsulta','Referenciação normal','Referenciação urgente','Referenciação muito urgente'];
 const referralClasses=['green','tele','normal','urgent','very'];
+let currentReferralDecision=null;
 // 12 valores por linha: idade 19–39, 40–64, 65–80, >80; em cada grupo ACR <30 / 30–300 / >300 mg/g.
 const referralMatrix=[
  [0,1,2, 0,0,2, 0,0,2, 0,0,0],
@@ -170,6 +171,7 @@ function renderReferralMatrix(selectedRow=-1, selectedCol=-1){
 function calculateReferral(){
  const egfr=parseFloat(get('egfr').value), acr=parseFloat(get('acr').value), age=parseFloat(get('age').value);
  const sec=get('referralSection'), box=get('referral');
+ currentReferralDecision=null;
  if(!Number.isFinite(egfr)||!Number.isFinite(acr)||!Number.isFinite(age)){sec.classList.add('hidden');return;}
  const a=referralAgeCol(age), g=referralEgfrRow(egfr), r=referralAcrCol(acr);
  sec.classList.remove('hidden');
@@ -204,11 +206,16 @@ function calculateReferral(){
  const matrixName=referralLabels[matrixIdx];
  const finalName=referralLabels[finalIdx];
  const escalated=finalIdx>matrixIdx;
+ const over80Caveat=(age>80 && (matrixIdx===1 || matrixIdx===2))
+   ? '<p style="margin-top:9px;font-size:11px"><strong>Nota em doentes &gt;80 anos:</strong> perante elevada dependência nas atividades da vida diária, síndromes demenciais avançadas ou elevada fragilidade, deve ser ponderado o benefício da referenciação à Nefrologia face ao estado basal do doente, apesar da indicação da matriz.</p>'
+   : '';
+ currentReferralDecision={egfr,acr,age,matrixIdx,finalIdx,matrixName,finalName,extraIdx,extraText,escalated,over80Caveat};
  box.innerHTML='<h3>'+finalName+'</h3>'
    +'<p><strong>Resultado final:</strong> '+finalName+'.</p>'
    +'<p><strong>Matriz TFGe + albuminúria + idade:</strong> '+matrixName+' — TFGe '+egfr+' mL/min/1,73 m², ACR '+acr+' mg/g, idade '+age+' anos.</p>'
    +'<p style="margin-top:7px;font-size:11px"><strong>Critério adicional:</strong> '+extraText+'</p>'
    +(escalated?'<p style="margin-top:7px;font-size:11px"><strong>Prioridade elevada</strong> pelo critério adicional; a prioridade nunca é reduzida face à matriz.</p>':'')
+   +over80Caveat
    +'<p style="margin-top:7px;font-size:11px">O KFRE continua a ser apresentado como estimativa de risco, mas não determina a prioridade de referenciação.</p>';
  renderReferralMatrix(extraIdx===null ? g : -1, extraIdx===null ? a*3+r : -1);
 }
@@ -219,7 +226,6 @@ function calculate(){
   get('urgent').className='alert hidden';
   get('urgent').innerHTML='';
   get('riskPills').innerHTML='';
-  calculateReferral();
   get('summarySection').classList.add('hidden');
   get('clinicalSummary').innerHTML='';
   get('checklist').innerHTML='';
@@ -378,11 +384,15 @@ if(dm2Active&&hasCkd&&!glp1&&priorities.length<3) priorities.push('avaliar GLP-1
 if(!statin&&age>=50&&hasCkdPattern&&priorities.length<3) priorities.push('avaliar estatina segundo KDIGO, individualizando em idade muito avançada ou fragilidade');
 if(!statin&&age>=50&&!hasCkdPattern&&priorities.length<3) priorities.push('avaliar risco cardiovascular e indicação de estatina');
 if(priorities.length) summary.push('Prioridades: '+priorities.slice(0,3).join('; ')+'.');
-if(risk2!==null&&risk5!==null&&egfr<60){
-  if(risk2>=.40) summary.push('O risco calculado justifica seguimento nefrológico e planeamento atempado de TSFR.');
-  else if(risk5>.05) summary.push('O risco calculado justifica referenciação à Nefrologia.');
-  else if(risk2>.10) summary.push('Considerar seguimento nefrológico estruturado.');
-  else if(risk5>=.03) summary.push('Ponderar referenciação à Nefrologia, integrando a decisão com a trajetória clínica.');
+if(currentReferralDecision){
+  const rd=currentReferralDecision;
+  summary.push(`Referenciação / seguimento nefrológico: ${rd.finalName}.`);
+  if(rd.extraIdx!==null){
+    summary.push(`Critério adicional: ${rd.extraText}`);
+  }
+  if(rd.age>80 && (rd.matrixIdx===1 || rd.matrixIdx===2)){
+    summary.push('Em doentes >80 anos com elevada dependência nas atividades da vida diária, síndromes demenciais avançadas ou elevada fragilidade, ponderar o benefício da referenciação à Nefrologia face ao estado basal, apesar da indicação da matriz.');
+  }
 }else if(egfr<15){
   summary.push('Em G5, planear TSFR de acordo com a trajetória clínica e o contexto individual.');
 }
