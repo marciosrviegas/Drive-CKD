@@ -14,6 +14,22 @@
 <style>
 :root{color-scheme:light dark;--bg:light-dark(#f5f7fa,#101317);--surface:light-dark(#fff,#171b20);--surface2:light-dark(#f0f3f7,#20262d);--text:light-dark(#17202a,#f2f5f7);--muted:light-dark(#5d6875,#aab4bf);--border:light-dark(#dce2e8,#303943);--accent:light-dark(#5b8f70,#6ea1ff);--green:light-dark(#087443,#57d59b);--amber:light-dark(#a15c00,#ffbe63);--red:light-dark(#b42318,#ff7b72)}
 *{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}#app{min-height:100vh;background:var(--bg)}.wrap{max-width:1120px;margin:auto;padding:28px 20px 44px}.top{display:flex;justify-content:space-between;gap:20px;align-items:flex-end;margin-bottom:22px}.eyebrow{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}h1{font-size:30px;line-height:1.1;margin:6px 0}.sub{color:var(--muted);max-width:760px;line-height:1.5}.badge{border:1px solid var(--border);background:var(--surface);padding:9px 12px;border-radius:999px;font-size:12px;color:var(--muted)}.grid{display:grid;grid-template-columns:360px 1fr;gap:18px}.card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:18px;box-shadow:0 6px 22px rgba(0,0,0,.04)}.card h2{font-size:16px;margin:0 0 14px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field.full{grid-column:1/-1}label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px}input,select{width:100%;border:1px solid var(--border);background:var(--surface2);color:var(--text);border-radius:10px;padding:10px 11px;font-size:14px;outline:none}input:focus,select:focus{border-color:var(--accent)}.check{display:flex;align-items:center;gap:8px;padding:7px 0;font-size:13px}.check input{width:auto}.actions{display:flex;gap:9px;margin-top:15px}.btn{border:0;border-radius:10px;padding:10px 13px;font-weight:800;cursor:pointer}.primary{background:var(--accent);color:white}.secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border)}.result-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:16px}.result-hero{padding:18px;border:1px solid var(--border);border-radius:16px;background:linear-gradient(135deg,var(--surface2),var(--surface));margin-bottom:16px}.stage{font-weight:900;font-size:32px;letter-spacing:-.03em}.hero-label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:800;color:var(--muted);margin-bottom:4px}.hero-sub{font-size:13px;color:var(--muted);margin-top:4px}.risk-pills{justify-content:flex-end;margin-top:0}.section-title{font-size:13px;font-weight:900;margin:20px 0 8px;display:flex;align-items:center;gap:6px}.recommend{border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:12px;padding:12px 14px;margin:8px 0;background:var(--surface2)}.recommend h3{font-size:13px;margin:0 0 4px}.recommend p{font-size:12.5px;line-height:1.45;margin:0;color:var(--muted)}.small{font-size:12px;color:var(--muted)}.recommend{border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:12px;padding:13px 14px;margin:10px 0;background:var(--surface2)}.recommend.green{border-left-color:var(--green)}.recommend.tele{border-left-color:#d6a6b5;background:light-dark(#fbf1f4,#302126)}.recommend.normal{border-left-color:#d4b800;background:light-dark(#fffbe0,#302d16)}.recommend.urgent{border-left-color:#e8872f;background:light-dark(#fff0df,#332316)}.recommend.very{border-left-color:#d93025;background:light-dark(#fff0f0,#351616)}.recommend.amber{border-left-color:var(--amber)}.recommend.red{border-left-color:var(--red)}.summary-card{border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:12px;padding:13px 14px;margin:10px 0;background:var(--surface2)}.summary-card p{font-size:13px;line-height:1.55;margin:0;color:var(--text)}.recommend h3{font-size:14px;margin:0 0 5px}.recommend p{font-size:13px;line-height:1.5;margin:0;color:var(--muted)}.table{width:100%;border-collapse:collapse;font-size:12px}.table th,.table td{padding:9px 7px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}.table th{color:var(--muted);font-size:11px}.note{font-size:11px;color:var(--muted);line-height:1.5}.footer{margin-top:18px}.app-credit{margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:11px;line-height:1.5;color:var(--muted)}.app-update{margin-top:3px;font-style:italic}.source{padding:10px 0;border-bottom:1px solid var(--border);font-size:12px}.source a{color:var(--accent);text-decoration:none}.hidden{display:none}.alert{padding:11px 13px;border-radius:10px;background:light-dark(#fff7e6,#30250f);border:1px solid light-dark(#f5d18b,#66501e);font-size:12px;line-height:1.45;margin-bottom:12px}.pillrow{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.pill{padding:6px 8px;border-radius:999px;background:var(--surface2);font-size:11px;font-weight:800}.section-title{font-size:13px;font-weight:900;margin:18px 0 7px}.install-banner{position:sticky;top:0;z-index:20;margin:0 auto;padding:10px 14px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:center;gap:10px}.install-banner small{color:var(--muted)}.install-banner .btn{padding:7px 10px}.install-banner .secondary{font-size:18px;line-height:1}@media(max-width:850px){.grid{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}.fields{grid-template-columns:1fr}.field.full{grid-column:auto}}
+
+.referral-matrix-wrap{margin-top:12px;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--surface)}
+.referral-matrix-wrap summary{cursor:pointer;padding:11px 13px;font-size:12px;font-weight:900;list-style:none}
+.referral-matrix-wrap summary::-webkit-details-marker{display:none}
+.referral-matrix-inner{padding:0 10px 12px;overflow-x:auto}
+.referral-matrix{width:100%;min-width:700px;border-collapse:separate;border-spacing:2px;font-size:10px}
+.referral-matrix th{padding:7px 5px;background:var(--surface2);color:var(--muted);font-weight:900;text-align:center;line-height:1.2}
+.referral-matrix th.side{min-width:82px;text-align:left}
+.referral-matrix td{height:42px;padding:4px;text-align:center;font-weight:900;border:1px solid rgba(0,0,0,.08);border-radius:3px;position:relative;color:#17202a}
+.referral-matrix td.m-green{background:#75b347}.referral-matrix td.m-tele{background:#f2dfe4}.referral-matrix td.m-normal{background:#fff900}.referral-matrix td.m-urgent{background:#ff7300}.referral-matrix td.m-very{background:#ff0505;color:#fff}
+.referral-matrix td.selected{outline:3px solid var(--accent);outline-offset:-3px;box-shadow:0 0 0 2px rgba(91,143,112,.25) inset}
+.referral-matrix td.selected::after{content:'●';position:absolute;right:4px;top:2px;font-size:10px;color:#111}
+.referral-matrix .group{font-size:11px;color:var(--text);background:var(--surface2)}
+.referral-legend{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px;font-size:10px;color:var(--muted)}
+.referral-legend span{display:inline-flex;align-items:center;gap:4px}.referral-legend i{width:11px;height:11px;border-radius:2px;display:inline-block;border:1px solid rgba(0,0,0,.1)}
+.referral-current{margin:8px 0 0;padding:8px 10px;border-radius:8px;background:var(--surface2);font-size:11px;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -44,7 +60,7 @@
 <div id="urgent" class="alert hidden"></div><div class="section-title hidden" id="therapyTitle">💊 Otimização terapêutica</div><div id="recommendations"></div>
 <div id="resultsContent" class="hidden">
 <div class="section-title">🩺 Risco de falência renal · KFRE</div><div id="kfre" class="recommend"></div>
-<div id="referralSection" class="hidden"><div class="section-title">🩺 Referenciação / seguimento nefrológico</div><div id="referral" class="recommend"></div></div>
+<div id="referralSection" class="hidden"><div class="section-title">🩺 Referenciação / seguimento nefrológico</div><div id="referral" class="recommend"></div><details class="referral-matrix-wrap"><summary>📊 Consultar matriz de referenciação do Serviço</summary><div id="referralMatrixView" class="referral-matrix-inner"></div></details></div>
 <div id="summarySection" class="hidden"><div class="section-title">🩺 Resumo clínico</div><div id="clinicalSummary" class="summary-card"></div></div>
 <div class="section-title">Checklist de consulta</div><table class="table"><thead><tr><th>Domínio</th><th>Verificar</th><th>Comentário</th></tr></thead><tbody id="checklist"></tbody></table>
 <details style="margin-top:18px"><summary style="cursor:pointer;font-size:13px;font-weight:900;color:var(--text)">📚 Evidência e metodologia</summary><div id="evidence" class="note" style="margin-top:8px"></div></details>
@@ -100,6 +116,27 @@ const referralMatrix=[
 function referralAgeCol(age){if(age>=19&&age<=39)return 0;if(age>=40&&age<=64)return 1;if(age>=65&&age<=80)return 2;if(age>80)return 3;return -1}
 function referralEgfrRow(egfr){if(egfr>75)return 0;if(egfr>=60)return 1;if(egfr>=45)return 2;if(egfr>=30)return 3;if(egfr>=15)return 4;if(egfr>0)return 5;return -1}
 function referralAcrCol(acr){if(acr<30)return 0;if(acr<=300)return 1;if(acr>300)return 2;return -1}
+function renderReferralMatrix(selectedRow=-1, selectedCol=-1){
+ const host=get('referralMatrixView');
+ if(!host)return;
+ const ageGroups=['19–39','40–64','65–80','>80'];
+ const acrs=['<30','30–300','>300'];
+ const labels=['Não referenciar','Teleconsulta','Referenciação normal','Referenciação urgente','Referenciação muito urgente'];
+ const short=['Não referenciar','Teleconsulta','Normal','Urgente','Muito urgente'];
+ let h='<table class="referral-matrix"><thead><tr><th rowspan="2" class="side">TFGe (mL/min/1,73 m²)</th>';
+ ageGroups.forEach(g=>h+='<th colspan="3" class="group">'+g+' anos</th>');
+ h+='</tr><tr>';
+ ageGroups.forEach(()=>acrs.forEach(a=>h+='<th>'+a+'</th>'));
+ h+='</tr></thead><tbody>';
+ const rows=['>75','60–75','45–59','30–44','15–29','<15'];
+ const classes=['m-green','m-tele','m-normal','m-urgent','m-very'];
+ rows.forEach((row,r)=>{h+='<tr><th class="side">'+row+'</th>'; for(let c=0;c<12;c++){const idx=referralMatrix[r][c]; const sel=(r===selectedRow&&c===selectedCol)?' selected':''; h+='<td class="'+classes[idx]+sel+'" title="'+labels[idx]+'">'+short[idx]+(sel?' ●':'')+'</td>'; } h+='</tr>';});
+ h+='</tbody></table>';
+ h+='<div class="referral-legend"><span><i style="background:#75b347"></i>Não referenciar</span><span><i style="background:#f2dfe4"></i>Teleconsulta</span><span><i style="background:#fff900"></i>Normal</span><span><i style="background:#ff7300"></i>Urgente</span><span><i style="background:#ff0505"></i>Muito urgente</span></div>';
+ if(selectedRow>=0&&selectedCol>=0){const ageIndex=Math.floor(selectedCol/3);const acrIndex=selectedCol%3; const idx=referralMatrix[selectedRow][selectedCol]; h+='<div class="referral-current"><strong>Localização deste doente:</strong> TFGe '+rows[selectedRow]+' · idade '+ageGroups[ageIndex]+' anos · ACR '+acrs[acrIndex]+' mg/g → <strong>'+labels[idx]+'</strong>. O ponto <strong>●</strong> assinala a célula correspondente.</div>'; }
+ host.innerHTML=h;
+}
+
 function calculateReferral(){
  const egfr=parseFloat(get('egfr').value), acr=parseFloat(get('acr').value), age=parseFloat(get('age').value);
  const sec=get('referralSection'), box=get('referral');
@@ -110,6 +147,7 @@ function calculateReferral(){
  const idx=referralMatrix[g][a*3+r];
  box.className='recommend '+referralClasses[idx];
  box.innerHTML='<h3>'+referralLabels[idx]+'</h3><p>Prioridade determinada pela matriz do Serviço com base em <strong>TFGe '+egfr+' mL/min/1,73 m²</strong>, <strong>ACR '+acr+' mg/g</strong> e <strong>idade '+age+' anos</strong>.</p><p style="margin-top:7px;font-size:11px">Critério de referenciação: TFGe + albuminúria + idade. O KFRE não determina esta decisão.</p>';
+ renderReferralMatrix(g,a*3+r);
 }
 
 function calculate(){
