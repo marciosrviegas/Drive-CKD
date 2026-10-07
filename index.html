@@ -27,6 +27,8 @@
 .referral-matrix th.side{width:76px;text-align:center;padding-left:4px;position:sticky;left:0;z-index:2;background:#edf5f0;color:#31543f}
 .referral-matrix th.group{font-size:10px;color:#174b31;background:#dcefe4}
 .referral-matrix td{height:43px;padding:4px 2px;text-align:center;font-weight:900;border:1px solid rgba(16,24,40,.08);border-radius:8px;position:relative;color:#17251d;line-height:1.08;transition:transform .15s ease,box-shadow .15s ease;white-space:normal;overflow-wrap:normal;word-break:normal}
+.referral-matrix.has-selection td{filter:saturate(.22);opacity:.48}
+.referral-matrix.has-selection td.selected{filter:none;opacity:1}
 .referral-matrix td.m-green{background:#9bd56f}
 .referral-matrix td.m-tele{background:#f3c7d3}
 .referral-matrix td.m-normal{background:#ffe94f}
@@ -141,13 +143,28 @@ function renderReferralMatrix(selectedRow=-1, selectedCol=-1){
  const short=['Não<br>referenciar','Teleconsulta','Normal','Urgente','Muito<br>urgente'];
  const rows=['>75','60–75','45–59','30–44','15–29','<15'];
  const classes=['m-green','m-tele','m-normal','m-urgent','m-very'];
- let h='<table class="referral-matrix" aria-label="Matriz de referenciação por TFGe, idade e ACR"><thead><tr><th rowspan="2" class="side">TFGe<br><span style="font-weight:700;font-size:8px">mL/min/1,73 m²</span></th>';
+ const hasSelection=(selectedRow>=0&&selectedCol>=0);
+ let h='<table class="referral-matrix'+(hasSelection?' has-selection':'')+'" aria-label="Matriz de referenciação por TFGe, idade e ACR"><thead><tr><th rowspan="2" class="side">TFGe<br><span style="font-weight:700;font-size:8px">mL/min/1,73 m²</span></th>';
  ageGroups.forEach(g=>h+='<th colspan="3" class="group">'+g+' anos</th>');
  h+='</tr><tr>'; ageGroups.forEach(()=>acrs.forEach(a=>h+='<th>ACR<br>'+a+'</th>')); h+='</tr></thead><tbody>';
- rows.forEach((row,r)=>{h+='<tr><th class="side">'+row+'</th>'; for(let c=0;c<12;c++){const idx=referralMatrix[r][c]; const sel=(r===selectedRow&&c===selectedCol)?' selected':''; h+='<td class="'+classes[idx]+sel+'" title="'+labels[idx]+'" aria-label="'+labels[idx]+'">'+short[idx] +(sel?' ●':'')+'</td>'; } h+='</tr>';});
+ rows.forEach((row,r)=>{
+   h+='<tr><th class="side">'+row+'</th>';
+   for(let c=0;c<12;c++){
+     const idx=referralMatrix[r][c];
+     const sel=(r===selectedRow&&c===selectedCol);
+     const cellClass=classes[idx]+(sel?' selected':'');
+     h+='<td class="'+cellClass+'" title="'+labels[idx]+'" aria-label="'+labels[idx]+'">'+short[idx]+'</td>';
+   }
+   h+='</tr>';
+ });
  h+='</tbody></table>';
  h+='<div class="referral-legend"><span><i style="background:#9bd56f"></i>Não referenciar</span><span><i style="background:#f3c7d3"></i>Teleconsulta</span><span><i style="background:#ffe94f"></i>Normal</span><span><i style="background:#ffad55"></i>Urgente</span><span><i style="background:#ff5959"></i>Muito urgente</span></div>';
- if(selectedRow>=0&&selectedCol>=0){const ageIndex=Math.floor(selectedCol/3); const acrIndex=selectedCol%3; const idx=referralMatrix[selectedRow][selectedCol]; h+='<div class="referral-current"><strong>Doente avaliado:</strong> TFGe '+rows[selectedRow]+' · idade '+ageGroups[ageIndex]+' anos · ACR '+acrs[acrIndex]+' mg/g → <strong>'+labels[idx]+'</strong>. <span>● assinala a posição na matriz.</span></div>';}
+ if(hasSelection){
+   const ageIndex=Math.floor(selectedCol/3);
+   const acrIndex=selectedCol%3;
+   const idx=referralMatrix[selectedRow][selectedCol];
+   h+='<div class="referral-current"><strong>Doente avaliado:</strong> TFGe '+rows[selectedRow]+' · idade '+ageGroups[ageIndex]+' anos · ACR '+acrs[acrIndex]+' mg/g → <strong>'+labels[idx]+'</strong>. <span>● assinala a posição na matriz.</span></div>';
+ }
  host.innerHTML=h;
 }
 function calculateReferral(){
@@ -193,7 +210,7 @@ function calculateReferral(){
    +'<p style="margin-top:7px;font-size:11px"><strong>Critério adicional:</strong> '+extraText+'</p>'
    +(escalated?'<p style="margin-top:7px;font-size:11px"><strong>Prioridade elevada</strong> pelo critério adicional; a prioridade nunca é reduzida face à matriz.</p>':'')
    +'<p style="margin-top:7px;font-size:11px">O KFRE continua a ser apresentado como estimativa de risco, mas não determina a prioridade de referenciação.</p>';
- renderReferralMatrix(g,a*3+r);
+ renderReferralMatrix(extraIdx===null ? g : -1, extraIdx===null ? a*3+r : -1);
 }
 
 function calculate(){
