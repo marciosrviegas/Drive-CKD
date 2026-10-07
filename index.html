@@ -210,13 +210,26 @@ function calculateReferral(){
    ? '<p style="margin-top:9px;font-size:11px"><strong>Nota em doentes &gt;80 anos:</strong> perante elevada dependência nas atividades da vida diária, síndromes demenciais avançadas ou elevada fragilidade, deve ser ponderado o benefício da referenciação à Nefrologia face ao estado basal do doente, apesar da indicação da matriz.</p>'
    : '';
  currentReferralDecision={egfr,acr,age,matrixIdx,finalIdx,matrixName,finalName,extraIdx,extraText,escalated,over80Caveat};
- box.innerHTML='<h3>'+finalName+'</h3>'
-   +'<p><strong>Resultado final:</strong> '+finalName+'.</p>'
-   +'<p><strong>Matriz TFGe + albuminúria + idade:</strong> '+matrixName+' — TFGe '+egfr+' mL/min/1,73 m², ACR '+acr+' mg/g, idade '+age+' anos.</p>'
-   +'<p style="margin-top:7px;font-size:11px"><strong>Critério adicional:</strong> '+extraText+'</p>'
-   +(escalated?'<p style="margin-top:7px;font-size:11px"><strong>Prioridade elevada</strong> pelo critério adicional; a prioridade nunca é reduzida face à matriz.</p>':'')
-   +over80Caveat
-   +'<p style="margin-top:7px;font-size:11px">O KFRE continua a ser apresentado como estimativa de risco, mas não determina a prioridade de referenciação.</p>';
+ let referralHtml='<h3>'+finalName+'</h3>';
+ if(extraIdx!==null){
+   const reason = acr>3000
+     ? 'ACR &gt;3000 mg/g em doente não diabético.'
+     : 'ACR 700–3000 mg/g em doente não diabético.';
+   referralHtml+='<p><strong>Motivo:</strong> '+reason+'</p>';
+   referralHtml+='<p style="margin-top:7px;font-size:12px"><strong>Matriz de base:</strong> '+matrixName+'.</p>';
+   if(escalated){
+     referralHtml+='<p style="margin-top:7px;font-size:11px"><strong>A prioridade é elevada pelo critério adicional.</strong></p>';
+   }
+ }else{
+   referralHtml+='<p><strong>Matriz TFGe + ACR + idade:</strong> TFGe '+egfr+' mL/min/1,73 m² · ACR '+acr+' mg/g · idade '+age+' anos.</p>';
+   if(diabetic && acr>3000){
+     referralHtml+='<p style="margin-top:7px;font-size:11px"><strong>Nota:</strong> em doente diabético, ACR &gt;3000 mg/g é orientado pela matriz; se houver apresentação de novo, considerar referenciação muito urgente.</p>';
+   }else if(diabetic && acr>=700){
+     referralHtml+='<p style="margin-top:7px;font-size:11px"><strong>Nota:</strong> em doente diabético, ACR 700–3000 mg/g é orientado pela matriz.</p>';
+   }
+ }
+ referralHtml+=over80Caveat;
+ box.innerHTML=referralHtml;
  renderReferralMatrix(extraIdx===null ? g : -1, extraIdx===null ? a*3+r : -1);
 }
 
@@ -388,7 +401,7 @@ if(currentReferralDecision){
   const rd=currentReferralDecision;
   summary.push(`Referenciação / seguimento nefrológico: ${rd.finalName}.`);
   if(rd.extraIdx!==null){
-    summary.push(`Critério adicional: ${rd.extraText}`);
+    summary.push(`Motivo: ${rd.acr>3000?'ACR >3000 mg/g em doente não diabético.':'ACR 700–3000 mg/g em doente não diabético.'}`);
   }
   if(rd.age>80 && (rd.matrixIdx===1 || rd.matrixIdx===2)){
     summary.push('Em doentes >80 anos com elevada dependência nas atividades da vida diária, síndromes demenciais avançadas ou elevada fragilidade, ponderar o benefício da referenciação à Nefrologia face ao estado basal, apesar da indicação da matriz.');
