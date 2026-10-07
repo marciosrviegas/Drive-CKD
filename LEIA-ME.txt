@@ -1,0 +1,20 @@
+FICHEIROS PARA SUBSTITUIR NA RAIZ DO REPOSITÓRIO
+Abordagem-rapida-DRC
+
+1. Carregue/substitua estes 3 ficheiros na raiz do repositório:
+   - icon.svg
+   - icon-192.png
+   - icon-512.png
+
+2. Não é necessário alterar index.html nem manifest.webmanifest:
+   index.html já aponta para icon.svg e manifest.webmanifest já aponta
+   para icon-192.png e icon-512.png.
+
+3. Faça Commit changes. Aguarde a publicação do GitHub Pages.
+
+4. Se o ícone não mudar logo, atualize a página sem cache e, se for uma
+   PWA já instalada, feche/abra a aplicação. Alguns dispositivos podem
+   manter o ícone antigo em cache durante algum tempo.
+
+Nota: estes ficheiros são apenas os substitutos dos ícones; não substitua
+outros ficheiros da aplicação.

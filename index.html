@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#175cd3">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Abordagem rápida DRC">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<title>Abordagem rápida DRC</title>
+<style>
+:root{color-scheme:light dark;--bg:light-dark(#f5f7fa,#101317);--surface:light-dark(#fff,#171b20);--surface2:light-dark(#f0f3f7,#20262d);--text:light-dark(#17202a,#f2f5f7);--muted:light-dark(#5d6875,#aab4bf);--border:light-dark(#dce2e8,#303943);--accent:light-dark(#175cd3,#6ea1ff);--green:light-dark(#087443,#57d59b);--amber:light-dark(#a15c00,#ffbe63);--red:light-dark(#b42318,#ff7b72)}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}#app{min-height:100vh;background:var(--bg)}.wrap{max-width:1120px;margin:auto;padding:28px 20px 44px}.top{display:flex;justify-content:space-between;gap:20px;align-items:flex-end;margin-bottom:22px}.eyebrow{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}h1{font-size:30px;line-height:1.1;margin:6px 0}.sub{color:var(--muted);max-width:760px;line-height:1.5}.badge{border:1px solid var(--border);background:var(--surface);padding:9px 12px;border-radius:999px;font-size:12px;color:var(--muted)}.grid{display:grid;grid-template-columns:360px 1fr;gap:18px}.card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:18px;box-shadow:0 6px 22px rgba(0,0,0,.04)}.card h2{font-size:16px;margin:0 0 14px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field.full{grid-column:1/-1}label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px}input,select{width:100%;border:1px solid var(--border);background:var(--surface2);color:var(--text);border-radius:10px;padding:10px 11px;font-size:14px;outline:none}input:focus,select:focus{border-color:var(--accent)}.check{display:flex;align-items:center;gap:8px;padding:7px 0;font-size:13px}.check input{width:auto}.actions{display:flex;gap:9px;margin-top:15px}.btn{border:0;border-radius:10px;padding:10px 13px;font-weight:800;cursor:pointer}.primary{background:var(--accent);color:white}.secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border)}.result-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:16px}.result-hero{padding:18px;border:1px solid var(--border);border-radius:16px;background:linear-gradient(135deg,var(--surface2),var(--surface));margin-bottom:16px}.stage{font-weight:900;font-size:32px;letter-spacing:-.03em}.hero-label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:800;color:var(--muted);margin-bottom:4px}.hero-sub{font-size:13px;color:var(--muted);margin-top:4px}.risk-pills{justify-content:flex-end;margin-top:0}.section-title{font-size:13px;font-weight:900;margin:20px 0 8px;display:flex;align-items:center;gap:6px}.recommend{border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:12px;padding:12px 14px;margin:8px 0;background:var(--surface2)}.recommend h3{font-size:13px;margin:0 0 4px}.recommend p{font-size:12.5px;line-height:1.45;margin:0;color:var(--muted)}.small{font-size:12px;color:var(--muted)}.recommend{border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:12px;padding:13px 14px;margin:10px 0;background:var(--surface2)}.recommend.green{border-left-color:var(--green)}.recommend.amber{border-left-color:var(--amber)}.recommend.red{border-left-color:var(--red)}.summary-card{border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:12px;padding:13px 14px;margin:10px 0;background:var(--surface2)}.summary-card p{font-size:13px;line-height:1.55;margin:0;color:var(--text)}.recommend h3{font-size:14px;margin:0 0 5px}.recommend p{font-size:13px;line-height:1.5;margin:0;color:var(--muted)}.table{width:100%;border-collapse:collapse;font-size:12px}.table th,.table td{padding:9px 7px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}.table th{color:var(--muted);font-size:11px}.note{font-size:11px;color:var(--muted);line-height:1.5}.footer{margin-top:18px}.app-credit{margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:11px;line-height:1.5;color:var(--muted)}.app-update{margin-top:3px;font-style:italic}.source{padding:10px 0;border-bottom:1px solid var(--border);font-size:12px}.source a{color:var(--accent);text-decoration:none}.hidden{display:none}.alert{padding:11px 13px;border-radius:10px;background:light-dark(#fff7e6,#30250f);border:1px solid light-dark(#f5d18b,#66501e);font-size:12px;line-height:1.45;margin-bottom:12px}.pillrow{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.pill{padding:6px 8px;border-radius:999px;background:var(--surface2);font-size:11px;font-weight:800}.section-title{font-size:13px;font-weight:900;margin:18px 0 7px}.install-banner{position:sticky;top:0;z-index:20;margin:0 auto;padding:10px 14px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:center;gap:10px}.install-banner small{color:var(--muted)}.install-banner .btn{padding:7px 10px}.install-banner .secondary{font-size:18px;line-height:1}@media(max-width:850px){.grid{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}.fields{grid-template-columns:1fr}.field.full{grid-column:auto}}
+</style>
+</head>
+<body>
+<div id="installBanner" class="install-banner hidden"><span><strong>Instalar app</strong><br><small>Adicione a Abordagem rápida DRC ao ecrã inicial.</small></span><button class="btn primary" onclick="installPWA()">Instalar</button><button class="btn secondary" onclick="dismissInstall()">×</button></div>
+<div id="app"><div class="wrap">
+<div class="top"><div><div class="eyebrow">Ferramenta clínica · versão pública 1.0</div><h1>Abordagem rápida DRC</h1><div class="sub">Apoio rápido à decisão para DRC, terapêutica cardiorrenal e metabólica, e estratificação do risco de falência renal com a KFRE.</div></div><div class="badge">Apoio à decisão · não substitui julgamento clínico</div></div>
+<div class="grid">
+<section class="card">
+<h2>Dados do doente</h2>
+<div class="fields">
+<div class="field"><label for="egfr">TFGe (mL/min/1,73 m²)</label><input id="egfr" type="number" min="1" max="150" step="1" placeholder="Introduzir TFGe"></div>
+<div class="field"><label for="acr">ACR (mg/g)</label><input id="acr" type="number" min="0" step="1" placeholder="Introduzir ACR"></div>
+<div class="field"><label for="age">Idade (anos)</label><input id="age" type="number" min="18" max="100" step="1" placeholder="Introduzir idade"></div>
+<div class="field"><label for="sex">Sexo</label><select id="sex"><option value="" selected>Selecionar</option><option value="female">Feminino</option><option value="male">Masculino</option></select></div>
+<div class="field full"><label for="k">Potássio (mmol/L)</label><input id="k" type="number" min="2.5" max="7" step="0.1" placeholder="Introduzir potássio"></div>
+<div class="field full"><label for="kfreCalibration">Calibração KFRE</label><select id="kfreCalibration"><option value="non-na" selected>Não norte-americana — recomendada para Portugal</option><option value="na">Norte-americana</option></select></div>
+</div>
+<div class="section-title">Diabetes</div>
+<div class="check"><input id="dm1" type="checkbox" onchange="toggleDiabetes('dm1')"><label for="dm1">DM tipo 1</label></div><div class="check"><input id="dm2" type="checkbox" onchange="toggleDiabetes('dm2')"><label for="dm2">DM tipo 2</label></div>
+<div class="section-title">Comorbilidades</div><div class="check"><input id="hf" type="checkbox"><label for="hf">Insuficiência cardíaca</label></div><div class="check"><input id="ascvd" type="checkbox"><label for="ascvd">Doença cardiovascular aterosclerótica</label></div><div class="check"><input id="htn" type="checkbox"><label for="htn">Hipertensão arterial</label></div>
+<div class="section-title">Terapêutica atual</div>
+<div class="check"><input id="sglt2" type="checkbox"><label for="sglt2">SGLT2i</label></div><div class="check"><input id="raas" type="checkbox"><label for="raas">IECA/ARA</label></div><div class="check"><input id="finer" type="checkbox"><label for="finer">Finerenona</label></div><div class="check"><input id="statin" type="checkbox"><label for="statin">Estatina</label></div><div class="check"><input id="glp1" type="checkbox"><label for="glp1">GLP-1 RA</label></div>
+<div class="actions"><button class="btn primary" onclick="calculate()">Avaliar</button><button class="btn secondary" onclick="resetForm()">Repor</button></div>
+</section>
+<section class="card">
+<div class="result-hero"><div class="result-head"><div><div class="hero-label">Classificação renal</div><div id="stage" class="stage">—</div><div id="heroSub" class="hero-sub">Introduza os dados para classificar a DRC</div></div><div id="riskPills" class="pillrow risk-pills"></div></div></div>
+<div id="initialMessage" class="recommend"><h3>Introduza os dados clínicos</h3><p>Preencha os campos necessários e selecione <strong>Avaliar</strong> para obter a classificação da DRC, o KFRE e as recomendações clínicas.</p></div>
+<div id="urgent" class="alert hidden"></div><div class="section-title hidden" id="therapyTitle">💊 Otimização terapêutica</div><div id="recommendations"></div>
+<div id="resultsContent" class="hidden">
+<div class="section-title">🩺 Risco de falência renal · KFRE</div><div id="kfre" class="recommend"></div>
+<div id="referralSection" class="hidden"><div class="section-title">🩺 Referenciação / seguimento nefrológico</div><div id="referral" class="recommend"></div></div>
+<div id="summarySection" class="hidden"><div class="section-title">🩺 Resumo clínico</div><div id="clinicalSummary" class="summary-card"></div></div>
+<div class="section-title">Checklist de consulta</div><table class="table"><thead><tr><th>Domínio</th><th>Verificar</th><th>Comentário</th></tr></thead><tbody id="checklist"></tbody></table>
+<details style="margin-top:18px"><summary style="cursor:pointer;font-size:13px;font-weight:900;color:var(--text)">📚 Evidência e metodologia</summary><div id="evidence" class="note" style="margin-top:8px"></div></details>
+</div>
+</section></div>
+<section class="card footer"><h2>Notas de segurança</h2><div class="note">Esta ferramenta é um apoio educacional/organizacional para profissionais de saúde, não uma prescrição automática nem substitui avaliação clínica. Não introduza dados diretamente identificáveis de doentes. Os limiares são baseados principalmente em KDIGO 2024 e grandes RCTs. A KFRE é aplicável a DRC G3–G5 e deve ser interpretada no contexto clínico.</div><div class="note" style="margin-top:8px">Para Portugal, a aplicação inicia por defeito a calibração <strong>não norte-americana</strong>. A opção norte-americana pode ser selecionada para comparação ou quando clinicamente apropriado.</div></section><div class="app-credit"><div>Ferramenta desenvolvida por Márcio Viegas · Nefrologista, para apoio rápido à avaliação, estratificação de risco e otimização terapêutica na doença renal crónica.</div><div class="app-update">Última atualização: 05/10/2026</div></div></section>
+</div></div>
+<script>
+let deferredInstallPrompt=null;
+let installDismissed=false;
+try{installDismissed=sessionStorage.getItem('drc-install-dismissed')==='1'}catch(e){}
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();
+  deferredInstallPrompt=e;
+  if(!installDismissed)get('installBanner').classList.remove('hidden');
+});
+window.addEventListener('appinstalled',()=>{
+  deferredInstallPrompt=null;
+  get('installBanner').classList.add('hidden');
+});
+async function installPWA(){
+  if(!deferredInstallPrompt)return;
+  const promptEvent=deferredInstallPrompt;
+  deferredInstallPrompt=null;
+  get('installBanner').classList.add('hidden');
+  try{await promptEvent.prompt();await promptEvent.userChoice}catch(e){}
+}
+function dismissInstall(){
+  installDismissed=true;
+  get('installBanner').classList.add('hidden');
+  try{sessionStorage.setItem('drc-install-dismissed','1')}catch(e){}
+}
+if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+function get(id){return document.getElementById(id)}
+function toggleDiabetes(selected){
+  const dm1=get('dm1'), dm2=get('dm2');
+  if(selected==='dm1' && dm1.checked) dm2.checked=false;
+  if(selected==='dm2' && dm2.checked) dm1.checked=false;
+}
+function calculate(){
+  // Cada clique em "Avaliar" inicia um cálculo novo a partir do estado atual dos campos.
+  get('recommendations').innerHTML='';
+  get('urgent').className='alert hidden';
+  get('urgent').innerHTML='';
+  get('riskPills').innerHTML='';
+  get('referralSection').classList.add('hidden');
+  get('referral').innerHTML='';
+  get('summarySection').classList.add('hidden');
+  get('clinicalSummary').innerHTML='';
+  get('checklist').innerHTML='';
+  get('evidence').innerHTML='';
+
+  const egfr=+get('egfr').value||0,acr=+get('acr').value||0,age=+get('age').value||0,sex=get('sex').value,k=+get('k').value||0;
+const dm1=get('dm1').checked,dm2=get('dm2').checked,dm2Active=dm2&&!dm1,hf=get('hf').checked,ascvd=get('ascvd').checked,htn=get('htn').checked,sglt2=get('sglt2').checked,raas=get('raas').checked,finer=get('finer').checked,statin=get('statin').checked,glp1=get('glp1').checked;
+if(!egfr||!acr||!age||!sex||!k){get('stage').textContent='—';get('heroSub').textContent='Introduza os dados para classificar a DRC';get('riskPills').innerHTML='';get('urgent').classList.add('hidden');get('recommendations').innerHTML='';get('therapyTitle').classList.add('hidden');get('initialMessage').classList.remove('hidden');get('resultsContent').classList.add('hidden');get('referralSection').classList.add('hidden');get('summarySection').classList.add('hidden');get('clinicalSummary').innerHTML='';return}
+get('initialMessage').classList.add('hidden');get('resultsContent').classList.remove('hidden');get('therapyTitle').classList.remove('hidden');
+const g=egfr>=90?'G1':egfr>=60?'G2':egfr>=45?'G3a':egfr>=30?'G3b':egfr>=15?'G4':'G5',a=acr<30?'A1':acr<300?'A2':'A3';get('stage').textContent=`${g} · ${a}`; get('heroSub').textContent = (g==='G1' || g==='G2') ? (a==='A1' ? 'TFGe preservada · G1/G2 A1 não demonstra DRC por si só' : 'TFGe preservada · G1/G2 A2/A3 corresponde a DRC se a albuminúria for persistente ≥3 meses') : (a==='A3' ? 'Risco de progressão aumentado · integrar TFGe, albuminúria e KFRE' : 'Integrar TFGe, albuminúria, evolução e contexto clínico');
+let pills=[];if(dm1)pills.push('DM1');if(dm2)pills.push('DM2');if(hf)pills.push('IC');if(ascvd)pills.push('DCV aterosclerótica');if(acr>=300)pills.push('A3');else if(acr>=30)pills.push('A2');if(k>=5)pills.push('K elevado');get('riskPills').innerHTML=pills.map(x=>`<span class="pill">${esc(x)}</span>`).join('');
+let rec=[];
+ let priorities=[];
+if(egfr<15)rec.push({c:'amber',t:'G5: foco adicional em preparação de TSFR',p:'Reavaliar sintomas urémicos, complicações da DRC, trajetória da TFGe e plano de transplante/acesso. Não extrapolar automaticamente RCTs de TFGe ≥20–25 para G5 avançada.'});
+const hasCkd=egfr<60||acr>=30; if(dm1&&dm2) rec.push({c:'red',t:'Diabetes · confirmar tipo',p:'DM1 e DM2 foram selecionadas simultaneamente. Confirmar a classificação da diabetes antes de interpretar as recomendações farmacológicas.'}); if(dm1&&sglt2) rec.push({c:'red',t:'DM1 + iSGLT2 · rever terapêutica',p:'Os iSGLT2 não são aprovados para utilização na diabetes tipo 1 e aumentam o risco de cetoacidose diabética, incluindo cetoacidose euglicémica. Rever a indicação e considerar suspensão em articulação com a equipa de Diabetes. Perante náuseas, vómitos, dor abdominal, mal-estar ou dispneia, considerar cetoacidose mesmo sem hiperglicemia marcada.'}); if(dm1&&finer) rec.push({c:'amber',t:'DM1 + finerenona · rever indicação',p:'A evidência que sustenta a utilização de finerenona na DRC albuminúrica diabética corresponde à DM2. A aplicação não deve extrapolar automaticamente essa indicação para DM1; rever individualmente.'}); if(dm1&&glp1) rec.push({c:'amber',t:'DM1 + GLP-1 RA · rever indicação',p:'As recomendações cardiorrenais desta aplicação para GLP-1 RA são dirigidas à DM2 com DRC e não devem ser extrapoladas automaticamente para DM1. Rever a indicação clínica individual.'});
+if(dm1&&sglt2) priorities.push('rever iSGLT2 na DM1 pelo risco de cetoacidose'); if(dm1&&finer&&priorities.length<3) priorities.push('rever indicação de finerenona na DM1'); if(dm1&&glp1&&priorities.length<3) priorities.push('rever indicação de GLP-1 RA na DM1'); if(!dm1&&!sglt2&&egfr>=20&&hasCkd&&(dm2Active||acr>=200||hf||egfr<=45)){
+  let p='';
+  if(dm2Active){
+    p='DM2 + DRC: iSGLT2 recomendado com TFGe ≥20 mL/min/1,73 m², independentemente da albuminúria.';
+    if(hf)p+=' A presença de insuficiência cardíaca constitui também indicação cardiorrenal.';
+  }else if(hf){
+    p='DRC + insuficiência cardíaca: iSGLT2 recomendado com TFGe ≥20 mL/min/1,73 m², independentemente da albuminúria.';
+    if(acr>=200)p+=' ACR ≥200 mg/g constitui também indicação em DRC.';
+  }else if(acr>=200){
+    p='DRC com ACR ≥200 mg/g: iSGLT2 recomendado com TFGe ≥20 mL/min/1,73 m².';
+  }else{
+    p='DRC com TFGe 20–45 mL/min/1,73 m² e ACR <200 mg/g: iSGLT2 pode ser usado mesmo sem diabetes.';
+  }
+  p+=' Antecipar pequena queda inicial da TFGe e rever estado volémico.';
+  rec.push({c:'green',t:'SGLT2i · considerar/iniciar',p:p});
+}
+if(sglt2&&!dm1){
+  if(egfr<20)rec.push({c:'green',t:'SGLT2i · manter se tolerado',p:'TFGe <20 mL/min/1,73 m²: não suspender automaticamente apenas pela descida da TFGe. Manter se tolerado, salvo intolerância ou início de terapêutica de substituição renal. Suspender temporariamente em jejum prolongado, cirurgia ou doença crítica/aguda grave.'});
+  else rec.push({c:'green',t:'SGLT2i · manter',p:'Manter o SGLT2i se tolerado. Monitorizar função renal e estado volémico e suspender temporariamente em jejum prolongado, cirurgia ou doença crítica/aguda grave.'});
+}
+if(raas&&acr>=30){
+  let p='';
+  if(k>=5.5){
+    p='⚠️ K+ ≥5,5 mmol/L: controlar a hipercaliemia antes de reduzir ou suspender automaticamente o IECA/ARA. Se persistir apesar de medidas adequadas, ponderar redução da dose ou suspensão. A albuminúria A2/A3 favorece bloqueio do SRAA, pelo que a hipercaliemia controlável não deve conduzir automaticamente à suspensão. Consultar o cartão “Hipercaliemia · medidas para redução do K+” para a abordagem terapêutica.';
+  }else{
+    p='Albuminúria A2/A3 favorece bloqueio do SRAA, sobretudo na presença de HTA. Titular para a maior dose tolerada. ';
+  }
+  p+='Reavaliar creatinina e K cerca de 2–4 semanas após iniciar ou aumentar a dose. Um aumento ligeiro da creatinina não implica suspensão automática; se houver aumento >30%, procurar causas reversíveis como hipovolémia, AINEs ou outros fatores hemodinâmicos.';
+  rec.push({c:k>=5.5?'amber':'green',t:'IECA/ARA · indicação e monitorização',p:p});
+}
+
+if(!raas&&acr>=30&&egfr>=15){
+ const raasIndication=(dm1||dm2)?'Na DRC com diabetes e albuminúria A2/A3, a KDIGO recomenda IECA ou ARA, incluindo em G1–G4.':acr>=300?'Na DRC com albuminúria A3, a KDIGO recomenda IECA ou ARA mesmo sem diabetes, incluindo em G1–G4.':'Na DRC não diabética com albuminúria A2, a KDIGO sugere iniciar IECA ou ARA, incluindo em G1–G4.';
+ if(k>=6.0){
+  rec.push({c:'red',t:'IECA/ARA · indicação presente, mas adiar perante hipercaliemia',p:`${raasIndication} Contudo, com K+ ≥6,0 mmol/L, priorizar avaliação e tratamento da hipercaliemia antes de iniciar o IECA/ARA. Após controlo do K+, reavaliar a introdução, titulando para a maior dose tolerada e monitorizando PA, creatinina e potássio.`});
+ }else if(k>=5.5){
+  rec.push({c:'amber',t:'IECA/ARA · indicação presente, mas controlar hipercaliemia antes de iniciar',p:`${raasIndication} Com K+ 5,5–5,9 mmol/L, controlar a hipercaliemia antes de iniciar o IECA/ARA. Após controlo do K+, reavaliar a introdução e monitorizar PA, creatinina e potássio 2–4 semanas após iniciar ou aumentar a dose. Consultar o cartão “Hipercaliemia · abordagem” para as medidas gerais.`});
+ }else if(dm2Active||acr>=300){
+  rec.push({c:'green',t:'IECA/ARA · iniciar/avaliar',p:`${raasIndication} Titular para a maior dose aprovada tolerada. Monitorizar PA, creatinina e potássio 2–4 semanas após iniciar ou aumentar a dose.`});
+ }else{
+  rec.push({c:'amber',t:'IECA/ARA · considerar',p:`${raasIndication} Titular para a maior dose aprovada tolerada e monitorizar PA, creatinina e potássio.`});
+ }
+}
+if(!raas&&acr<30&&(htn||hf)){
+  if(k>=6.0)rec.push({c:'red',t:'IECA/ARA · adiar perante hipercaliemia',p:'Mesmo com A1, um IECA ou ARA pode estar indicado para tratamento da HTA ou da insuficiência cardíaca com fração de ejeção reduzida. Contudo, com K+ ≥6,0 mmol/L, priorizar avaliação e tratamento da hipercaliemia antes de iniciar IECA/ARA. Após controlo do K+, reavaliar a indicação clínica.'});
+  else if(k>=5.5)rec.push({c:'amber',t:'IECA/ARA · controlar hipercaliemia antes de iniciar',p:'Mesmo com A1, um IECA ou ARA pode estar indicado para tratamento da HTA ou da insuficiência cardíaca com fração de ejeção reduzida. Com K+ 5,5–5,9 mmol/L, procurar e corrigir fatores reversíveis e controlar a hipercaliemia antes de iniciar. Após controlo do K+, reavaliar a indicação clínica.'});
+  else rec.push({c:'amber',t:'IECA/ARA · avaliar indicação clínica',p:'Mesmo com A1, um IECA ou ARA pode estar indicado para tratamento da HTA ou da insuficiência cardíaca com fração de ejeção reduzida. A decisão deve seguir a indicação clínica específica.'});
+}
+
+if(dm2Active&&acr>=30&&egfr>=25&&!finer){
+  if(k>5.0)rec.push({c:'red',t:'Finerenona · não iniciar perante hipercaliemia',p:'DM2 + DRC albuminúrica + TFGe ≥25 mL/min/1,73 m² + K+ >5,0 mmol/L: não iniciar finerenona. Corrigir/avaliar a hipercaliemia e reavaliar posteriormente.'});
+  else if(k>4.8){
+    if(raas)rec.push({c:'amber',t:'Finerenona · considerar com monitorização precoce',p:'DM2 + DRC albuminúrica + TFGe ≥25 mL/min/1,73 m² + K+ 4,9–5,0 mmol/L, com SRAA otimizado: pode considerar finerenona individualmente, com monitorização precoce do K+.'});
+    else rec.push({c:'amber',t:'Finerenona · otimizar SRAA e considerar',p:'DM2 + DRC albuminúrica + TFGe ≥25 mL/min/1,73 m² + K+ 4,9–5,0 mmol/L: otimizar primeiro o IECA/ARA, salvo contraindicação/intolerância, e considerar finerenona individualmente com monitorização precoce do K+.'});
+  } else {
+    if(raas)rec.push({c:'green',t:'Finerenona · avaliar elegibilidade',p:'DM2 + DRC albuminúrica + TFGe ≥25 mL/min/1,73 m² + K+ ≤4,8 mmol/L, com SRAA otimizado: avaliar finerenona. Confirmar albuminúria persistente e reavaliar K+ e TFGe cerca de 4 semanas após iniciar ou alterar a dose.'});
+    else rec.push({c:'amber',t:'Finerenona · otimizar primeiro o SRAA',p:'DM2 + DRC albuminúrica + TFGe ≥25 mL/min/1,73 m² + K+ ≤4,8 mmol/L: otimizar primeiro o IECA/ARA, salvo contraindicação/intolerância, antes de adicionar finerenona. Confirmar albuminúria persistente.'});
+  }
+}
+if(finer&&!dm1){
+ if(egfr<15)rec.push({c:'red',t:'Finerenona · descontinuar',p:'TFGe <15 mL/min/1,73 m²: descontinuar finerenona.'});
+ else if(k>5.5)rec.push({c:'red',t:'Finerenona · suspender temporariamente por hipercaliemia',p:'K+ >5,5 mmol/L: suspender temporariamente a finerenona e reavaliar o K+. Corrigir a hipercaliemia; consultar o cartão “Hipercaliemia · abordagem” para as medidas gerais. Ponderar reintrodução quando K+ ≤5,0 mmol/L.'});
+ else if(k>5.0)rec.push({c:'amber',t:'Finerenona · manter com vigilância do K+',p:'K+ >5,0–5,5 mmol/L: manter a finerenona, sem aumentar a dose, com monitorização próxima do K+. Corrigir fatores reversíveis de hipercaliemia.'});
+ else rec.push({c:'green',t:'Finerenona · manter e monitorizar K',p:'Manter finerenona se tolerada. Monitorizar K+ e TFGe; reavaliar aproximadamente 4 semanas após início, reinício ou alteração da dose.'});
+}
+if(dm2Active&&hasCkd&&!glp1)rec.push({c:'amber',t:'GLP-1 RA · avaliar benefício cardiorrenal',p:'Na DM2 com DRC, avaliar um GLP-1 RA com benefício cardiovascular ou renal comprovado, particularmente perante doença cardiovascular aterosclerótica, elevado risco cardiovascular/renal, necessidade de otimização do controlo glicémico ou quando o SGLT2i não é tolerado ou não é apropriado. A aplicação não dispõe de HbA1c nem de toda a informação sobre terapêutica antidiabética, pelo que a decisão deve ser individualizada.'});
+const hasCkdPattern=egfr<60||acr>=30;
+if(!statin){
+ if(hasCkdPattern){
+  if(age>=50){
+   if(egfr>=60)rec.push({c:'green',t:'Estatina · recomendada pela KDIGO 2024',p:'Em adultos ≥50 anos com DRC G1–G2, a KDIGO recomenda tratamento com estatina. Assim, esta recomendação aplica-se a G1/G2 com A2/A3 quando a albuminúria é persistente e estabelece DRC. Em G3a–G5, recomenda-se estatina ou estatina/ezetimiba. Em idade muito avançada, fragilidade, prognóstico limitado ou elevada carga de comorbilidade, individualizar.'});
+   else rec.push({c:'green',t:'Estatina · recomendada pela KDIGO 2024',p:'Em adultos ≥50 anos com DRC e TFGe <60 (G3a–G5), a KDIGO recomenda estatina ou estatina/ezetimiba. Em idade muito avançada, fragilidade, prognóstico limitado ou elevada carga de comorbilidade, individualizar.'});
+  }else if(dm1||dm2||ascvd)rec.push({c:'green',t:'Estatina · considerar segundo critérios KDIGO',p:'Em adultos 18–49 anos com DRC e diabetes ou doença cardiovascular relevante, considerar tratamento com estatina. Individualizar conforme contexto clínico.'});
+  else rec.push({c:'amber',t:'Estatina · individualizar',p:'Em adultos 18–49 anos com DRC sem critérios específicos, individualizar segundo risco cardiovascular e contexto clínico.'});
+ }else{
+  rec.push({c:'amber',t:'Estatina · avaliar risco cardiovascular',p:'TFGe G1/G2 e ACR A1, sem evidência suficiente de DRC pelos dados introduzidos. A indicação de estatina deve basear-se no risco cardiovascular global e nas indicações clínicas habituais, e não na DRC isoladamente.'});
+ }
+}else if(age>=50&&hasCkdPattern){
+ rec.push({c:'green',t:'Estatina · manter, se tolerada',p:'Em adultos ≥50 anos com DRC, manter se tolerada. Em idade muito avançada, fragilidade, prognóstico limitado ou elevada carga de comorbilidade, reavaliar periodicamente a adequação.'});
+}
+if(ascvd||dm1||dm2||egfr<60)rec.push({c:'amber',t:'Revisão terapêutica transversal',p:'Confirmar adesão, doses adequadas à TFGe, interações e fármacos potencialmente nefrotóxicos (nomeadamente AINEs). Evitar duplicação ou combinação inadequada de terapêuticas com risco renal/hipercaliemia.'});
+if(k>=5.5)rec.push({c:'amber',t:'Hipercaliemia · abordagem',p:'Rever e corrigir fatores precipitantes, incluindo fármacos e suplementos que possam aumentar o K+ e causas dietéticas quando relevantes. Conforme a gravidade e o contexto clínico, considerar diurético quando apropriado, bicarbonato se houver acidose metabólica e fármacos para tratamento da hipercaliemia, nomeadamente patirómero, ciclosilicato de zircónio ou resinas de troca iónica. Reavaliar o K+ após as medidas instituídas. Quando possível, estas medidas devem permitir preservar terapêuticas cardiorrenais benéficas, evitando a suspensão automática do IECA/ARA ou da finerenona.'});
+if(k>=6.5){get('urgent').classList.remove('hidden');get('urgent').style.background='light-dark(#fff0f0,#351416)';get('urgent').style.borderColor='light-dark(#f3a6a6,#7a3034)';get('urgent').innerHTML='<strong>🚨 Hipercaliemia grave (K ≥6,5 mmol/L):</strong> confirmar rapidamente se necessário, realizar ECG e <strong>encaminhar para avaliação urgente em Serviço de Urgência</strong>, de acordo com o contexto clínico e protocolo local. Se houver sintomas ou alterações eletrocardiográficas, não atrasar a avaliação.'}else if(k>=6.0){get('urgent').classList.remove('hidden');get('urgent').style.background='light-dark(#fff0f0,#351416)';get('urgent').style.borderColor='light-dark(#f3a6a6,#7a3034)';get('urgent').innerHTML='<strong>🔴 Hipercaliemia importante (K 6,0–6,4 mmol/L):</strong> confirmar rapidamente, realizar ECG e <strong>avaliar necessidade de referenciação urgente ao Serviço de Urgência</strong>, considerando sintomas, alterações no ECG, contexto clínico e possibilidade de pseudohipercaliemia.'}else if(k>=5.5){get('urgent').classList.remove('hidden');get('urgent').style.background='';get('urgent').style.borderColor='';get('urgent').innerHTML='<strong>⚠️ Hipercaliemia (K 5,5–5,9 mmol/L):</strong> confirmar resultado, rever fármacos e outras causas tratáveis e monitorizar. Antes de iniciar ou intensificar terapêuticas que possam aumentar o potássio, corrigir fatores modificáveis.'}else if(k>=5){get('urgent').classList.remove('hidden');get('urgent').style.background='';get('urgent').style.borderColor='';get('urgent').innerHTML='<strong>Potássio 5,0–5,4 mmol/L:</strong> rever fatores modificáveis e monitorizar antes de intensificar terapêutica com risco de hipercaliemia.'}else{get('urgent').classList.add('hidden');get('urgent').style.background='';get('urgent').style.borderColor='';}
+get('recommendations').innerHTML=rec.map(r=>`<div class="recommend ${r.c}"><h3>${esc(r.t)}</h3><p>${esc(r.p)}</p></div>`).join('')||'<div class="recommend"><h3>Sem alerta específico</h3><p>Rever progressão da DRC, risco cardiovascular, complicações e preparação para terapêutica de substituição renal.</p></div>';
+let risk2=null,risk5=null;
+if(age>=18&&age<=100&&egfr>=15&&egfr<60&&acr>0){
+const male=sex==='male'?1:0;
+const lp=-0.2201*(age/10-7.036)+0.2467*(male-0.5642)-0.5567*(egfr/5-7.222)+0.4510*(Math.log(acr)-5.137);
+const isNA=get('kfreCalibration').value==='na';
+const s02=isNA?0.9750:0.9832;
+const s05=isNA?0.9240:0.9365;
+risk2=1-Math.pow(s02,Math.exp(lp));risk5=1-Math.pow(s05,Math.exp(lp));
+const label=isNA?'Norte-americana':'Não norte-americana';
+get('kfre').className='recommend '+(risk2>=.10||risk5>=.05?'amber':'green');
+get('kfre').innerHTML='<h3>KFRE 4 variáveis · calibração '+label+'</h3><p>Risco de falência renal tratada (diálise ou transplante): <strong>'+((risk2*100).toFixed(1))+'% em 2 anos</strong> e <strong>'+((risk5*100).toFixed(1))+'% em 5 anos</strong>.</p><p style="margin-top:6px">Idade, sexo, TFGe e ACR. ACR em mg/g e logaritmo natural.</p>';
+}else if(egfr>=60){get('kfre').className='recommend';get('kfre').innerHTML='<h3>KFRE · não aplicável em G1–G2</h3><p>A KFRE 4 variáveis é utilizada nesta ferramenta para DRC G3–G5.</p>'}else{get('kfre').className='recommend amber';get('kfre').innerHTML='<h3>KFRE · dados insuficientes</h3><p>Introduza idade, sexo, TFGe e ACR (ACR &gt;0) para calcular o risco.</p>'}
+if(risk2!==null&&risk5!==null&&egfr<60){get('referralSection').classList.remove('hidden');let cls='green',title='',txt='';if(risk2>=.40){cls='red';title='🔴 Alto risco de falência renal · planeamento atempado';txt='O risco estimado de falência renal a 2 anos é ≥40%. Recomenda-se seguimento nefrológico estruturado e planeamento atempado de terapêutica de substituição renal, incluindo educação sobre modalidades e, quando apropriado, planeamento de acesso vascular e avaliação para transplante.'}else if(risk5>.05){cls='red';title='🔴 Referenciação à Nefrologia recomendada';txt='O risco estimado de falência renal a 5 anos é >5%. Este nível de risco favorece a referenciação à Nefrologia, integrando a decisão com a TFGe, albuminúria, evolução da função renal e contexto clínico.'}else if(risk2>.10){cls='amber';title='🟠 Considerar seguimento nefrológico estruturado';txt='O risco estimado de falência renal a 2 anos é >10%. Considerar seguimento nefrológico/multidisciplinar estruturado e planear a abordagem de acordo com a trajetória da DRC.'}else if(risk5>=.03){cls='amber';title='🟡 Ponderar referenciação à Nefrologia';txt='O risco estimado de falência renal a 5 anos encontra-se entre 3% e 5%. A KDIGO permite utilizar este intervalo para considerar referenciação à Nefrologia, integrando a decisão com a TFGe, albuminúria e contexto clínico.'}else{title='🟢 Sem indicação de referenciação com base no KFRE';txt='O risco estimado de falência renal a 5 anos é <3%. Não há indicação de referenciação à Nefrologia com base no risco calculado isoladamente. Manter acompanhamento e reavaliar a evolução da DRC.'}get('referral').className='recommend '+cls;get('referral').innerHTML='<h3>'+title+'</h3><p>'+txt+'</p><p style="margin-top:7px;font-size:11px">A decisão de referenciação deve integrar o contexto clínico e outros critérios relevantes não avaliados nesta ferramenta.</p>'}else get('referralSection').classList.add('hidden');
+
+// Resumo clínico: conclusão integrada da classificação, KFRE, potássio, terapêutica e referenciação.
+let summary=[];
+if((g==='G1'||g==='G2')&&a==='A1'){
+  summary.push(`TFGe ${g} ${a}, sem evidência suficiente de DRC pelos dados introduzidos isoladamente. Confirmar persistência ≥3 meses ou a presença de outros marcadores de lesão renal.`);
+}else if((g==='G1'||g==='G2')&&(a==='A2'||a==='A3')){
+  summary.push(`DRC ${g} ${a}, desde que a albuminúria seja persistente ≥3 meses ou exista outro marcador de lesão renal crónica.`);
+}else{
+  summary.push(`DRC ${g} ${a}.`);
+}
+if(risk2!==null&&risk5!==null){
+  let riskLabel=risk2>=.40?'muito elevado':risk5>.05?'elevado':risk2>.10?'aumentado':risk5>=.03?'intermédio':'baixo';
+  summary.push(`Risco ${riskLabel} de progressão para falência renal (KFRE: ${(risk2*100).toFixed(1)}% aos 2 anos e ${(risk5*100).toFixed(1)}% aos 5 anos).`);
+}else if(egfr>=60){
+  summary.push('KFRE não aplicável em G1–G2.');
+}else{
+  summary.push('KFRE não calculável com os dados introduzidos.');
+}
+if(k>=5.5) priorities.push('priorizar avaliação e correção da hipercaliemia antes de intensificar fármacos com risco de hiperK');
+else if(k<3.5) priorities.push('reavaliar e corrigir a hipocaliemia');
+if(!dm1&&!sglt2&&egfr>=20&&hasCkd&&(dm2Active||acr>=200||hf||egfr<=45)){
+  if(dm2Active) priorities.push('considerar início de SGLT2i (DM2 + DRC)');
+  else if(hf) priorities.push('considerar início de SGLT2i (IC + DRC)');
+  else if(acr>=200) priorities.push('considerar início de SGLT2i (ACR ≥200 mg/g)');
+  else priorities.push('considerar início de SGLT2i (TFGe 20–45)');
+}
+if(raas&&acr>=30) priorities.push('manter/otimizar o SRAA');
+else if(!raas&&acr>=30&&egfr>=15){
+  if(k>=6.0) priorities.push('tratar hipercaliemia antes de iniciar IECA/ARA');
+  else if(k>=5.5) priorities.push('controlar hipercaliemia antes de iniciar IECA/ARA');
+  else priorities.push('avaliar início de IECA/ARA');
+}
+else if(!raas&&acr<30&&(htn||hf)){
+  if(k>=6.0) priorities.push('tratar hipercaliemia antes de iniciar IECA/ARA pela comorbilidade');
+  else if(k>=5.5) priorities.push('controlar hipercaliemia antes de iniciar IECA/ARA pela comorbilidade');
+  else priorities.push('avaliar indicação de IECA/ARA pela comorbilidade');
+}
+if(dm2Active&&acr>=30&&egfr>=25&&!finer&&priorities.length<3){
+  if(k>5.0) priorities.push('corrigir hipercaliemia antes de iniciar finerenona');
+  else if(k>4.8) priorities.push('considerar finerenona individualmente com monitorização precoce do K+');
+  else if(raas) priorities.push('avaliar elegibilidade para finerenona após otimização do SRAA');
+  else priorities.push('otimizar SRAA antes de avaliar finerenona');
+}
+if(dm2Active&&hasCkd&&!glp1&&priorities.length<3) priorities.push('avaliar GLP-1 RA pelo benefício cardiorrenal');
+if(!statin&&age>=50&&hasCkdPattern&&priorities.length<3) priorities.push('avaliar estatina segundo KDIGO, individualizando em idade muito avançada ou fragilidade');
+if(!statin&&age>=50&&!hasCkdPattern&&priorities.length<3) priorities.push('avaliar risco cardiovascular e indicação de estatina');
+if(priorities.length) summary.push('Prioridades: '+priorities.slice(0,3).join('; ')+'.');
+if(risk2!==null&&risk5!==null&&egfr<60){
+  if(risk2>=.40) summary.push('O risco calculado justifica seguimento nefrológico e planeamento atempado de TSFR.');
+  else if(risk5>.05) summary.push('O risco calculado justifica referenciação à Nefrologia.');
+  else if(risk2>.10) summary.push('Considerar seguimento nefrológico estruturado.');
+  else if(risk5>=.03) summary.push('Ponderar referenciação à Nefrologia, integrando a decisão com a trajetória clínica.');
+}else if(egfr<15){
+  summary.push('Em G5, planear TSFR de acordo com a trajetória clínica e o contexto individual.');
+}
+get('clinicalSummary').innerHTML='<p>'+summary.join(' ')+'</p>';
+get('summarySection').classList.remove('hidden');
+const rows=[['Progressão renal',`TFGe ${egfr} + ACR ${acr} mg/g`,'Repetir tendência e estratificar risco; evitar decisões com um valor isolado.'],['Potássio',`${k.toFixed(1)} mmol/L`,k<3.5?'Hipocaliemia: confirmar/reavaliar causas e corrigir antes de intensificar terapêutica, de acordo com o contexto clínico.':k>=5?'Corrigir/reavaliar antes de intensificar fármacos hiperK.':'Adequado para a maioria das opções, mantendo monitorização.'],['Volume/PA',htn?'HTA presente':'Sem HTA assinalada','Rever PA, peso, edema, diurético e ortostatismo.'],['Anemia','Hb · ferritina · TSAT','Avaliar e tratar complicações da DRC.'],['CKD-MBD','Ca · P · PTH · FA','Interpretar tendências e contexto, sobretudo em G4–G5.'],['Acidose','HCO₃⁻','Pesquisar/tratar acidose metabólica persistente.'],['TSFR','Transplante · acesso · educação','Em G4 avançada/G5, antecipar planeamento conforme trajetória e contexto.']];
+get('checklist').innerHTML=rows.map(r=>`<tr><td><strong>${esc(r[0])}</strong></td><td>${esc(r[1])}</td><td>${esc(r[2])}</td></tr>`).join('');
+get('evidence').innerHTML=`<div class="source"><strong>KFRE 4 variáveis:</strong> equação validada para DRC G3–G5, utilizando idade, sexo, TFGe e ACR. A calculadora oficial permite selecionar a região e informa que existe um fator de calibração para coortes não norte-americanas. <a href="https://kidneyfailurerisk.com/" target="_blank">Kidney Failure Risk Equation</a></div><div class="source"><strong>Fórmula aplicada:</strong> LP = −0,2201×(idade/10−7,036) + 0,2467×(sexo−0,5642) − 0,5567×(TFGe/5−7,222) + 0,4510×(ln ACR−5,137). Para a calibração norte-americana: risco 2 anos = 1−0,9750^exp(LP); risco 5 anos = 1−0,9240^exp(LP). Para a calibração não norte-americana: risco 2 anos = 1−0,9832^exp(LP); risco 5 anos = 1−0,9365^exp(LP).</div><div class="source"><strong>KDIGO 2024 · referenciação:</strong> risco de falência renal de 3–5% a 5 anos pode ser usado para determinar necessidade de referenciação; >10% a 2 anos pode orientar timing de cuidados multidisciplinares; >40% a 2 anos pode orientar preparação para terapêutica de substituição renal. <a href="https://kdigo.org/guidelines/ckd-evaluation-and-management/" target="_blank">KDIGO</a></div>`;
+}
+function resetForm(){['egfr','acr','age','k'].forEach(id=>get(id).value='');get('sex').value='';get('kfreCalibration').value='non-na';['dm1','dm2','hf','ascvd','htn','sglt2','raas','finer','statin','glp1'].forEach(id=>get(id).checked=false);get('stage').textContent='—';get('heroSub').textContent='Introduza os dados para classificar a DRC';get('riskPills').innerHTML='';get('urgent').classList.add('hidden');get('recommendations').innerHTML='';get('therapyTitle').classList.add('hidden');get('initialMessage').classList.remove('hidden');get('resultsContent').classList.add('hidden');get('referralSection').classList.add('hidden');get('summarySection').classList.add('hidden');get('clinicalSummary').innerHTML=''}
+</script>
+</body>
+</html>
