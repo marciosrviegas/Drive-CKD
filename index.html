@@ -33,6 +33,7 @@
 
  
 .referral-matrix-wrap{margin-top:14px;border:1px solid #d7e6dc;border-radius:16px;overflow:hidden;background:var(--surface);box-shadow:0 5px 18px rgba(0,96,48,.08)}
+#emergencyTop{margin:0 0 14px}.alert{margin:10px 0}.recommend.very{background:light-dark(#fff0f0,#351616)}
 .referral-matrix-wrap summary{cursor:pointer;padding:13px 15px;font-size:12px;font-weight:900;list-style:none;display:flex;align-items:center;justify-content:space-between;color:var(--text);background:linear-gradient(180deg,var(--surface),#edf8f1)}
 .referral-matrix-wrap summary::-webkit-details-marker{display:none}
 .referral-matrix-wrap summary::after{content:'⌄';font-size:17px;color:#008f4c;transition:transform .2s ease}
@@ -133,9 +134,9 @@
 <section class="card">
 <div class="result-hero"><div class="result-head"><div><div class="hero-label">Classificação renal</div><div id="stage" class="stage">—</div><div id="heroSub" class="hero-sub">Introduza os dados para classificar a DRC</div></div><div id="riskPills" class="pillrow risk-pills"></div></div></div>
 <div id="initialMessage" class="recommend"><h3>Introduza os dados clínicos</h3><p>Preencha os campos necessários e selecione <strong>Avaliar</strong> para obter a classificação da DRC, o KFRE e as recomendações clínicas.</p></div>
+<div id="emergencyTop" class="hidden"></div>
 <div id="urgent" class="alert hidden"></div><div id="recommendations"></div>
 <div id="resultsContent" class="hidden">
-<div id="emergencyTop" class="hidden"></div>
 <div id="referralSection" class="hidden"><div id="referralTitle" class="section-title">🩺 Referenciação / seguimento nefrológico</div><div id="referral" class="recommend"></div><details class="referral-matrix-wrap"><summary>📊 Consultar matriz de referenciação do Serviço</summary><div id="referralMatrixView" class="referral-matrix-inner"></div></details></div>
 <div id="summarySection" class="hidden"><div class="section-title">🩺 Resumo clínico</div><div id="clinicalSummary" class="summary-card"></div></div>
 <div class="section-title">🩺 Risco de falência renal · KFRE</div><div id="kfre" class="recommend"></div>
