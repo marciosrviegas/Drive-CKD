@@ -70,7 +70,7 @@
 <body>
 <div id="installBanner" class="install-banner hidden"><span><strong>Instalar app</strong><br><small>Adicione a Drive CKD ao ecrã inicial.</small></span><button class="btn primary" onclick="installPWA()">Instalar</button><button class="btn secondary" onclick="dismissInstall()">×</button></div>
 <div id="app"><div class="wrap">
-<div class="top"><div><div class="eyebrow">Ferramenta clínica · versão pública 1.0</div><h1>Drive CKD</h1><div class="sub">Apoio rápido à decisão para DRC, terapêutica cardiorrenal e metabólica, e estratificação do risco de falência renal e referenciação a consulta de Nefrologia na ULS Arrábida.</div></div><div class="badge">Apoio à decisão · não substitui julgamento clínico</div></div>
+<div class="top"><div><div class="eyebrow">Ferramenta clínica · versão pública 1.0</div><h1>Drive CKD</h1><div class="sub">Apoio à decisão clínica na doença renal crónica: otimização da terapêutica cardiorrenal e metabólica, avaliação do risco de falência renal e orientação da referenciação à Nefrologia na ULS Arrábida.</div></div><div class="badge">Apoio à decisão · não substitui julgamento clínico</div></div>
 <div class="grid">
 <section class="card">
 <h2>Dados do doente</h2>
@@ -104,9 +104,9 @@
     <label class="check urgent-check"><input id="refHydroUrgent" type="checkbox"><span>Alteração grave e/ou sintomática → Serviço de Urgência</span></label>
   </div>
   <div class="other-referral-group"><strong>4. Alterações renais morfológicas</strong>
-    <label class="check"><input id="refCysticDisease" type="checkbox"><span>Suspeita de ADPKD / doença renal quística familiar-genética</span></label>
+    <label class="check"><input id="refCysticDisease" type="checkbox"><span>Suspeita de DPKAD / doença renal quística hereditária</span></label>
     <label class="check"><input id="refNephrocalcinosis" type="checkbox"><span>Nefrocalcinose</span></label>
-    <div class="other-referral-note"><strong>Critérios diagnósticos ADPKD:</strong> 15–39 anos: ≥3 quistos renais (uni/bilaterais); 40–59 anos: ≥2 em cada rim; ≥60 anos: ≥4 em cada rim. Quistos simples isolados/múltiplos, por si só, não são critério de referenciação.</div>
+    <div class="other-referral-note"><strong>Suspeita de doença poliquística renal autossómica dominante (DPKAD):</strong> valorizar a história familiar e o padrão imagiológico, considerando os seguintes critérios ecográficos em indivíduos com história familiar da doença: <strong>15–39 anos</strong>: ≥3 quistos renais, uni ou bilaterais; <strong>40–59 anos</strong>: ≥2 quistos em cada rim; <strong>≥60 anos</strong>: ≥4 quistos em cada rim. Estes critérios destinam-se a indivíduos em risco familiar e não devem ser aplicados isoladamente à população geral. A presença isolada de quistos renais, mesmo múltiplos, não constitui por si só critério de referenciação. Considerar referenciação perante suspeita de doença hereditária, nomeadamente na presença de história familiar sugestiva ou de padrão imagiológico compatível com DPKAD, mesmo sem história familiar conhecida.</div>
   </div>
   <div class="other-referral-group"><strong>5. Suspeita de doença renal hereditária</strong>
     <label class="check"><input id="refHereditary" type="checkbox"><span>Outra doença renal hereditária não quística</span></label>
