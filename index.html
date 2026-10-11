@@ -426,7 +426,7 @@ if(!raas&&acr>=30&&egfr>=15){
   rec.push({c:'red',t:'IECA/ARA · indicação presente, mas adiar perante hipercaliemia',p:`${raasIndication} Contudo, com K+ ≥6,0 mmol/L, priorizar avaliação e tratamento da hipercaliemia antes de iniciar o IECA/ARA. Após controlo do K+, reavaliar a introdução, titulando para a maior dose tolerada e monitorizando PA, creatinina e potássio.`});
  }else if(k>=5.5){
   rec.push({c:'amber',t:'IECA/ARA · indicação presente, mas controlar hipercaliemia antes de iniciar',p:`${raasIndication} Com K+ 5,5–5,9 mmol/L, controlar a hipercaliemia antes de iniciar o IECA/ARA. Após controlo do K+, reavaliar a introdução e monitorizar PA, creatinina e potássio 2–4 semanas após iniciar ou aumentar a dose. Consultar o cartão “Hipercaliemia · abordagem” para as medidas gerais.`});
- }else if(dm2Active||acr>=300){
+ }else if(((dm1||dm2)&&!(dm1&&dm2))||acr>=300){
   rec.push({c:'green',t:'IECA/ARA · iniciar/avaliar',p:`${raasIndication} Titular para a maior dose aprovada tolerada. Monitorizar PA, creatinina e potássio 2–4 semanas após iniciar ou aumentar a dose.`});
  }else{
   rec.push({c:'amber',t:'IECA/ARA · considerar',p:`${raasIndication} Titular para a maior dose aprovada tolerada e monitorizar PA, creatinina e potássio.`});
