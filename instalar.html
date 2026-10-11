@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#123b50">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Instalar Drive CKD</title>
+<style>
+:root{color-scheme:light;--navy:#123b50;--teal:#087e8b;--pale:#eef6f7;--line:#d8e5e8;--text:#19323b;--muted:#5d7077}
+*{box-sizing:border-box}body{margin:0;background:#f4f8f9;color:var(--text);font:16px/1.5 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+main{max-width:620px;margin:0 auto;padding:28px 18px 36px}
+.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:24px;box-shadow:0 8px 28px #123b5010}
+.brand{display:flex;align-items:center;gap:13px;margin-bottom:18px}.logo{width:54px;height:54px;border-radius:15px;background:var(--navy);color:white;display:grid;place-items:center;font-size:27px;font-weight:750}.brand strong{display:block;font-size:21px;color:var(--navy)}.brand span{font-size:13px;color:var(--muted)}
+h1{font-size:25px;line-height:1.2;margin:10px 0 10px;color:var(--navy)}p{margin:9px 0}.intro{color:var(--muted);margin-bottom:22px}
+.choice{border:1px solid var(--line);border-radius:15px;padding:17px;margin:14px 0}.choice h2{font-size:18px;margin:0 0 6px}.choice p{font-size:14px;color:var(--muted)}
+.btn{display:block;width:100%;border:0;border-radius:11px;background:var(--teal);color:#fff;text-decoration:none;text-align:center;padding:13px 15px;font-size:16px;font-weight:700;margin-top:12px;cursor:pointer}.btn.secondary{background:var(--pale);color:var(--navy);border:1px solid var(--line)}
+.steps{padding-left:22px;margin:9px 0}.steps li{margin:6px 0}.small{font-size:13px;color:var(--muted)}.notice{background:#fff8e8;border:1px solid #f1dfb3;border-radius:11px;padding:12px;font-size:13px;margin-top:14px}
+.hidden{display:none!important}footer{text-align:center;color:var(--muted);font-size:12px;padding:18px 8px}
+</style>
+</head>
+<body>
+<main>
+<section class="card">
+  <div class="brand"><div class="logo" aria-hidden="true">+</div><div><strong>Drive CKD</strong><span>Apoio à decisão clínica na DRC</span></div></div>
+  <h1>Abra e instale a Drive CKD</h1>
+  <p class="intro">Para uma melhor experiência, abra a aplicação no navegador do seu telemóvel e adicione um ícone ao ecrã inicial.</p>
+
+  <section class="choice" id="androidChoice">
+    <h2>📱 Tenho Android</h2>
+    <p>Experimente abrir diretamente no Google Chrome. Se o Chrome estiver instalado e o sistema permitir, a página será aberta nesse navegador.</p>
+    <a class="btn" id="chromeBtn" href="#">Abrir no Google Chrome</a>
+    <a class="btn secondary" href="https://marciosrviegas.github.io/Drive-CKD/">Abrir Drive CKD neste navegador</a>
+    <ol class="steps"><li>No Chrome, toque no menu <strong>⋮</strong>.</li><li>Escolha <strong>Instalar aplicação</strong> ou <strong>Adicionar ao ecrã principal</strong>.</li><li>Confirme. O nome/ícone da Drive CKD ficará disponível no ecrã inicial.</li></ol>
+  </section>
+
+  <section class="choice" id="iosChoice">
+    <h2>🍎 Tenho iPhone ou iPad</h2>
+    <p>Para criar o ícone no ecrã inicial, use o Safari. Por limitações do iOS, uma página web não consegue garantir que abre o Safari diretamente a partir de todos os navegadores ou leitores de QR.</p>
+    <a class="btn" id="safariBtn" href="https://marciosrviegas.github.io/Drive-CKD/">Tentar abrir a Drive CKD</a>
+    <button class="btn secondary" id="copyBtn" type="button">Copiar endereço para abrir no Safari</button>
+    <ol class="steps"><li>Se a página abrir noutro navegador, copie o endereço abaixo e cole-o na barra do Safari.</li><li>No Safari, toque em <strong>Partilhar</strong> (quadrado com seta para cima).</li><li>Escolha <strong>Adicionar ao ecrã principal</strong>. Se não aparecer, deslize o menu para cima.</li><li>Confirme <strong>Adicionar</strong>.</li></ol>
+    <p class="small" id="copyStatus" aria-live="polite"></p>
+  </section>
+
+  <section class="choice" id="otherChoice">
+    <h2>💻 Outro dispositivo</h2>
+    <p>Abra a aplicação no navegador disponível.</p>
+    <a class="btn" href="https://marciosrviegas.github.io/Drive-CKD/">Abrir Drive CKD</a>
+  </section>
+  <p class="notice">A abertura direta no Chrome/Safari depende do sistema operativo, do navegador que leu o QR Code e das respetivas permissões. Se o botão não funcionar, utilize o endereço normal e siga as instruções acima.</p>
+</section>
+<footer>Drive CKD · Ferramenta de apoio à decisão clínica. Não substitui o julgamento clínico.</footer>
+</main>
+<script>
+(function(){
+ const appUrl='https://marciosrviegas.github.io/Drive-CKD/';
+ const ua=navigator.userAgent||'';
+ const isAndroid=/Android/i.test(ua);
+ const isIOS=/iPhone|iPad|iPod/i.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+ const android=document.getElementById('androidChoice');
+ const ios=document.getElementById('iosChoice');
+ const other=document.getElementById('otherChoice');
+ if(isAndroid){ios.classList.add('hidden');other.classList.add('hidden');}
+ else if(isIOS){android.classList.add('hidden');other.classList.add('hidden');}
+ else {android.classList.remove('hidden');ios.classList.remove('hidden');}
+ document.getElementById('chromeBtn').href='intent://marciosrviegas.github.io/Drive-CKD/#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url='+encodeURIComponent(appUrl)+';end';
+ document.getElementById('safariBtn').addEventListener('click',function(){});
+ document.getElementById('copyBtn').addEventListener('click',async function(){
+   const status=document.getElementById('copyStatus');
+   try{
+     await navigator.clipboard.writeText(appUrl);
+     status.textContent='Endereço copiado. Abra o Safari e cole-o na barra de endereço.';
+   }catch(e){
+     status.textContent='Copie este endereço e abra-o no Safari: '+appUrl;
+   }
+ });
+})();
+</script>
+</body>
+</html>
