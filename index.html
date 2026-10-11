@@ -158,8 +158,18 @@
 <div id="resultsContent" class="hidden">
 <!-- Ordem dos resultados: urgência → resumo clínico → KFRE → referenciação → matriz → terapêutica → informação complementar -->
 <div id="emergencyTop" class="hidden"></div>
-<details class="guidance-details">
- <summary>🚑 Critérios para avaliação no Serviço de Urgência</summary>
+<div id="summarySection" class="hidden"><div class="section-title">🩺 Resumo clínico</div><div id="clinicalSummary" class="summary-card"></div></div>
+<div class="section-title">🩺 Risco de falência renal · KFRE</div><div id="kfre" class="recommend"></div>
+<div id="referralSection" class="hidden"><div id="referralTitle" class="section-title">🩺 Referenciação segundo critérios do Serviço de Nefrologia da ULS Arrábida</div><div id="referral" class="recommend"></div><details class="referral-matrix-wrap"><summary>📊 Consultar matriz de referenciação do Serviço</summary><div id="referralMatrixView" class="referral-matrix-inner"></div></details>
+</div>
+<div class="section-title hidden" id="therapyTitle">💊 Otimização terapêutica</div>
+<div id="urgent" class="alert hidden"></div>
+<div id="recommendations"></div>
+<div class="section-title">Checklist de consulta</div><table class="table"><thead><tr><th>Domínio</th><th>Verificar</th><th>Comentário</th></tr></thead><tbody id="checklist"></tbody></table>
+<details style="margin-top:18px"><summary style="cursor:pointer;font-size:13px;font-weight:900;color:var(--text)">📚 Evidência e metodologia</summary><div id="evidence" class="note" style="margin-top:8px"></div></details>
+<details class="guidance-details supplementary-guidance"><summary>ℹ️ Informação complementar sobre referenciação</summary><div class="guidance-body">
+<details class="guidance-details" style="margin-bottom:10px">
+ <summary>🚑 Outros critérios para avaliação no Serviço de Urgência</summary>
  <div class="guidance-body">
   <p>Encaminhar para avaliação urgente no próprio dia perante suspeita de situação aguda grave, incluindo:</p>
   <ul>
@@ -174,16 +184,6 @@
  </div>
 </details>
 
-<div id="summarySection" class="hidden"><div class="section-title">🩺 Resumo clínico</div><div id="clinicalSummary" class="summary-card"></div></div>
-<div class="section-title">🩺 Risco de falência renal · KFRE</div><div id="kfre" class="recommend"></div>
-<div id="referralSection" class="hidden"><div id="referralTitle" class="section-title">🩺 Referenciação segundo critérios do Serviço de Nefrologia da ULS Arrábida</div><div id="referral" class="recommend"></div><details class="referral-matrix-wrap"><summary>📊 Consultar matriz de referenciação do Serviço</summary><div id="referralMatrixView" class="referral-matrix-inner"></div></details>
-</div>
-<div class="section-title hidden" id="therapyTitle">💊 Otimização terapêutica</div>
-<div id="urgent" class="alert hidden"></div>
-<div id="recommendations"></div>
-<div class="section-title">Checklist de consulta</div><table class="table"><thead><tr><th>Domínio</th><th>Verificar</th><th>Comentário</th></tr></thead><tbody id="checklist"></tbody></table>
-<details style="margin-top:18px"><summary style="cursor:pointer;font-size:13px;font-weight:900;color:var(--text)">📚 Evidência e metodologia</summary><div id="evidence" class="note" style="margin-top:8px"></div></details>
-<details class="guidance-details supplementary-guidance"><summary>ℹ️ Informação complementar sobre referenciação</summary><div class="guidance-body">
 <details class="guidance-details">
  <summary>ℹ️ Situações que geralmente não justificam referenciação nefrológica de rotina</summary>
  <div class="guidance-body">
