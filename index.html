@@ -79,6 +79,13 @@
   .referral-legend{grid-template-columns:repeat(2,minmax(0,1fr))}
   .referral-legend span:last-child{grid-column:1/-1}
 }
+
+/* Informação complementar: discreta e no final dos resultados */
+.supplementary-guidance{margin-top:18px;border:1px solid var(--line);border-radius:12px;background:transparent;opacity:.92}
+.supplementary-guidance>summary{font-size:12px!important;font-weight:700!important;color:var(--muted)!important;padding:10px 12px;cursor:pointer}
+.supplementary-guidance>.guidance-body{padding:0 12px 12px}
+.supplementary-guidance .guidance-details{margin-top:8px}
+.supplementary-guidance .guidance-details>summary{font-size:12px;font-weight:700;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -149,7 +156,7 @@
 <div class="result-hero"><div class="result-head"><div><div class="hero-label">Classificação renal</div><div id="stage" class="stage">—</div><div id="heroSub" class="hero-sub">Introduza os dados para classificar a DRC</div></div><div id="riskPills" class="pillrow risk-pills"></div></div></div>
 <div id="initialMessage" class="recommend"><h3>Introduza os dados clínicos</h3><p>Preencha os campos necessários e selecione <strong>Avaliar</strong> para obter a classificação da DRC, o KFRE e as recomendações clínicas.</p></div>
 <div id="resultsContent" class="hidden">
-<!-- Ordem dos resultados: urgência → resumo clínico → KFRE → referenciação → matriz → terapêutica -->
+<!-- Ordem dos resultados: urgência → resumo clínico → KFRE → referenciação → matriz → terapêutica → informação complementar -->
 <div id="emergencyTop" class="hidden"></div>
 <details class="guidance-details">
  <summary>🚑 Critérios para avaliação no Serviço de Urgência</summary>
@@ -166,6 +173,17 @@
   <p style="margin-top:8px"><strong>Nota:</strong> seguir o protocolo local; não atrasar a avaliação urgente para completar a ferramenta.</p>
  </div>
 </details>
+
+<div id="summarySection" class="hidden"><div class="section-title">🩺 Resumo clínico</div><div id="clinicalSummary" class="summary-card"></div></div>
+<div class="section-title">🩺 Risco de falência renal · KFRE</div><div id="kfre" class="recommend"></div>
+<div id="referralSection" class="hidden"><div id="referralTitle" class="section-title">🩺 Referenciação segundo critérios do Serviço de Nefrologia da ULS Arrábida</div><div id="referral" class="recommend"></div><details class="referral-matrix-wrap"><summary>📊 Consultar matriz de referenciação do Serviço</summary><div id="referralMatrixView" class="referral-matrix-inner"></div></details>
+</div>
+<div class="section-title hidden" id="therapyTitle">💊 Otimização terapêutica</div>
+<div id="urgent" class="alert hidden"></div>
+<div id="recommendations"></div>
+<div class="section-title">Checklist de consulta</div><table class="table"><thead><tr><th>Domínio</th><th>Verificar</th><th>Comentário</th></tr></thead><tbody id="checklist"></tbody></table>
+<details style="margin-top:18px"><summary style="cursor:pointer;font-size:13px;font-weight:900;color:var(--text)">📚 Evidência e metodologia</summary><div id="evidence" class="note" style="margin-top:8px"></div></details>
+<details class="guidance-details supplementary-guidance"><summary>ℹ️ Informação complementar sobre referenciação</summary><div class="guidance-body">
 <details class="guidance-details">
  <summary>ℹ️ Situações que geralmente não justificam referenciação nefrológica de rotina</summary>
  <div class="guidance-body">
@@ -179,9 +197,6 @@
   <p style="margin-top:8px"><strong>Estes pontos não são exclusões absolutas.</strong> Reavaliar após resolução de causas transitórias e referenciar se persistirem alterações, houver deterioração renal ou outros critérios clínicos relevantes. Suspeita de DPKAD/doença renal hereditária deve ser interpretada pelo padrão imagiológico e contexto familiar.</p>
  </div>
 </details>
-<div id="summarySection" class="hidden"><div class="section-title">🩺 Resumo clínico</div><div id="clinicalSummary" class="summary-card"></div></div>
-<div class="section-title">🩺 Risco de falência renal · KFRE</div><div id="kfre" class="recommend"></div>
-<div id="referralSection" class="hidden"><div id="referralTitle" class="section-title">🩺 Referenciação segundo critérios do Serviço de Nefrologia da ULS Arrábida</div><div id="referral" class="recommend"></div><details class="referral-matrix-wrap"><summary>📊 Consultar matriz de referenciação do Serviço</summary><div id="referralMatrixView" class="referral-matrix-inner"></div></details>
 <details class="guidance-details"><summary>📝 Preparação do pedido de referenciação</summary><div class="guidance-body"><p>Antes de enviar o pedido, confirmar se a informação essencial está documentada:</p><div class="referral-prep">
 <label><input type="checkbox">Sexo, idade, motivo de referenciação e score KFRE, quando aplicável.</label>
 <label><input type="checkbox">Evolução da função renal (creatinina/TFGe), albuminúria ou proteinúria e presença de hematúria.</label>
@@ -189,12 +204,9 @@
 <label><input type="checkbox">Medicação habitual e alterações recentes relevantes.</label>
 <label><input type="checkbox">Exame objetivo: tensão arterial, auscultação pulmonar e presença de edema.</label>
 <label><input type="checkbox">MCDT disponíveis: hemograma, urina II, RAC urinária (ou equivalente), ionograma e ecografia renal.</label>
-</div><p style="margin-top:8px">A ausência de um exame não deve atrasar uma referenciação clinicamente urgente; indicar os exames em falta e o motivo, se relevante.</p></div></details></div>
-<div class="section-title hidden" id="therapyTitle">💊 Otimização terapêutica</div>
-<div id="urgent" class="alert hidden"></div>
-<div id="recommendations"></div>
-<div class="section-title">Checklist de consulta</div><table class="table"><thead><tr><th>Domínio</th><th>Verificar</th><th>Comentário</th></tr></thead><tbody id="checklist"></tbody></table>
-<details style="margin-top:18px"><summary style="cursor:pointer;font-size:13px;font-weight:900;color:var(--text)">📚 Evidência e metodologia</summary><div id="evidence" class="note" style="margin-top:8px"></div></details>
+</div><p style="margin-top:8px">A ausência de um exame não deve atrasar uma referenciação clinicamente urgente; indicar os exames em falta e o motivo, se relevante.</p></div></details>
+</div></details>
+
 </div>
 </section></div>
 <section class="card footer"><h2>Notas de segurança</h2><div class="note">Esta ferramenta é um apoio educacional/organizacional para profissionais de saúde, não uma prescrição automática nem substitui avaliação clínica. Não introduza dados diretamente identificáveis de doentes. Os limiares são baseados principalmente em KDIGO 2024 e grandes RCTs. A KFRE é aplicável a DRC G3–G5 e deve ser interpretada no contexto clínico.</div><div class="note" style="margin-top:8px">Para Portugal, a aplicação inicia por defeito a calibração <strong>não norte-americana</strong>. A opção norte-americana pode ser selecionada para comparação ou quando clinicamente apropriado.</div></section><div class="app-credit"><div>Ferramenta desenvolvida por Márcio Viegas · Nefrologista, para apoio rápido à avaliação, estratificação de risco e otimização terapêutica na doença renal crónica.</div><div class="app-update">Última atualização da aplicação: 11/10/2026</div></div></section>
