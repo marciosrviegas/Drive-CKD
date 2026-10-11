@@ -82,7 +82,7 @@
 </style>
 </head>
 <body>
-<div id="installBanner" class="install-banner hidden"><span><strong>Instalar app</strong><br><small>Adicione a Drive CKD ao ecrã inicial.</small></span><button class="btn primary" onclick="installPWA()">Instalar</button><button class="btn secondary" onclick="dismissInstall()">×</button></div>
+<div id="installBanner" class="install-banner hidden"><span><strong>Instalar app</strong><br><small>Adicione a Drive CKD ao ecrã inicial.</small></span><button class="btn primary" onclick="installPWA()">Instalar</button><button type="button" id="dismissInstallButton" class="btn secondary" aria-label="Fechar aviso de instalação" title="Fechar aviso">×</button></div>
 <div id="app"><div class="wrap">
 <div class="top"><div><div class="eyebrow">Ferramenta clínica · versão pública 1.0</div><h1>Drive CKD</h1><div class="sub">Apoio à decisão clínica na doença renal crónica: otimização da terapêutica cardiorrenal e metabólica, avaliação do risco de falência renal e orientação da referenciação à Nefrologia na ULS Arrábida.</div></div><div class="badge">Apoio à decisão · não substitui julgamento clínico</div></div>
 <div class="grid">
@@ -202,7 +202,7 @@
 <script>
 let deferredInstallPrompt=null;
 let installDismissed=false;
-try{installDismissed=sessionStorage.getItem('drc-install-dismissed')==='1'}catch(e){}
+try{installDismissed=localStorage.getItem('drive-ckd-install-dismissed')==='1'}catch(e){}
 window.addEventListener('beforeinstallprompt',e=>{
   e.preventDefault();
   deferredInstallPrompt=e;
@@ -221,9 +221,12 @@ async function installPWA(){
 }
 function dismissInstall(){
   installDismissed=true;
-  get('installBanner').classList.add('hidden');
-  try{sessionStorage.setItem('drc-install-dismissed','1')}catch(e){}
+  const banner=get('installBanner');
+  if(banner) banner.classList.add('hidden');
+  try{localStorage.setItem('drive-ckd-install-dismissed','1')}catch(e){}
 }
+const dismissInstallButton=get('dismissInstallButton');
+if(dismissInstallButton) dismissInstallButton.addEventListener('click',dismissInstall);
 if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 function get(id){return document.getElementById(id)}
