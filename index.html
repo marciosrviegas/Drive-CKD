@@ -339,6 +339,28 @@ function calculateReferral(){
  renderReferralMatrix(allAdditionalReasons.length ? -1 : g, allAdditionalReasons.length ? -1 : a*3+r);
 }
 
+function showPotassiumAlertBeforeFullAssessment(k){
+  if(!Number.isFinite(k)||k<6.0)return false;
+  get('initialMessage').classList.add('hidden');
+  get('resultsContent').classList.remove('hidden');
+  get('summarySection').classList.add('hidden');
+  get('referralSection').classList.add('hidden');
+  get('therapyTitle').classList.add('hidden');
+  get('kfre').innerHTML='';
+  get('recommendations').innerHTML='';
+  get('urgent').innerHTML='';
+  get('urgent').className='alert hidden';
+  const top=get('emergencyTop');
+  if(k>=6.5){
+    top.className='recommend very';
+    top.innerHTML='<h3>🚨 Serviço de Urgência</h3><p><strong>Motivo:</strong> Hipercaliemia grave (K ≥6,5 mmol/L).</p><p style="margin-top:7px;font-size:11px"><strong>Encaminhar de imediato para o Serviço de Urgência.</strong> Confirmar rapidamente se necessário, realizar ECG e seguir o protocolo local; não atrasar a avaliação perante sintomas ou alterações eletrocardiográficas. Complete os restantes dados apenas depois de assegurada a avaliação urgente.</p>';
+  }else{
+    top.className='recommend urgent';
+    top.innerHTML='<h3>🔴 Hipercaliemia importante (K 6,0–6,4 mmol/L)</h3><p>Confirmar rapidamente, realizar ECG e avaliar a necessidade de referenciação urgente ao Serviço de Urgência, considerando sintomas, alterações no ECG, contexto clínico e possibilidade de pseudohipercaliemia. A avaliação do potássio não depende do preenchimento dos restantes campos.</p>';
+  }
+  return true;
+}
+
 function calculate(){
   // Cada clique em "Avaliar" inicia um cálculo novo a partir do estado atual dos campos.
   get('recommendations').innerHTML='';
@@ -353,8 +375,8 @@ function calculate(){
   calculateReferral();
   const egfr=+get('egfr').value||0,acr=+get('acr').value||0,age=+get('age').value||0,sex=get('sex').value,k=+get('k').value||0;
 const dm1=get('dm1').checked,dm2=get('dm2').checked,dm2Active=dm2&&!dm1,hf=get('hf').checked,ascvd=get('ascvd').checked,htn=get('htn').checked,sglt2=get('sglt2').checked,raas=get('raas').checked,finer=get('finer').checked,statin=get('statin').checked,glp1=get('glp1').checked;
-if(!Number.isFinite(egfr)||!Number.isFinite(acr)||!Number.isFinite(age)||!sex||!Number.isFinite(k)||get('egfr').value.trim()===''||get('acr').value.trim()===''||get('age').value.trim()===''||get('k').value.trim()===''){get('stage').textContent='—';get('heroSub').textContent='Introduza os dados para classificar a DRC';get('riskPills').innerHTML='';get('urgent').classList.add('hidden');get('recommendations').innerHTML='';get('therapyTitle').classList.add('hidden');get('initialMessage').classList.remove('hidden');get('resultsContent').classList.add('hidden');get('referralSection').classList.add('hidden');get('summarySection').classList.add('hidden');get('clinicalSummary').innerHTML='';return}
-if(egfr<1||egfr>150||acr<0||age<18||age>100||k<2.5||k>7){get('initialMessage').classList.remove('hidden');get('resultsContent').classList.add('hidden');get('referralSection').classList.add('hidden');get('summarySection').classList.add('hidden');get('initialMessage').innerHTML='<h3>Verifique os dados introduzidos</h3><p>Valores fora dos intervalos previstos: TFGe 1–150 mL/min/1,73 m²; ACR ≥0 mg/g; idade 18–100 anos; potássio 2,5–7,0 mmol/L. Confirme os valores e volte a selecionar <strong>Avaliar</strong>.</p>';return}
+if(!Number.isFinite(egfr)||!Number.isFinite(acr)||!Number.isFinite(age)||!sex||!Number.isFinite(k)||get('egfr').value.trim()===''||get('acr').value.trim()===''||get('age').value.trim()===''||get('k').value.trim()===''){get('stage').textContent='—';get('heroSub').textContent='Introduza os dados para classificar a DRC';get('riskPills').innerHTML='';get('urgent').classList.add('hidden');get('recommendations').innerHTML='';get('therapyTitle').classList.add('hidden');get('initialMessage').classList.remove('hidden');get('resultsContent').classList.add('hidden');get('referralSection').classList.add('hidden');get('summarySection').classList.add('hidden');get('clinicalSummary').innerHTML='';if(showPotassiumAlertBeforeFullAssessment(k))return;return}
+if(egfr<1||egfr>150||acr<0||age<18||age>100||k<2.5||k>7){get('initialMessage').classList.remove('hidden');get('resultsContent').classList.add('hidden');get('referralSection').classList.add('hidden');get('summarySection').classList.add('hidden');get('initialMessage').innerHTML='<h3>Verifique os dados introduzidos</h3><p>Valores fora dos intervalos previstos: TFGe 1–150 mL/min/1,73 m²; ACR ≥0 mg/g; idade 18–100 anos; potássio 2,5–7,0 mmol/L. Confirme os valores e volte a selecionar <strong>Avaliar</strong>.</p>';if(showPotassiumAlertBeforeFullAssessment(k))return;return}
 get('initialMessage').classList.add('hidden');get('resultsContent').classList.remove('hidden');get('therapyTitle').classList.remove('hidden');
 const g=egfr>=90?'G1':egfr>=60?'G2':egfr>=45?'G3a':egfr>=30?'G3b':egfr>=15?'G4':'G5',a=acr<30?'A1':acr<300?'A2':'A3';get('stage').textContent=`${g} · ${a}`; get('heroSub').textContent = (g==='G1' || g==='G2') ? (a==='A1' ? 'TFGe preservada · G1/G2 A1 não demonstra DRC por si só' : 'TFGe preservada · G1/G2 A2/A3 corresponde a DRC se a albuminúria for persistente ≥3 meses') : (a==='A3' ? 'Risco de progressão aumentado · integrar TFGe, albuminúria e KFRE' : 'Integrar TFGe, albuminúria, evolução e contexto clínico');
 let pills=[];if(dm1)pills.push('DM1');if(dm2)pills.push('DM2');if(hf)pills.push('IC');if(ascvd)pills.push('DCV aterosclerótica');if(acr>=300)pills.push('A3');else if(acr>=30)pills.push('A2');if(k>=5)pills.push('K elevado');get('riskPills').innerHTML=pills.map(x=>`<span class="pill">${esc(x)}</span>`).join('');
@@ -382,14 +404,19 @@ if(sglt2&&!dm1){
   if(egfr<20)rec.push({c:'green',t:'SGLT2i · manter se tolerado',p:'TFGe <20 mL/min/1,73 m²: não suspender automaticamente apenas pela descida da TFGe. Manter se tolerado, salvo intolerância ou início de terapêutica de substituição renal. Suspender temporariamente em jejum prolongado, cirurgia ou doença crítica/aguda grave.'});
   else rec.push({c:'green',t:'SGLT2i · manter',p:'Manter o SGLT2i se tolerado. Monitorizar função renal e estado volémico e suspender temporariamente em jejum prolongado, cirurgia ou doença crítica/aguda grave.'});
 }
-if(raas&&acr>=30){
+if(raas&&(acr>=30||htn||hf)){
   let p='';
-  if(k>=5.5){
-    p='⚠️ K+ ≥5,5 mmol/L: controlar a hipercaliemia antes de reduzir ou suspender automaticamente o IECA/ARA. Se persistir apesar de medidas adequadas, ponderar redução da dose ou suspensão. A albuminúria A2/A3 favorece bloqueio do SRAA, pelo que a hipercaliemia controlável não deve conduzir automaticamente à suspensão. Consultar o cartão “Hipercaliemia · medidas para redução do K+” para a abordagem terapêutica.';
+  if(acr>=30){
+    if(k>=5.5){
+      p='⚠️ K+ ≥5,5 mmol/L: avaliar prontamente e corrigir fatores reversíveis. Não suspender automaticamente o IECA/ARA por hipercaliemia potencialmente controlável; ponderar redução/suspensão se persistir apesar de medidas adequadas. A albuminúria A2/A3 favorece bloqueio do SRAA. ';
+    }else{
+      p='Albuminúria A2/A3 favorece bloqueio do SRAA, sobretudo na presença de HTA. Manter e titular para a maior dose aprovada tolerada. ';
+    }
   }else{
-    p='Albuminúria A2/A3 favorece bloqueio do SRAA, sobretudo na presença de HTA. Titular para a maior dose tolerada. ';
+    p='Com ACR A1, não há indicação renoprotetora específica apenas pela albuminúria; contudo, o IECA/ARA pode estar indicado para HTA ou insuficiência cardíaca (conforme o fenótipo, incluindo IC com fração de ejeção reduzida). Rever a indicação clínica e manter se apropriado. ';
+    if(k>=5.5)p+='K+ ≥5,5 mmol/L: avaliar e corrigir hipercaliemia; não suspender automaticamente sem ponderar gravidade, causas reversíveis e indicação cardiovascular. ';
   }
-  p+='Reavaliar creatinina e K cerca de 2–4 semanas após iniciar ou aumentar a dose. Um aumento ligeiro da creatinina não implica suspensão automática; se houver aumento >30%, procurar causas reversíveis como hipovolémia, AINEs ou outros fatores hemodinâmicos.';
+  p+='Reavaliar PA, creatinina e K cerca de 2–4 semanas após iniciar ou aumentar a dose. Um aumento de creatinina >30% nas primeiras 4 semanas exige avaliação de causas reversíveis e reavaliação da terapêutica.';
   rec.push({c:k>=5.5?'amber':'green',t:'IECA/ARA · indicação e monitorização',p:p});
 }
 
@@ -421,13 +448,17 @@ if(dm2Active&&acr>=30&&egfr>=25&&!finer){
     else rec.push({c:'amber',t:'Finerenona · otimizar primeiro o SRAA',p:'DM2 + DRC albuminúrica + TFGe ≥25 mL/min/1,73 m² + K+ ≤4,8 mmol/L: otimizar primeiro o IECA/ARA, salvo contraindicação/intolerância, antes de adicionar finerenona. Confirmar albuminúria persistente.'});
   }
 }
-if(finer&&!dm1){
- if(egfr<15)rec.push({c:'red',t:'Finerenona · descontinuar',p:'TFGe <15 mL/min/1,73 m²: descontinuar finerenona.'});
- else if(k>5.5)rec.push({c:'red',t:'Finerenona · suspender temporariamente por hipercaliemia',p:'K+ >5,5 mmol/L: suspender temporariamente a finerenona e reavaliar o K+. Corrigir a hipercaliemia; consultar o cartão “Hipercaliemia · abordagem” para as medidas gerais. Ponderar reintrodução quando K+ ≤5,0 mmol/L.'});
- else if(k>5.0)rec.push({c:'amber',t:'Finerenona · manter com vigilância do K+',p:'K+ >5,0–5,5 mmol/L: manter a finerenona, sem aumentar a dose, com monitorização próxima do K+. Corrigir fatores reversíveis de hipercaliemia.'});
- else rec.push({c:'green',t:'Finerenona · manter e monitorizar K',p:'Manter finerenona se tolerada. Monitorizar K+ e TFGe; reavaliar aproximadamente 4 semanas após início, reinício ou alteração da dose.'});
+if(finer){
+ if(!dm2Active){
+  rec.push({c:'red',t:'Finerenona · confirmar indicação',p:'A indicação cardiorrenal da finerenona avaliada por esta ferramenta é a DRC albuminúrica associada a diabetes tipo 2. Como DM2 não está selecionada (ou DM1 está selecionada), não assumir elegibilidade: confirmar indicação, diagnóstico, tolerabilidade e plano de monitorização.'});
+ }else if(acr<30){
+  rec.push({c:'amber',t:'Finerenona · confirmar indicação',p:'A ACR introduzida é inferior a 30 mg/g; não corresponde ao critério de DRC albuminúrica usado nesta ferramenta para avaliar finerenona. Confirmar a indicação individual e a existência de albuminúria persistente antes de manter a recomendação automática.'});
+ }else if(egfr<15)rec.push({c:'red',t:'Finerenona · rever/descontinuar',p:'TFGe <15 mL/min/1,73 m²: rever a terapêutica e seguir o RCM/protocolo local; a utilização não deve ser mantida automaticamente nesta faixa.'});
+ else if(k>5.5)rec.push({c:'red',t:'Finerenona · suspender temporariamente por hipercaliemia',p:'K+ >5,5 mmol/L: suspender temporariamente a finerenona e reavaliar o K+. Corrigir a hipercaliemia; ponderar reintrodução quando K+ ≤5,0 mmol/L, segundo o RCM e o protocolo local.'});
+ else if(k>5.0)rec.push({c:'amber',t:'Finerenona · vigilância do K+',p:'K+ >5,0–5,5 mmol/L: não aumentar a dose; monitorizar de perto, corrigir fatores reversíveis e seguir o RCM/protocolo local. Reavaliar a necessidade de manter conforme tendência do K+.'});
+ else rec.push({c:'green',t:'Finerenona · manter e monitorizar K',p:'Manter se houver indicação válida e for tolerada. Confirmar albuminúria persistente e monitorizar K+ e TFGe, habitualmente cerca de 4 semanas após início, reinício ou alteração da dose.'});
 }
-if(dm2Active&&hasCkd&&!glp1)rec.push({c:'amber',t:'GLP-1 RA · avaliar benefício cardiorrenal',p:'Na DM2 com DRC, avaliar um GLP-1 RA com benefício cardiovascular ou renal comprovado, particularmente perante doença cardiovascular aterosclerótica, elevado risco cardiovascular/renal, necessidade de otimização do controlo glicémico ou quando o SGLT2i não é tolerado ou não é apropriado. A aplicação não dispõe de HbA1c nem de toda a informação sobre terapêutica antidiabética, pelo que a decisão deve ser individualizada.'});
+if(dm2Active&&hasCkd&&!glp1)rec.push({c:'amber',t:'GLP-1 RA · avaliar indicação',p:'Na DM2 com DRC, considerar um GLP-1 RA com benefício cardiovascular/renal comprovado quando o controlo glicémico individualizado não é atingido apesar da terapêutica adequada (incluindo iSGLT2 quando indicado), ou quando estes fármacos não podem ser utilizados; também ponderar conforme risco cardiovascular e objetivos do doente. A app não recolhe HbA1c, eGFR de segurança específico por molécula, intolerâncias ou tratamento antidiabético completo, pelo que não determina elegibilidade nem substitui avaliação individual.'});
 const hasCkdPattern=egfr<60||acr>=30;
 if(!statin){
  if(hasCkdPattern){
