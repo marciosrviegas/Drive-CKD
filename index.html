@@ -32,6 +32,20 @@
 @media(max-width:850px){.grid{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}.fields{grid-template-columns:1fr}.field.full{grid-column:auto}}
 
  
+
+.guidance-details{margin-top:10px;border:1px solid var(--border);border-radius:12px;background:var(--surface);overflow:hidden}
+.guidance-details summary{cursor:pointer;padding:11px 13px;font-size:12px;font-weight:850;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.guidance-details summary::-webkit-details-marker{display:none}
+.guidance-details summary::after{content:'⌄';font-size:16px;color:var(--accent);flex:0 0 auto}
+.guidance-details[open] summary::after{transform:rotate(180deg)}
+.guidance-body{padding:0 13px 12px;font-size:12px;line-height:1.5;color:var(--muted)}
+.guidance-body ul{padding-left:18px;margin:6px 0 0}
+.guidance-body li{margin:4px 0}
+.guidance-body strong{color:var(--text)}
+.referral-prep{border-left:3px solid var(--accent);padding:8px 10px;margin-top:9px;background:var(--surface2);border-radius:0 8px 8px 0}
+.referral-prep label{display:flex;gap:8px;align-items:flex-start;margin:7px 0;color:var(--text);font-size:12px;font-weight:500}
+.referral-prep input{width:auto;margin-top:2px;flex:0 0 auto}
+
 .referral-matrix-wrap{margin-top:14px;border:1px solid #d7e6dc;border-radius:16px;overflow:hidden;background:var(--surface);box-shadow:0 5px 18px rgba(0,96,48,.08)}
 #emergencyTop{margin:0 0 14px}.alert{margin:10px 0}.recommend.very{background:light-dark(#fff0f0,#351616)}
 .referral-matrix-wrap summary{cursor:pointer;padding:13px 15px;font-size:12px;font-weight:900;list-style:none;display:flex;align-items:center;justify-content:space-between;color:var(--text);background:linear-gradient(180deg,var(--surface),#edf8f1)}
@@ -137,9 +151,45 @@
 <div id="resultsContent" class="hidden">
 <!-- Ordem dos resultados: urgência → resumo clínico → KFRE → referenciação → matriz → terapêutica -->
 <div id="emergencyTop" class="hidden"></div>
+<details class="guidance-details">
+ <summary>🚑 Critérios para avaliação no Serviço de Urgência</summary>
+ <div class="guidance-body">
+  <p>Encaminhar para avaliação urgente no próprio dia perante suspeita de situação aguda grave, incluindo:</p>
+  <ul>
+   <li><strong>Hipercaliemia:</strong> K⁺ &gt;6,5 mmol/L mesmo sem alterações no ECG, ou K⁺ &gt;6,0 mmol/L com alterações eletrocardiográficas sugestivas. Sintomas, alterações no ECG ou instabilidade justificam avaliação urgente independentemente do valor isolado.</li>
+   <li>Sintomatologia urémica relevante em doente com DRC conhecida.</li>
+   <li>Sobrecarga hídrica clinicamente significativa.</li>
+   <li>Pielonefrite aguda em rim único.</li>
+   <li>Lesão renal aguda KDIGO estádio 3 ou deterioração rapidamente progressiva de novo, sem avaliação nefrológica.</li>
+   <li>Hipertensão arterial maligna.</li>
+  </ul>
+  <p style="margin-top:8px"><strong>Nota:</strong> seguir o protocolo local; não atrasar a avaliação urgente para completar a ferramenta.</p>
+ </div>
+</details>
+<details class="guidance-details">
+ <summary>ℹ️ Situações que geralmente não justificam referenciação nefrológica de rotina</summary>
+ <div class="guidance-body">
+  <ul>
+   <li><strong>Idade &gt;80 anos:</strong> função renal estável ou deterioração lenta (&lt;5 mL/min/1,73 m²/ano), sem proteinúria relevante, anemia significativa (Hb &lt;10 g/dL) ou outros critérios. A idade, isoladamente, não exclui referenciação.</li>
+   <li><strong>Alterações transitórias:</strong> albuminúria/proteinúria durante ITU, febre, menstruação, secreção ginecológica ou exercício intenso; confirmar após resolução.</li>
+   <li><strong>Achados imagiológicos sem suspeita de doença renal hereditária:</strong> quistos simples, variantes anatómicas como coluna de Bertin proeminente ou bacinete extrassinusal. Massas renais e angiomiolipomas podem necessitar de avaliação por Urologia ou outra especialidade.</li>
+   <li><strong>Problemas predominantemente urológicos:</strong> retenção ou incontinência urinária, hematúria de causa urológica ou associada a ITU e episódio isolado de cólica renal não complicada.</li>
+   <li><strong>Seguimento específico:</strong> doentes em hemodiálise devem ser articulados com a respetiva unidade; doentes transplantados, com a unidade de transplante.</li>
+  </ul>
+  <p style="margin-top:8px"><strong>Estes pontos não são exclusões absolutas.</strong> Reavaliar após resolução de causas transitórias e referenciar se persistirem alterações, houver deterioração renal ou outros critérios clínicos relevantes. Suspeita de DPKAD/doença renal hereditária deve ser interpretada pelo padrão imagiológico e contexto familiar.</p>
+ </div>
+</details>
 <div id="summarySection" class="hidden"><div class="section-title">🩺 Resumo clínico</div><div id="clinicalSummary" class="summary-card"></div></div>
 <div class="section-title">🩺 Risco de falência renal · KFRE</div><div id="kfre" class="recommend"></div>
-<div id="referralSection" class="hidden"><div id="referralTitle" class="section-title">🩺 Referenciação segundo critérios do Serviço de Nefrologia da ULS Arrábida</div><div id="referral" class="recommend"></div><details class="referral-matrix-wrap"><summary>📊 Consultar matriz de referenciação do Serviço</summary><div id="referralMatrixView" class="referral-matrix-inner"></div></details></div>
+<div id="referralSection" class="hidden"><div id="referralTitle" class="section-title">🩺 Referenciação segundo critérios do Serviço de Nefrologia da ULS Arrábida</div><div id="referral" class="recommend"></div><details class="referral-matrix-wrap"><summary>📊 Consultar matriz de referenciação do Serviço</summary><div id="referralMatrixView" class="referral-matrix-inner"></div></details>
+<details class="guidance-details"><summary>📝 Preparação do pedido de referenciação</summary><div class="guidance-body"><p>Antes de enviar o pedido, confirmar se a informação essencial está documentada:</p><div class="referral-prep">
+<label><input type="checkbox">Sexo, idade, motivo de referenciação e score KFRE, quando aplicável.</label>
+<label><input type="checkbox">Evolução da função renal (creatinina/TFGe), albuminúria ou proteinúria e presença de hematúria.</label>
+<label><input type="checkbox">Antecedentes pessoais e familiares relevantes.</label>
+<label><input type="checkbox">Medicação habitual e alterações recentes relevantes.</label>
+<label><input type="checkbox">Exame objetivo: tensão arterial, auscultação pulmonar e presença de edema.</label>
+<label><input type="checkbox">MCDT disponíveis: hemograma, urina II, RAC urinária (ou equivalente), ionograma e ecografia renal.</label>
+</div><p style="margin-top:8px">A ausência de um exame não deve atrasar uma referenciação clinicamente urgente; indicar os exames em falta e o motivo, se relevante.</p></div></details></div>
 <div class="section-title hidden" id="therapyTitle">💊 Otimização terapêutica</div>
 <div id="urgent" class="alert hidden"></div>
 <div id="recommendations"></div>
