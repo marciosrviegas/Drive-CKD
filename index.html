@@ -87,9 +87,13 @@
 .supplementary-guidance .guidance-details{margin-top:8px}
 .supplementary-guidance .guidance-details>summary{font-size:12px;font-weight:700;color:var(--muted)}
 
-.mode-options{display:flex;gap:8px;flex-wrap:wrap;margin-top:5px}
-.mode-option{display:flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:10px;padding:9px 11px;cursor:pointer;flex:1;min-width:150px;font-size:13px;font-weight:600}
-.mode-option input{margin:0;accent-color:var(--accent)}
+.renal-mode-field{margin-bottom:0}
+.mode-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-top:4px;width:100%}
+.mode-option{display:flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--border);border-radius:9px;padding:8px 7px;cursor:pointer;min-width:0;min-height:38px;margin:0;font-size:12px;line-height:1.15;font-weight:700;text-align:center;background:var(--surface)}
+.mode-option:has(input:checked){border-color:var(--accent);background:var(--surface2);box-shadow:inset 0 0 0 1px var(--accent);color:var(--text)}
+.mode-option input{width:14px;height:14px;min-width:14px;margin:0;accent-color:var(--accent);flex:0 0 14px;padding:0}
+.mode-option span{display:block;min-width:0}
+@media(max-width:420px){.mode-options{gap:5px}.mode-option{font-size:11.5px;padding:7px 5px;gap:5px;min-height:36px}.renal-mode-field{grid-column:1/-1!important}}
 .input-with-unit{display:flex;gap:7px;align-items:center}
 .input-with-unit input{min-width:0;flex:1}
 .input-with-unit select{width:100px;flex:0 0 100px}
@@ -104,9 +108,9 @@
 <section class="card">
 <h2>Dados do doente</h2>
 <div class="fields">
-<div class="field full"><label>Função renal — escolha uma forma de introdução</label><div class="mode-options" role="radiogroup" aria-label="Forma de introdução da função renal"><label class="mode-option"><input type="radio" name="renalInputMode" id="renalModeEgfr" value="egfr" checked><span>TFGe conhecida</span></label><label class="mode-option"><input type="radio" name="renalInputMode" id="renalModeCreatinine" value="creatinine"><span>Calcular pela creatinina</span></label></div></div>
+<div class="field full renal-mode-field"><label>Função renal</label><div class="mode-options" role="radiogroup" aria-label="Forma de introdução da função renal"><label class="mode-option"><input type="radio" name="renalInputMode" id="renalModeEgfr" value="egfr" checked><span>TFGe conhecida</span></label><label class="mode-option"><input type="radio" name="renalInputMode" id="renalModeCreatinine" value="creatinine"><span>Calcular pela Cr</span></label></div></div>
 <div class="field" id="egfrField"><label for="egfr">TFGe (mL/min/1,73 m²)</label><input id="egfr" type="number" min="1" max="150" step="any" placeholder="Introduzir TFGe"></div>
-<div class="field hidden" id="creatinineField"><label for="creatinine">Creatinina sérica</label><div class="input-with-unit"><input id="creatinine" type="number" min="0.1" max="30" step="any" placeholder="Introduzir creatinina"><select id="creatinineUnit" aria-label="Unidade da creatinina"><option value="mgdl" selected>mg/dL</option><option value="umol">µmol/L</option></select></div><div class="small" id="egfrEstimate" aria-live="polite">Introduza creatinina, idade e sexo para calcular a TFGe.</div></div>
+<div class="field hidden" id="creatinineField"><label for="creatinine">Creatinina sérica</label><div class="input-with-unit"><input id="creatinine" type="number" min="0.1" max="30" step="0.1" placeholder="Introduzir creatinina"><select id="creatinineUnit" aria-label="Unidade da creatinina"><option value="mgdl" selected>mg/dL</option><option value="umol">µmol/L</option></select></div><div class="small" id="egfrEstimate" aria-live="polite">Introduza creatinina, idade e sexo para calcular a TFGe.</div></div>
 <div class="field"><label for="acr">ACR (mg/g)</label><input id="acr" type="number" min="0" step="any" placeholder="Introduzir ACR"></div>
 <div class="field"><label for="age">Idade (anos)</label><input id="age" type="number" min="18" max="100" step="1" placeholder="Introduzir idade"></div>
 <div class="field"><label for="sex">Sexo</label><select id="sex"><option value="" selected>Selecionar</option><option value="female">Feminino</option><option value="male">Masculino</option></select></div>
@@ -279,7 +283,9 @@ function calculateEgfrFromCreatinine(){
  if(!Number.isFinite(scr)||scr<=0)return NaN;
  // CKD-EPI 2021 baseada na creatinina sérica, sem variável racial.
  const female=sex==='female', k=female?0.7:0.9, alpha=female?-0.241:-0.302;
- return 142*Math.pow(Math.min(scr/k,1),alpha)*Math.pow(Math.max(scr/k,1),-1.200)*Math.pow(0.9938,age)*(female?1.012:1);
+ const estimate=142*Math.pow(Math.min(scr/k,1),alpha)*Math.pow(Math.max(scr/k,1),-1.200)*Math.pow(0.9938,age)*(female?1.012:1);
+ // Apresentar e utilizar a TFGe em número inteiro (mL/min/1,73 m²).
+ return Math.round(estimate);
 }
 function getEffectiveEgfr(){return renalInputMode()==='creatinine'?calculateEgfrFromCreatinine():parseFloat(get('egfr').value)}
 function updateRenalInputMode(){
@@ -291,7 +297,7 @@ function updateRenalInputMode(){
 function updateEgfrEstimate(){
  const host=get('egfrEstimate');if(!host)return;
  const value=calculateEgfrFromCreatinine();
- host.textContent=Number.isFinite(value)?`TFGe estimada (CKD-EPI 2021): ${value.toFixed(1)} mL/min/1,73 m²`:'Introduza creatinina, idade e sexo para calcular a TFGe.';
+ host.textContent=Number.isFinite(value)?`TFGe estimada (CKD-EPI 2021): ${value.toFixed(0)} mL/min/1,73 m²`:'Introduza creatinina, idade e sexo para calcular a TFGe.';
 }
 function toggleDiabetes(selected){
   const dm1=get('dm1'), dm2=get('dm2');
@@ -495,7 +501,7 @@ const dm1=get('dm1').checked,dm2=get('dm2').checked,dm2Active=dm2&&!dm1,hf=get('
 if(!Number.isFinite(egfr)||!Number.isFinite(acr)||!Number.isFinite(age)||!sex||(renalInputMode()==='egfr'&&get('egfr').value.trim()==='')||(renalInputMode()==='creatinine'&&get('creatinine').value.trim()==='')||get('acr').value.trim()===''||get('age').value.trim()===''){get('stage').textContent='—';get('heroSub').textContent='Introduza TFGe ou creatinina, ACR, idade e sexo para iniciar a avaliação';get('riskPills').innerHTML='';get('urgent').classList.add('hidden');get('recommendations').innerHTML='';get('therapyTitle').classList.add('hidden');get('initialMessage').classList.remove('hidden');get('resultsContent').classList.add('hidden');get('referralSection').classList.add('hidden');get('summarySection').classList.add('hidden');get('clinicalSummary').innerHTML='';if(showPotassiumAlertBeforeFullAssessment(k))return;return}
 if(egfr<1||egfr>150||acr<0||age<18||age>100||!Number.isInteger(age)||(renalInputMode()==='creatinine'&&(!Number.isFinite(parseFloat(get('creatinine').value))||parseFloat(get('creatinine').value)<=0||(get('creatinineUnit').value==='mgdl'&&parseFloat(get('creatinine').value)>30)||(get('creatinineUnit').value==='umol'&&parseFloat(get('creatinine').value)>2652)))||(kKnown&&(!Number.isFinite(k)||k<2.5||k>7))){get('initialMessage').classList.remove('hidden');get('resultsContent').classList.add('hidden');get('referralSection').classList.add('hidden');get('summarySection').classList.add('hidden');get('initialMessage').innerHTML='<h3>Verifique os dados introduzidos</h3><p>Valores fora dos intervalos previstos: TFGe 1–150 mL/min/1,73 m² (se selecionada); creatinina positiva e plausível (se selecionada); ACR ≥0 mg/g; idade inteira entre 18–100 anos; potássio 2,5–7,0 mmol/L quando preenchido. Confirme os valores e volte a selecionar <strong>Avaliar</strong>.</p>';if(showPotassiumAlertBeforeFullAssessment(k))return;return}
 get('initialMessage').classList.add('hidden');get('resultsContent').classList.remove('hidden');get('therapyTitle').classList.remove('hidden');
-const g=egfr>=90?'G1':egfr>=60?'G2':egfr>=45?'G3a':egfr>=30?'G3b':egfr>=15?'G4':'G5',a=acr<30?'A1':acr<300?'A2':'A3';get('stage').textContent=`${g} · ${a}`;if(renalInputMode()==='creatinine')get('heroSub').textContent=`TFGe estimada por CKD-EPI 2021: ${egfr.toFixed(1)} mL/min/1,73 m² · interpretar no contexto clínico`; get('heroSub').textContent = (g==='G1' || g==='G2') ? (a==='A1' ? 'TFGe preservada · G1/G2 A1 não demonstra DRC por si só' : 'TFGe preservada · G1/G2 A2/A3 corresponde a DRC se a albuminúria for persistente ≥3 meses') : (a==='A3' ? 'Risco de progressão aumentado · integrar TFGe, albuminúria e KFRE' : 'Integrar TFGe, albuminúria, evolução e contexto clínico');
+const g=egfr>=90?'G1':egfr>=60?'G2':egfr>=45?'G3a':egfr>=30?'G3b':egfr>=15?'G4':'G5',a=acr<30?'A1':acr<300?'A2':'A3';get('stage').textContent=`${g} · ${a}`;if(renalInputMode()==='creatinine')get('heroSub').textContent=`TFGe estimada por CKD-EPI 2021: ${egfr.toFixed(0)} mL/min/1,73 m² · interpretar no contexto clínico`; get('heroSub').textContent = (g==='G1' || g==='G2') ? (a==='A1' ? 'TFGe preservada · G1/G2 A1 não demonstra DRC por si só' : 'TFGe preservada · G1/G2 A2/A3 corresponde a DRC se a albuminúria for persistente ≥3 meses') : (a==='A3' ? 'Risco de progressão aumentado · integrar TFGe, albuminúria e KFRE' : 'Integrar TFGe, albuminúria, evolução e contexto clínico');
 let pills=[];if(dm1)pills.push('DM1');if(dm2)pills.push('DM2');if(hf)pills.push('IC');if(ascvd)pills.push('DCV aterosclerótica');if(obesity)pills.push('Obesidade');if(acr>=300)pills.push('A3');else if(acr>=30)pills.push('A2');if(kKnown&&k>=5)pills.push('K elevado');get('riskPills').innerHTML=pills.map(x=>`<span class="pill">${esc(x)}</span>`).join('');
 let rec=[];
  let priorities=[];
