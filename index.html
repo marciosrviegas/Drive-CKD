@@ -648,15 +648,7 @@ if(risk2!==null&&risk5!==null){
 }else{
   summary.push('KFRE não calculável com os dados introduzidos.');
 }
-// Terapêutica atual no resumo: ordem coerente com as recomendações (IECA/ARA II, iSGLT2 e restantes fármacos).
-const currentMeds=[];
-if(raas) currentMeds.push('IECA/ARA II');
-if(sglt2) currentMeds.push('iSGLT2');
-if(finer) currentMeds.push('finerenona');
-if(statin) currentMeds.push('estatina');
-if(glp1) currentMeds.push('AR GLP-1');
-if(currentMeds.length) summary.push('Terapêutica assinalada: '+currentMeds.join(', ')+'.');
-if(dm2Active&&hasCkd&&glp1){summary.push('AR GLP-1 em curso: rever indicação, adesão, tolerabilidade e resposta glicémica; se houver obesidade, avaliar também a evolução do peso e manter uma abordagem integrada com alimentação, atividade física e apoio comportamental.');}
+// No resumo clínico não listar simplesmente os fármacos assinalados: apresentar apenas prioridades clínicas acionáveis.
 if(!kKnown) priorities.push('confirmar potássio antes de iniciar/titular IECA/ARA ou finerenona');
 else if(k>=5.5) priorities.push('priorizar avaliação e correção da hipercaliemia antes de intensificar fármacos com risco de hiperK');
 else if(k<3.5) priorities.push('reavaliar e corrigir a hipocaliemia');
@@ -686,10 +678,17 @@ if(dm2Active&&acr>=30&&egfr>=25&&!finer&&priorities.length<3){
   else if(raas) priorities.push('avaliar elegibilidade para finerenona após otimização de IECA/ARA II');
   else priorities.push('otimizar IECA/ARA II antes de avaliar finerenona');
 }
-if(dm2Active&&hasCkd&&!glp1&&priorities.length<3) priorities.push('avaliar benefício cardiorrenal de AR GLP-1 na DM2 com DRC');
-if(!statin&&age>=50&&hasCkdPattern&&priorities.length<3) priorities.push('avaliar estatina segundo KDIGO, individualizando em idade muito avançada ou fragilidade');
-if(!statin&&age>=50&&!hasCkdPattern&&priorities.length<3) priorities.push('avaliar risco cardiovascular e indicação de estatina');
-if(priorities.length) summary.push('Prioridades: '+priorities.slice(0,3).join('; ')+'.');
+if(dm2Active&&hasCkd&&!glp1) priorities.push('AR GLP-1: avaliar indicação e benefício cardiorrenal');
+if(dm2Active&&hasCkd&&glp1) priorities.push('AR GLP-1 em curso: rever indicação, adesão, tolerabilidade e resposta'+(obesity?'; avaliar evolução do peso':'') );
+if(!statin&&age>=50&&hasCkdPattern) priorities.push('estatina: avaliar indicação segundo KDIGO, individualizando em idade muito avançada ou fragilidade');
+if(!statin&&age>=50&&!hasCkdPattern) priorities.push('estatina: avaliar risco cardiovascular e indicação');
+// Ordenar prioridades terapêuticas pela sequência acordada e apresentar todas as aplicáveis, sem lista redundante de medicação atual.
+const priorityOrder=[/IECA\/ARA/,/SGLT2i|iSGLT2/,/finerenona/,/estatina/,/AR GLP-1/,/potássio|hipercaliemia|hipocaliemia|urgência|rever iSGLT2 na DM1|rever indicação de finerenona na DM1|rever indicação de AR GLP-1 na DM1/i];
+priorities.sort((a,b)=>{
+ const rank=x=>{for(let i=0;i<priorityOrder.length;i++)if(priorityOrder[i].test(x))return i;return priorityOrder.length;};
+ return rank(a)-rank(b);
+});
+if(priorities.length) summary.push('Prioridades clínicas: '+priorities.join('; ')+'.');
 if(currentReferralDecision){
   const rd=currentReferralDecision;
   if(rd.emergencyCriteria && rd.emergencyCriteria.length){
