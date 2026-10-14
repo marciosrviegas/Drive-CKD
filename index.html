@@ -94,9 +94,13 @@
 .mode-option input{width:14px;height:14px;min-width:14px;margin:0;accent-color:var(--accent);flex:0 0 14px;padding:0}
 .mode-option span{display:block;min-width:0}
 @media(max-width:420px){.mode-options{gap:5px}.mode-option{font-size:11.5px;padding:7px 5px;gap:5px;min-height:36px}.renal-mode-field{grid-column:1/-1!important}}
-.input-with-unit{display:flex;gap:7px;align-items:center}
-.input-with-unit input{min-width:0;flex:1}
-.input-with-unit select{width:100px;flex:0 0 100px}
+/* Campo de creatinina: ocupar toda a largura no desktop para evitar input estreito */
+#creatinineField{grid-column:1/-1}
+.input-with-unit{display:grid;grid-template-columns:minmax(0,1fr) 92px;gap:7px;align-items:center;width:100%}
+.input-with-unit input{display:block;width:100%;min-width:0;flex:initial;font-variant-numeric:tabular-nums}
+.input-with-unit select{display:block;width:100%;min-width:0;flex:initial;padding-left:8px;padding-right:6px}
+@media(max-width:850px){#creatinineField{grid-column:auto}}
+@media(max-width:420px){#creatinineField{grid-column:1/-1}.input-with-unit{grid-template-columns:minmax(0,1fr) 92px}}
 #egfrEstimate{margin-top:6px}
 </style>
 </head>
