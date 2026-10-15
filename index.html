@@ -526,6 +526,8 @@ function calculate(){
   calculateReferral();
   const egfr=getEffectiveEgfr(),acr=+get('acr').value||0,age=+get('age').value||0,sex=get('sex').value,kRaw=get('k').value.trim(),kKnown=kRaw!=='',k=kKnown?Number(kRaw):NaN;
 const dm1=get('dm1').checked,dm2=get('dm2').checked,dm2Active=dm2&&!dm1,hf=get('hf').checked,ascvd=get('ascvd').checked,htn=get('htn').checked,obesity=get('obesity').checked,sglt2=get('sglt2').checked,raas=get('raas').checked,finer=get('finer').checked,statin=get('statin').checked,glp1=get('glp1').checked;
+const selectedRaasIndications=[htn?'HTA':null,hf?'insuficiência cardíaca (conforme o fenótipo, incluindo IC com fração de ejeção reduzida)':''].filter(Boolean);
+const selectedSglt2Indications=[dm2Active?'DM2':null,hf?'insuficiência cardíaca':null,acr>=200?'ACR ≥200 mg/g':null,(egfr>=20&&egfr<=45)?'TFGe 20–45 mL/min/1,73 m²':null].filter(Boolean);
 if(!Number.isFinite(egfr)||!Number.isFinite(acr)||!Number.isFinite(age)||!sex||(renalInputMode()==='egfr'&&get('egfr').value.trim()==='')||(renalInputMode()==='creatinine'&&get('creatinine').value.trim()==='')||get('acr').value.trim()===''||get('age').value.trim()===''){get('stage').textContent='—';get('heroSub').textContent='Introduza TFGe ou creatinina, ACR, idade e sexo para iniciar a avaliação';get('riskPills').innerHTML='';get('urgent').classList.add('hidden');get('recommendations').innerHTML='';get('therapyTitle').classList.add('hidden');get('initialMessage').classList.remove('hidden');get('resultsContent').classList.add('hidden');get('referralSection').classList.add('hidden');get('summarySection').classList.add('hidden');get('clinicalSummary').innerHTML='';if(showPotassiumAlertBeforeFullAssessment(k))return;return}
 if(egfr<1||egfr>150||acr<0||age<18||age>100||!Number.isInteger(age)||(renalInputMode()==='creatinine'&&(!Number.isFinite(parseFloat(get('creatinine').value))||parseFloat(get('creatinine').value)<=0||(get('creatinineUnit').value==='mgdl'&&parseFloat(get('creatinine').value)>30)||(get('creatinineUnit').value==='umol'&&parseFloat(get('creatinine').value)>2652)))||(kKnown&&(!Number.isFinite(k)||k<1.0||k>7))){get('initialMessage').classList.remove('hidden');get('resultsContent').classList.add('hidden');get('referralSection').classList.add('hidden');get('summarySection').classList.add('hidden');get('initialMessage').innerHTML='<h3>Verifique os dados introduzidos</h3><p>Valores fora dos intervalos previstos: TFGe 1–150 mL/min/1,73 m² (se selecionada); creatinina positiva e plausível (se selecionada); ACR ≥0 mg/g; idade inteira entre 18–100 anos; potássio 1,0–7,0 mmol/L quando preenchido. Confirme os valores e volte a selecionar <strong>Avaliar</strong>.</p>';if(showPotassiumAlertBeforeFullAssessment(k))return;return}
 get('initialMessage').classList.add('hidden');get('resultsContent').classList.remove('hidden');get('therapyTitle').classList.remove('hidden');
@@ -553,7 +555,7 @@ if(dm1&&sglt2) priorities.push('rever iSGLT2 na DM1 pelo risco de cetoacidose');
 }
 if(sglt2&&!dm1){
   if(egfr<20)rec.push({c:'green',t:'SGLT2i · manter se tolerado',p:'TFGe <20 mL/min/1,73 m²: não suspender automaticamente apenas pela descida da TFGe. Manter se tolerado, salvo intolerância ou início de terapêutica de substituição renal. Suspender temporariamente em jejum prolongado, cirurgia ou doença crítica/aguda grave.'});
-  else rec.push({c:'green',t:'SGLT2i · manter',p:'Manter o SGLT2i se tolerado. Monitorizar função renal e estado volémico e suspender temporariamente em jejum prolongado, cirurgia ou doença crítica/aguda grave.'});
+  else rec.push({c:'green',t:'SGLT2i · manter',p:'Manter o iSGLT2 se tolerado; a ACR atualmente em A1 não é, por si só, motivo para suspensão. '+(selectedSglt2Indications.length?'Indicações/critérios assinalados na aplicação: '+selectedSglt2Indications.join('; ')+'. ':'Confirmar a indicação inicial e os critérios clínicos aplicáveis. ')+'Rever função renal, estado volémico e tolerabilidade. Suspender temporariamente em jejum prolongado, cirurgia ou doença crítica/aguda grave.'});
 }
 if(raas&&(acr>=30||htn||hf)){
   let p='';
@@ -566,14 +568,14 @@ if(raas&&(acr>=30||htn||hf)){
       p='Albuminúria A2/A3 favorece tratamento com IECA/ARA II, sobretudo na presença de HTA. Manter e titular para a maior dose aprovada tolerada. ';
     }
   }else{
-    p='Com ACR A1, não há indicação renoprotetora específica apenas pela albuminúria; contudo, o IECA/ARA pode estar indicado para HTA ou insuficiência cardíaca (conforme o fenótipo, incluindo IC com fração de ejeção reduzida). Rever a indicação clínica e manter se apropriado. ';
+    p='ACR atualmente em A1 durante tratamento. Se o IECA/ARA II foi iniciado perante albuminúria A2/A3, a redução para A1 pode refletir resposta terapêutica e não significa, por si só, perda da indicação para manter. '+(selectedRaasIndications.length?'Indicações adicionais assinaladas na aplicação: '+selectedRaasIndications.join(' e ')+'. ':'')+'Não suspender apenas com base na ACR atual; individualizar a decisão considerando a indicação inicial, TA, função renal, caliemia e tolerabilidade. ';
     if(!kKnown)p+='Potássio não introduzido: confirmar K+ para avaliar segurança e monitorização. ';else if(k>=5.5)p+='K+ ≥5,5 mmol/L: avaliar e corrigir hipercaliemia; não suspender automaticamente sem ponderar gravidade, causas reversíveis e indicação cardiovascular. ';
   }
   p+='Reavaliar TA, creatinina e K cerca de 2–4 semanas após iniciar ou aumentar a dose. Um aumento de creatinina >30% nas primeiras 4 semanas exige avaliação de causas reversíveis e reavaliação da terapêutica.';
   rec.push({c:!kKnown?'amber':k>=5.5?'amber':'green',t:'IECA/ARA · indicação e monitorização',p:p});
 }
 
-if(raas&&acr<30&&!htn&&!hf){rec.push({c:'amber',t:'IECA/ARA · confirmar indicação de manutenção',p:'Com ACR A1, sem HTA ou insuficiência cardíaca assinaladas, não há indicação renoprotetora específica identificada pelos dados introduzidos para IECA/ARA apenas por DRC. Podem existir outras indicações não recolhidas pela aplicação. Não suspender automaticamente: rever indicação original, pressão arterial, função cardíaca, tolerabilidade e contexto clínico.'});}
+if(raas&&acr<30&&!htn&&!hf){rec.push({c:'amber',t:'IECA/ARA · confirmar indicação de manutenção',p:'ACR atualmente em A1 durante tratamento. Se o IECA/ARA II foi iniciado perante albuminúria A2/A3, a redução para A1 pode refletir resposta terapêutica e não significa, por si só, perda da indicação para manter. Como não foram assinaladas outras indicações nesta avaliação, confirmar a indicação original e individualizar a decisão segundo a evolução clínica, TA, função renal, caliemia e tolerabilidade. Não suspender automaticamente com base na ACR atual.'});}
 
 if(!raas&&acr>=30&&egfr>=15){
  const raasIndication=(dm1||dm2)?'Na DRC com diabetes e albuminúria A2/A3, a KDIGO recomenda IECA ou ARA, incluindo em G1–G4.':acr>=300?'Na DRC com albuminúria A3, a KDIGO recomenda IECA ou ARA mesmo sem diabetes, incluindo em G1–G4.':'Na DRC não diabética com albuminúria A2, a KDIGO sugere iniciar IECA ou ARA, incluindo em G1–G4.';
@@ -611,7 +613,7 @@ if(finer){
  if(!dm2Active){
   rec.push({c:'red',t:'Finerenona · confirmar indicação',p:'A indicação cardiorrenal da finerenona avaliada por esta ferramenta é a DRC albuminúrica associada a diabetes tipo 2. Como DM2 não está selecionada (ou DM1 está selecionada), não assumir elegibilidade: confirmar indicação, diagnóstico, tolerabilidade e plano de monitorização.'});
  }else if(acr<30){
-  rec.push({c:'amber',t:'Finerenona · confirmar indicação',p:'A ACR introduzida é inferior a 30 mg/g; não corresponde ao critério de DRC albuminúrica usado nesta ferramenta para avaliar finerenona. Confirmar a indicação individual e a existência de albuminúria persistente antes de manter a recomendação automática.'});
+  rec.push({c:'amber',t:'Finerenona · confirmar indicação de manutenção',p:'Se a finerenona foi iniciada perante DM2 com DRC albuminúrica A2/A3, a redução atual da ACR para A1 pode refletir resposta terapêutica e não significa, por si só, perda da indicação para manter. Confirmar a albuminúria pré-tratamento e a indicação inicial; individualizar a decisão segundo a evolução clínica, a função renal, a caliemia, a tolerabilidade e o plano de monitorização. Não suspender automaticamente apenas com base na ACR atual.'});
  }else if(egfr<15)rec.push({c:'red',t:'Finerenona · rever/descontinuar',p:'TFGe <15 mL/min/1,73 m²: rever a terapêutica e seguir o RCM/protocolo local; a utilização não deve ser mantida automaticamente nesta faixa.'});
  else if(!kKnown)rec.push({c:'amber',t:'Finerenona · confirmar potássio',p:'O potássio não foi introduzido; não é possível confirmar a segurança de manutenção. Obter K+ recente e seguir o RCM/protocolo local. Não suspender automaticamente apenas por falta deste dado, mas rever a decisão clínica.'});
  else if(k>5.5)rec.push({c:'red',t:'Finerenona · suspender temporariamente por hipercaliemia',p:'K+ >5,5 mmol/L: suspender temporariamente a finerenona e reavaliar o K+. Corrigir a hipercaliemia; ponderar reintrodução quando K+ ≤5,0 mmol/L, segundo o RCM e o protocolo local.'});
@@ -647,7 +649,7 @@ if(kKnown&&k>=6.5){get('urgent').classList.add('hidden');get('urgent').innerHTML
 if(kKnown&&k>=6.5){rec=[{c:'red',t:'Prioridade clínica · hipercaliemia grave',p:'As recomendações terapêuticas não urgentes foram omitidas nesta avaliação para não competir com a necessidade de avaliação imediata no Serviço de Urgência. Após estabilização, repetir a avaliação com dados atualizados.'}];get('therapyTitle').classList.add('hidden');}
 if(kKnown&&k<2.5){rec=[{c:'red',t:'Prioridade clínica · hipocaliemia grave',p:'As recomendações terapêuticas não urgentes foram omitidas para não competir com a necessidade de avaliação imediata no Serviço de Urgência. Após estabilização, repetir a avaliação com dados atualizados.'}];get('therapyTitle').classList.add('hidden');}
 // Ordenar recomendações farmacológicas: IECA/ARA II como base, depois iSGLT2 e só depois finerenona.
-const therapyRank=r=>{const t=(r.t+' '+r.p).toLowerCase();if(/ieca\/ara|ieca\/ara ii/.test(t))return 0;if(/sglt2i|isglt2/.test(t))return 1;if(/finerenona/.test(t))return 2;return 3;};
+const therapyRank=r=>{const t=(r.t+' '+r.p).toLowerCase();if(/ieca\/ara|ieca\/ara ii/.test(t))return 0;if(/sglt2i|isglt2/.test(t))return 1;if(/finerenona/.test(t))return 2;if(/ar glp-1/.test(t))return 3;if(/estatina/.test(t))return 4;return 5;};
 rec=rec.map((r,i)=>({...r,_originalIndex:i})).sort((a,b)=>therapyRank(a)-therapyRank(b)||a._originalIndex-b._originalIndex);
 get('recommendations').innerHTML=rec.map(r=>`<div class="recommend ${r.c}"><h3>${esc(r.t)}</h3><p>${esc(r.p)}</p></div>`).join('')||'<div class="recommend"><h3>Sem alerta específico</h3><p>Rever progressão da DRC, risco cardiovascular, complicações e preparação para terapêutica de substituição renal.</p></div>';
 let risk2=null,risk5=null;
@@ -690,6 +692,7 @@ else if(k<2.5) priorities.push('🚨 Serviço de Urgência imediato por hipocali
 else if(k<3.0) priorities.push('hipocaliemia moderada (K 2,5–2,9 mmol/L): avaliação clínica célere; se sintomática ou com alterações de gravidade no ECG, encaminhar para o Serviço de Urgência');
 else if(k<3.5) priorities.push('hipocaliemia ligeira (K 3,0–3,4 mmol/L): investigar causas, corrigir e monitorizar');
 if(raas&&acr>=30) priorities.push('manter/otimizar IECA/ARA II');
+else if(raas&&acr<30) priorities.push('IECA/ARA II em curso com ACR A1: confirmar indicação original e albuminúria pré-tratamento; não suspender automaticamente');
 else if(!raas&&acr>=30&&egfr>=15){
   if(!kKnown) priorities.push('confirmar potássio antes de iniciar IECA/ARA');
   else if(k>=6.0) priorities.push('tratar hipercaliemia antes de iniciar IECA/ARA');
@@ -708,6 +711,8 @@ if(!dm1&&!sglt2&&egfr>=20&&hasCkd&&(dm2Active||acr>=200||hf||egfr<=45)){
   else if(acr>=200) priorities.push('considerar início de SGLT2i (ACR ≥200 mg/g)');
   else priorities.push('considerar início de SGLT2i (TFGe 20–45)');
 }
+if(sglt2&&!dm1&&acr<30) priorities.push('iSGLT2 em curso com ACR A1: rever indicação e tolerabilidade; ACR atual, isoladamente, não justifica suspensão');
+if(finer&&dm2Active&&acr<30) priorities.push('finerenona em curso com ACR A1: confirmar indicação original e albuminúria pré-tratamento; não suspender automaticamente');
 if(dm2Active&&acr>=30&&egfr>=25&&!finer){
   if(!kKnown) priorities.push('confirmar potássio antes de avaliar finerenona');
   else if(k>5.0) priorities.push('corrigir hipercaliemia antes de iniciar finerenona');
@@ -719,18 +724,8 @@ if(dm2Active&&hasCkd&&!glp1) priorities.push('AR GLP-1: avaliar indicação e be
 if(dm2Active&&hasCkd&&glp1) priorities.push('AR GLP-1 em curso: rever indicação, adesão, tolerabilidade e resposta'+(obesity?'; avaliar evolução do peso':'') );
 if(!statin&&age>=50&&hasCkdPattern) priorities.push('estatina: avaliar indicação segundo KDIGO, individualizando em idade muito avançada ou fragilidade');
 if(!statin&&age>=50&&!hasCkdPattern) priorities.push('estatina: avaliar risco cardiovascular e indicação');
-// Em hipercaliemia/hipocaliemia grave, não competir com a prioridade de avaliação urgente.
-if(kKnown&&(k>=6.5||k<2.5)) priorities=priorities.filter(x=>/Serviço de Urgência imediato/i.test(x));
-// Ordenar pelas prioridades acordadas sem classificar finerenona como IECA/ARA só porque a frase os menciona.
-const priorityOrder=[
-  /^(🚨 Serviço de Urgência|hipercaliemia importante|hipercaliemia|hipocaliemia)/i,
-  /^(manter\/otimizar IECA\/ARA II|confirmar caliemia antes de iniciar\/titular IECA\/ARA II|confirmar potássio antes de iniciar IECA\/ARA|tratar hipercaliemia antes de iniciar IECA\/ARA|controlar hipercaliemia antes de iniciar IECA\/ARA|avaliar início de IECA\/ARA|avaliar indicação de IECA\/ARA)/i,
-  /^(considerar início de SGLT2i|rever iSGLT2)/i,
-  /finerenona/i,
-  /estatina/i,
-  /AR GLP-1/i,
-  /caliemia|potássio|urgência|rever indicação de finerenona na DM1|rever indicação de AR GLP-1 na DM1/i
-];
+// Ordenar prioridades terapêuticas pela sequência acordada e apresentar todas as aplicáveis, sem lista redundante de medicação atual.
+const priorityOrder=[/🚨 Serviço de Urgência|hipercaliemia importante|hipercaliemia|hipocaliemia/i,/IECA\/ARA/,/SGLT2i|iSGLT2/,/finerenona/,/AR GLP-1/,/estatina/,/caliemia|potássio|urgência|rever iSGLT2 na DM1|rever indicação de finerenona na DM1|rever indicação de AR GLP-1 na DM1/i];
 priorities.sort((a,b)=>{
  const rank=x=>{for(let i=0;i<priorityOrder.length;i++)if(priorityOrder[i].test(x))return i;return priorityOrder.length;};
  return rank(a)-rank(b);
