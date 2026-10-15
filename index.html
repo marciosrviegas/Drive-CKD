@@ -719,8 +719,18 @@ if(dm2Active&&hasCkd&&!glp1) priorities.push('AR GLP-1: avaliar indicação e be
 if(dm2Active&&hasCkd&&glp1) priorities.push('AR GLP-1 em curso: rever indicação, adesão, tolerabilidade e resposta'+(obesity?'; avaliar evolução do peso':'') );
 if(!statin&&age>=50&&hasCkdPattern) priorities.push('estatina: avaliar indicação segundo KDIGO, individualizando em idade muito avançada ou fragilidade');
 if(!statin&&age>=50&&!hasCkdPattern) priorities.push('estatina: avaliar risco cardiovascular e indicação');
-// Ordenar prioridades terapêuticas pela sequência acordada e apresentar todas as aplicáveis, sem lista redundante de medicação atual.
-const priorityOrder=[/🚨 Serviço de Urgência|hipercaliemia importante|hipercaliemia|hipocaliemia/i,/IECA\/ARA/,/SGLT2i|iSGLT2/,/finerenona/,/estatina/,/AR GLP-1/,/caliemia|potássio|urgência|rever iSGLT2 na DM1|rever indicação de finerenona na DM1|rever indicação de AR GLP-1 na DM1/i];
+// Em hipercaliemia/hipocaliemia grave, não competir com a prioridade de avaliação urgente.
+if(kKnown&&(k>=6.5||k<2.5)) priorities=priorities.filter(x=>/Serviço de Urgência imediato/i.test(x));
+// Ordenar pelas prioridades acordadas sem classificar finerenona como IECA/ARA só porque a frase os menciona.
+const priorityOrder=[
+  /^(🚨 Serviço de Urgência|hipercaliemia importante|hipercaliemia|hipocaliemia)/i,
+  /^(manter\/otimizar IECA\/ARA II|confirmar caliemia antes de iniciar\/titular IECA\/ARA II|confirmar potássio antes de iniciar IECA\/ARA|tratar hipercaliemia antes de iniciar IECA\/ARA|controlar hipercaliemia antes de iniciar IECA\/ARA|avaliar início de IECA\/ARA|avaliar indicação de IECA\/ARA)/i,
+  /^(considerar início de SGLT2i|rever iSGLT2)/i,
+  /finerenona/i,
+  /estatina/i,
+  /AR GLP-1/i,
+  /caliemia|potássio|urgência|rever indicação de finerenona na DM1|rever indicação de AR GLP-1 na DM1/i
+];
 priorities.sort((a,b)=>{
  const rank=x=>{for(let i=0;i<priorityOrder.length;i++)if(priorityOrder[i].test(x))return i;return priorityOrder.length;};
  return rank(a)-rank(b);
