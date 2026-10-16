@@ -727,9 +727,14 @@ if(!severeK&&!urgentK){
   else if(dm2Active&&hasCkd&&!glp1) addPriority('Avaliar AR GLP-1 com benefício cardiorrenal demonstrado na DM2 com DRC, conforme objetivos clínicos e perfil individual.');
   if(obesity) addPriority('Integrar a abordagem do peso e das comorbilidades relacionadas com a obesidade; esta, isoladamente, não determina indicação para AR GLP-1.');
 }
-// Estatina: incluir no resumo quando existe uma indicação baseada na DRC ou uma situação que justifica consideração segundo KDIGO.
-// Esta recomendação é independente das prioridades relacionadas com a caliemia e não deve desaparecer por existir outra alteração laboratorial.
-if(!statin&&hasCkd){
+// Prevenção cardiovascular secundária: a DCVA é relevante mesmo sem DRC e não deve depender da TFGe/ACR.
+// Evitar duplicação: se já existe estatina, rever adequação/intensidade em manutenção; caso contrário, avaliar terapêutica hipolipemiante.
+if(ascvd){
+  if(!statin) addPriority('DCVA estabelecida: avaliar/iniciar terapêutica hipolipemiante de prevenção secundária, geralmente com estatina de intensidade adequada, considerando contraindicações, tolerabilidade e tratamento atual.');
+  else addPriority('DCVA estabelecida: confirmar se a terapêutica hipolipemiante e a intensidade são adequadas para prevenção secundária; não duplicar estatina já instituída.');
+}
+// Estatina: incluir no resumo quando existe indicação baseada na DRC segundo KDIGO, sem duplicar a mensagem específica de DCVA.
+if(!statin&&hasCkd&&!ascvd){
   if(age>=50){
     if(egfr>=60) addPriority('Estatina: recomendada pela KDIGO em adultos ≥50 anos com DRC G1–G2; aplica-se quando A2/A3 persistente estabelece DRC. Individualizar perante fragilidade, prognóstico limitado ou comorbilidade elevada.');
     else addPriority('Estatina: recomendada pela KDIGO em adultos ≥50 anos com DRC G3a–G5 (estatina ou estatina/ezetimiba); individualizar perante fragilidade, prognóstico limitado ou comorbilidade elevada.');
@@ -738,18 +743,28 @@ if(!statin&&hasCkd){
   }
 }
 if(egfr<15) addPriority('DRC G5: rever complicações, trajetória da função renal e plano de preparação para TSFR conforme contexto e preferências do doente.');
-// Evitar acumulação: mostrar até seis prioridades clínicas, sem ocultar situações urgentes nem uma indicação relevante para estatina.
-const urgencyFirst=summaryPriorities.filter(x=>/🚨|urgente|hipercaliemia \(K 6,0|hipocaliemia \(K 2,5/i.test(x));
-const otherPriorities=summaryPriorities.filter(x=>!urgencyFirst.includes(x));
-const finalPriorities=[...urgencyFirst,...otherPriorities.slice(0,Math.max(0,6-urgencyFirst.length))];
+// Em urgência eletrolítica grave, não apresentar ações terapêuticas não urgentes no resumo.
+// Mantêm-se a situação renal/KFRE e a conclusão de referenciação, mas as prioridades de rotina aguardam estabilização.
+const severeEmergency= kKnown&&(k>=6.0||k<2.5);
+let finalPriorities;
+if(severeEmergency){
+  finalPriorities=summaryPriorities.filter(x=>/Serviço de Urgência imediato|Avaliação urgente da hipercaliemia/.test(x)).slice(0,1);
+}else{
+  // Mostrar até seis prioridades, reservando espaço para prevenção secundária por DCVA e planeamento de DRC G5.
+  const mustKeep=summaryPriorities.filter(x=>/DCVA estabelecida:|DRC G5:/.test(x));
+  const urgencyFirst=summaryPriorities.filter(x=>/🚨|urgente|hipercaliemia \(K 6,0|hipocaliemia \(K 2,5/i.test(x));
+  const selected=[...new Set([...urgencyFirst,...mustKeep])];
+  const others=summaryPriorities.filter(x=>!selected.includes(x));
+  finalPriorities=[...selected,...others.slice(0,Math.max(0,6-selected.length))];
+}
 if(finalPriorities.length) summary.push(`<div class="summary-subsection"><strong>Prioridades clínicas</strong><ul>${finalPriorities.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`);
 else if(hasCkd) summary.push('<p><strong>Prioridades clínicas:</strong> não foi identificada uma nova intervenção específica a partir dos dados introduzidos. Confirmar se a terapêutica atual está otimizada e manter seguimento individualizado.</p>');
 // Manutenção só aparece quando há uma questão contextual relevante; não repetir a informação das caixas farmacológicas.
 const maintenanceSummary=[];
-if(raas&&acr<30) maintenanceSummary.push('IECA/ARA II: se iniciado por albuminúria A2/A3, a redução atual para A1 não implica, por si só, perda da indicação para manutenção. Considerar também HTA, insuficiência cardíaca e outras indicações; rever indicação inicial, evolução e segurança.');
-if(finer&&acr<30) maintenanceSummary.push('Finerenona: se iniciada segundo critérios de albuminúria ou outra indicação clínica aplicável, a redução para A1 não implica, por si só, perda da indicação para manutenção. Rever indicação inicial, evolução, função renal, caliemia e tolerabilidade.');
-if(sglt2&& !dm1 && (egfr<20||acr<30)) maintenanceSummary.push('iSGLT2: a redução da TFGe ou da albuminúria, isoladamente, não determina suspensão; rever tolerabilidade, estado volémico e precauções de segurança.');
-if(dm2Active&&hasCkd&&glp1) maintenanceSummary.push('AR GLP-1 em curso: rever adequação do fármaco/dose, adesão, tolerabilidade e resposta; se houver obesidade, avaliar também evolução ponderal.');
+if(!severeEmergency&&raas&&acr<30) maintenanceSummary.push('IECA/ARA II: se iniciado por albuminúria A2/A3, a redução atual para A1 não implica, por si só, perda da indicação para manutenção. Considerar também HTA, insuficiência cardíaca e outras indicações; rever indicação inicial, evolução e segurança.');
+if(!severeEmergency&&finer&&acr<30) maintenanceSummary.push('Finerenona: se iniciada segundo critérios de albuminúria ou outra indicação clínica aplicável, a redução para A1 não implica, por si só, perda da indicação para manutenção. Rever indicação inicial, evolução, função renal, caliemia e tolerabilidade.');
+if(!severeEmergency&&sglt2&& !dm1 && (egfr<20||acr<30)) maintenanceSummary.push('iSGLT2: a redução da TFGe ou da albuminúria, isoladamente, não determina suspensão; rever tolerabilidade, estado volémico e precauções de segurança.');
+if(!severeEmergency&&dm2Active&&hasCkd&&glp1) maintenanceSummary.push('AR GLP-1 em curso: rever adequação do fármaco/dose, adesão, tolerabilidade e resposta; se houver obesidade, avaliar também evolução ponderal.');
 if(maintenanceSummary.length) summary.push(`<div class="summary-subsection"><strong>Manutenção</strong><ul>${maintenanceSummary.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`);
 if(currentReferralDecision){
   const rd=currentReferralDecision;
@@ -759,7 +774,7 @@ if(currentReferralDecision){
     const reasons=[];
     if(rd.albuminReason) reasons.push(rd.albuminReason);
     (rd.otherCriteria||[]).forEach(x=>reasons.push(x.label));
-    summary.push(`<p><strong>Referenciação à Nefrologia (critérios ULS Arrábida):</strong> ${rd.finalName}${reasons.length?` — ${reasons.map(x=>esc(x)).join('; ')}.`:'.'} A prioridade resulta dos critérios locais; o KFRE é complementar.</p>`);
+    summary.push(`<p><strong>Referenciação à Nefrologia (critérios ULS Arrábida):</strong> ${rd.finalName}${reasons.length?` — ${reasons.map(x=>esc(x)).join('; ').replace(/[.。]+$/,'')}.`:'.'} A prioridade resulta dos critérios locais; o KFRE é complementar.</p>`);
   }
   if(rd.age>80 && (rd.matrixIdx===1 || rd.matrixIdx===2) && !(rd.emergencyCriteria&&rd.emergencyCriteria.length)){
     summary.push('<p><strong>Nota:</strong> em pessoas >80 anos com dependência importante, demência avançada ou fragilidade elevada, ponderar benefício da referenciação face ao estado basal, sem ignorar critérios de alarme.</p>');
