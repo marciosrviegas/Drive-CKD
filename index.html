@@ -759,12 +759,12 @@ if(severeEmergency){
 }
 if(finalPriorities.length) summary.push(`<div class="summary-subsection"><strong>Prioridades clínicas</strong><ul>${finalPriorities.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`);
 else if(hasCkd) summary.push('<p><strong>Prioridades clínicas:</strong> não foi identificada uma nova intervenção específica a partir dos dados introduzidos. Confirmar se a terapêutica atual está otimizada e manter seguimento individualizado.</p>');
-// Manutenção só aparece quando há uma questão contextual relevante; não repetir a informação das caixas farmacológicas.
+// Manutenção seletiva: mostrar apenas quando os dados introduzidos revelam uma questão contextual concreta; não listar revisões genéricas de todos os fármacos em curso.
 const maintenanceSummary=[];
 if(!severeEmergency&&raas&&acr<30) maintenanceSummary.push('IECA/ARA II: se iniciado por albuminúria A2/A3, a redução atual para A1 não implica, por si só, perda da indicação para manutenção. Considerar também HTA, insuficiência cardíaca e outras indicações; rever indicação inicial, evolução e segurança.');
 if(!severeEmergency&&finer&&acr<30) maintenanceSummary.push('Finerenona: se iniciada segundo critérios de albuminúria ou outra indicação clínica aplicável, a redução para A1 não implica, por si só, perda da indicação para manutenção. Rever indicação inicial, evolução, função renal, caliemia e tolerabilidade.');
 if(!severeEmergency&&sglt2&& !dm1 && (egfr<20||acr<30)) maintenanceSummary.push('iSGLT2: a redução da TFGe ou da albuminúria, isoladamente, não determina suspensão; rever tolerabilidade, estado volémico e precauções de segurança.');
-if(!severeEmergency&&dm2Active&&hasCkd&&glp1) maintenanceSummary.push('AR GLP-1 em curso: rever adequação do fármaco/dose, adesão, tolerabilidade e resposta; se houver obesidade, avaliar também evolução ponderal.');
+if(!severeEmergency&&dm2Active&&hasCkd&&glp1&&obesity) maintenanceSummary.push('AR GLP-1 em curso, com obesidade: avaliar a resposta ponderal e a adequação da estratégia de controlo do peso, considerando também tolerabilidade e objetivos terapêuticos.');
 if(maintenanceSummary.length) summary.push(`<div class="summary-subsection"><strong>Manutenção</strong><ul>${maintenanceSummary.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`);
 if(currentReferralDecision){
   const rd=currentReferralDecision;
