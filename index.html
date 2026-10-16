@@ -615,7 +615,7 @@ if(finer){
   rec.push({c:'amber',t:'Finerenona · rever indicação e manutenção',p:'A avaliação da finerenona nesta aplicação contempla a DRC albuminúrica associada a DM2, mas a ausência de DM2 selecionada não exclui outras indicações clínicas aprovadas aplicáveis. Confirmar a indicação inicial e regulamentar, o benefício esperado, a função renal, a caliemia, a tolerabilidade e o plano de monitorização; não suspender ou manter automaticamente sem revisão clínica.'});
  }else if(acr<30){
   rec.push({c:'amber',t:'Finerenona · manutenção',p:'Se a finerenona foi iniciada segundo critérios de albuminúria ou outra indicação clínica aplicável, a redução atual da ACR para A1 não implica, por si só, perda da indicação para manutenção. Confirmar a indicação inicial e rever a evolução clínica, a função renal, a caliemia, a tolerabilidade e o plano de monitorização. Não suspender apenas com base na ACR atual.'});
- }else if(egfr<15)rec.push({c:'red',t:'Finerenona · rever/descontinuar',p:'TFGe <15 mL/min/1,73 m²: rever a terapêutica e seguir o RCM/protocolo local; a utilização não deve ser mantida automaticamente nesta faixa.'});
+ }else if(egfr<15)rec.push({c:'red',t:'Finerenona · rever/descontinuar',p:'TFGe &lt;15 mL/min/1,73 m²: rever a terapêutica e seguir o RCM/protocolo local; a utilização não deve ser mantida automaticamente nesta faixa.'});
  else if(!kKnown)rec.push({c:'amber',t:'Finerenona · confirmar potássio',p:'O potássio não foi introduzido; não é possível confirmar a segurança de manutenção. Obter K+ recente e seguir o RCM/protocolo local. Não suspender automaticamente apenas por falta deste dado, mas rever a decisão clínica.'});
  else if(k>5.5)rec.push({c:'red',t:'Finerenona · suspender temporariamente por hipercaliemia',p:'K+ >5,5 mmol/L: suspender temporariamente a finerenona e reavaliar o K+. Corrigir a hipercaliemia; ponderar reintrodução quando K+ ≤5,0 mmol/L, segundo o RCM e o protocolo local.'});
  else if(k>5.0)rec.push({c:'amber',t:'Finerenona · vigilância do K+',p:'K+ >5,0–5,5 mmol/L: não aumentar a dose; monitorizar de perto, corrigir fatores reversíveis e seguir o RCM/protocolo local. Reavaliar a necessidade de manter conforme tendência do K+.'});
@@ -665,91 +665,100 @@ risk2=1-Math.pow(s02,Math.exp(lp));risk5=1-Math.pow(s05,Math.exp(lp));
 const label=isNA?'Norte-americana':'Não norte-americana';
 get('kfre').className='recommend '+(risk2>=.10||risk5>=.05?'amber':'green');
 get('kfre').innerHTML='<h3>KFRE 4 variáveis · calibração '+label+'</h3><p>Risco de falência renal tratada (diálise ou transplante): <strong>'+((risk2*100).toFixed(1))+'% em 2 anos</strong> e <strong>'+((risk5*100).toFixed(1))+'% em 5 anos</strong>.</p><p style="margin-top:6px">Idade, sexo, TFGe e ACR. Introduza ACR em mg/g; conversão interna para mg/mmol antes do cálculo (logaritmo natural).</p>';
-}else if(egfr>=60){get('kfre').className='recommend';get('kfre').innerHTML='<h3>KFRE · não aplicável em G1–G2</h3><p>Nesta ferramenta, a KFRE é calculada para TFGe 15–59 mL/min/1,73 m² (G3–G4). Para TFGe <15, o cálculo não é apresentado; avaliar o contexto clínico e o planeamento de TSFR.</p>'}else if(egfr<15){get('kfre').className='recommend amber';get('kfre').innerHTML='<h3>KFRE · fora do intervalo de cálculo desta ferramenta</h3><p>Para TFGe <15 mL/min/1,73 m², esta ferramenta não calcula o KFRE. Avaliar a trajetória clínica, complicações da DRC e planeamento de TSFR.</p>'}else{get('kfre').className='recommend amber';get('kfre').innerHTML='<h3>KFRE · dados insuficientes</h3><p>Introduza idade, sexo, TFGe e ACR (ACR &gt;0) para calcular o risco.</p>'}
-// Resumo clínico: conclusão integrada da classificação, KFRE, potássio, terapêutica e referenciação.
+}else if(egfr>=60){get('kfre').className='recommend';get('kfre').innerHTML='<h3>KFRE · não aplicável em G1–G2</h3><p>Nesta ferramenta, a KFRE é calculada para TFGe 15–59 mL/min/1,73 m² (G3–G4). Para TFGe <15, o cálculo não é apresentado; avaliar o contexto clínico e o planeamento de TSFR.</p>'}else if(egfr<15){get('kfre').className='recommend amber';get('kfre').innerHTML='<h3>KFRE · fora do intervalo de cálculo desta ferramenta</h3><p>Para TFGe &lt;15 mL/min/1,73 m², esta ferramenta não calcula o KFRE. Avaliar a trajetória clínica, complicações da DRC e planeamento de TSFR.</p>'}else{get('kfre').className='recommend amber';get('kfre').innerHTML='<h3>KFRE · dados insuficientes</h3><p>Introduza idade, sexo, TFGe e ACR (ACR &gt;0) para calcular o risco.</p>'}
+// Resumo clínico integrado: informação renal, risco, prioridades acionáveis, manutenção e referenciação.
 let summary=[];
-if(renalInputMode()==='creatinine'){summary.push(`TFGe estimada por CKD-EPI 2021: ${egfr} mL/min/1,73 m² (creatinina sérica, idade e sexo).`);}
+if(renalInputMode()==='creatinine') summary.push(`<p><strong>TFGe:</strong> estimada por CKD-EPI 2021 em ${egfr} mL/min/1,73 m², a partir da creatinina, idade e sexo.</p>`);
 if((g==='G1'||g==='G2')&&a==='A1'){
-  summary.push(`TFGe ${g} ${a}, sem evidência suficiente de DRC pelos dados introduzidos isoladamente. Confirmar persistência ≥3 meses ou a presença de outros marcadores de lesão renal.`);
+  summary.push('<p><strong>Situação renal:</strong> TFGe preservada (G1–G2), A1. Estes dados, isoladamente, não demonstram DRC; confirmar outros marcadores de lesão renal, antecedentes e cronicidade.</p>');
 }else if((g==='G1'||g==='G2')&&(a==='A2'||a==='A3')){
-  summary.push(`DRC ${g} ${a}, desde que a albuminúria seja persistente ≥3 meses ou exista outro marcador de lesão renal crónica.`);
+  summary.push(`<p><strong>Situação renal:</strong> padrão ${g} ${a}; considerar DRC se a albuminúria persistir ≥3 meses ou existir outro marcador de lesão renal crónica. Confirmar persistência e causas transitórias.</p>`);
 }else{
-  summary.push(`DRC ${g} ${a}.`);
+  const renalMsg = egfr<15
+    ? `DRC ${g} ${a}, com função renal muito reduzida. Integrar a trajetória da TFGe, sintomas, complicações e planeamento atempado de terapêutica de substituição renal (TSFR).`
+    : `DRC ${g} ${a}. Interpretar em conjunto com a evolução da TFGe, albuminúria, comorbilidades e contexto clínico.`;
+  summary.push(`<p><strong>Situação renal:</strong> ${renalMsg}</p>`);
 }
 if(risk2!==null&&risk5!==null){
   let riskLabel=risk2>=.40?'muito elevado':risk5>=.05?'elevado':risk2>=.10?'aumentado':risk5>=.03?'intermédio':'baixo';
-  summary.push(`Risco ${riskLabel} de progressão para falência renal (KFRE: ${(risk2*100).toFixed(1)}% aos 2 anos e ${(risk5*100).toFixed(1)}% aos 5 anos).`);
+  summary.push(`<p><strong>Risco renal (KFRE):</strong> ${riskLabel}; ${(risk2*100).toFixed(1)}% aos 2 anos e ${(risk5*100).toFixed(1)}% aos 5 anos. Complementa a avaliação clínica, mas não determina a prioridade de referenciação.</p>`);
 }else if(egfr>=60){
-  summary.push('KFRE não aplicável em G1–G2.');
+  summary.push('<p><strong>KFRE:</strong> não aplicável nesta ferramenta para TFGe ≥60 mL/min/1,73 m².</p>');
+}else if(egfr<15){
+  summary.push('<p><strong>KFRE:</strong> não calculado para TFGe &lt;15 mL/min/1,73 m²; nesta fase, valorizar trajetória clínica, complicações e planeamento de TSFR.</p>');
 }else{
-  summary.push('KFRE não calculável com os dados introduzidos.');
+  summary.push('<p><strong>KFRE:</strong> não calculável com os dados introduzidos; confirmar idade, sexo, TFGe e ACR.</p>');
 }
-// No resumo clínico não listar simplesmente os fármacos assinalados: apresentar apenas prioridades clínicas acionáveis.
-if(!kKnown) priorities.push('confirmar caliemia antes de iniciar/titular IECA/ARA II ou finerenona');
-else if(k>=6.5) priorities.push('🚨 Serviço de Urgência imediato por hipercaliemia grave (K ≥6,5 mmol/L); avaliação e tratamento urgentes antes das restantes prioridades');
-else if(k>=6.0) priorities.push('hipercaliemia importante (K 6,0–6,4 mmol/L): avaliação rápida, ECG e decisão sobre encaminhamento urgente');
-else if(k>=5.5) priorities.push('avaliar e corrigir hipercaliemia antes de intensificar terapêutica com risco de elevar a caliemia');
-else if(k<2.5) priorities.push('🚨 Serviço de Urgência imediato por hipocaliemia grave (K <2,5 mmol/L); avaliação e correção monitorizada antes das restantes prioridades');
-else if(k<3.0) priorities.push('hipocaliemia moderada (K 2,5–2,9 mmol/L): avaliação clínica célere; se sintomática ou com alterações de gravidade no ECG, encaminhar para o Serviço de Urgência');
-else if(k<3.5) priorities.push('hipocaliemia ligeira (K 3,0–3,4 mmol/L): investigar causas, corrigir e monitorizar');
-if(raas&&acr>=30) priorities.push('manter/otimizar IECA/ARA II');
-else if(raas&&acr<30) maintenance.push('IECA/ARA II: se iniciado por albuminúria A2/A3, a redução atual para A1 não implica, por si só, perda da indicação para manutenção. Considerar também HTA, insuficiência cardíaca e outras indicações clínicas; rever indicação inicial, evolução e segurança.');
-else if(!raas&&acr>=30&&egfr>=15){
-  if(!kKnown) priorities.push('confirmar potássio antes de iniciar IECA/ARA');
-  else if(k>=6.0) priorities.push('tratar hipercaliemia antes de iniciar IECA/ARA');
-  else if(k>=5.5) priorities.push('controlar hipercaliemia antes de iniciar IECA/ARA');
-  else priorities.push('avaliar início de IECA/ARA');
+// Construir as prioridades do resumo de novo: não herdar mensagens duplicadas nem transformar manutenção em prioridade.
+const summaryPriorities=[];
+const addPriority=(x)=>{if(x&&!summaryPriorities.includes(x))summaryPriorities.push(x)};
+const severeK=kKnown&&(k>=6.5||k<2.5);
+const urgentK=kKnown&&(k>=6.0||k<3.0);
+if(dm1&&dm2) addPriority('Confirmar o tipo de diabetes antes de interpretar recomendações farmacológicas.');
+if(kKnown&&k>=6.5) addPriority('🚨 Serviço de Urgência imediato por hipercaliemia grave (K ≥6,5 mmol/L).');
+else if(kKnown&&k>=6.0) addPriority('Avaliação urgente da hipercaliemia (K 6,0–6,4 mmol/L), incluindo ECG e decisão sobre encaminhamento.');
+else if(kKnown&&k>=5.5) addPriority('Avaliar e corrigir hipercaliemia e fatores reversíveis antes de iniciar ou intensificar terapêutica que possa elevar a caliemia.');
+else if(kKnown&&k<2.5) addPriority('🚨 Serviço de Urgência imediato por hipocaliemia grave (K <2,5 mmol/L), para avaliação e correção monitorizada.');
+else if(kKnown&&k<3.0) addPriority('Avaliar prontamente hipocaliemia (K 2,5–2,9 mmol/L); urgência se sintomática ou com alterações relevantes no ECG.');
+else if(kKnown&&k<3.5) addPriority('Investigar causas de hipocaliemia, corrigir e monitorizar.');
+if(!severeK&&!urgentK){
+  if(raas&&acr>=30) addPriority('IECA/ARA II: confirmar otimização para a maior dose aprovada tolerada e rever TA, creatinina e caliemia; não assumir necessidade de aumento sem avaliar controlo e tolerabilidade.');
+  else if(!raas&&acr>=30&&egfr>=15){
+    if(!kKnown) addPriority('Confirmar caliemia e contraindicações antes de iniciar IECA/ARA II pela albuminúria.');
+    else if(k<5.5) addPriority('Avaliar início de IECA/ARA II pela albuminúria A2/A3, se não houver contraindicações; monitorizar TA, creatinina e caliemia após início/titulação.');
+  }else if(!raas&&acr<30&&(htn||hf)){
+    if(!kKnown) addPriority('Confirmar caliemia e indicação clínica antes de iniciar IECA/ARA II por HTA/insuficiência cardíaca.');
+    else if(k<5.5) addPriority('Avaliar IECA/ARA II se indicado para HTA ou insuficiência cardíaca, considerando o fenótipo clínico e a segurança.');
+  }
+  if(dm1&&sglt2) addPriority('Rever iSGLT2 na DM1 pelo risco de cetoacidose; articular decisão com a equipa assistente.');
+  else if(!sglt2&&egfr>=20&&hasCkd&&(dm2Active||acr>=200||hf||egfr<=45)){
+    if(dm2Active) addPriority('Avaliar início de iSGLT2 na DM2 com DRC, independentemente da albuminúria, se não houver contraindicações.');
+    else if(hf) addPriority('Avaliar iSGLT2 na insuficiência cardíaca com DRC, independentemente da albuminúria, se clinicamente apropriado.');
+    else if(acr>=200) addPriority('Avaliar iSGLT2 na DRC com ACR ≥200 mg/g, se não houver contraindicações.');
+    else addPriority('Considerar iSGLT2 na DRC com TFGe 20–45 mL/min/1,73 m², mesmo sem diabetes.');
+  }
+  if(dm1&&finer) addPriority('Rever a indicação da finerenona na DM1; não extrapolar automaticamente a evidência da DRC associada a DM2.');
+  else if(dm2Active&&acr>=30&&egfr>=25&&!finer){
+    if(!kKnown) addPriority('Confirmar caliemia antes de avaliar início de finerenona; confirmar albuminúria persistente e otimização/tolerância de IECA/ARA II.');
+    else if(k<=5.0) addPriority(raas?'Avaliar elegibilidade para finerenona após confirmar albuminúria persistente, otimização de IECA/ARA II e segurança da caliemia.':'Otimizar IECA/ARA II, se indicado e tolerado, antes de avaliar finerenona.');
+    else addPriority('Não iniciar finerenona perante hipercaliemia; corrigir e reavaliar posteriormente.');
+  }
+  if(dm1&&glp1) addPriority('Rever a indicação de AR GLP-1 na DM1; as recomendações cardiorrenais desta ferramenta destinam-se à DM2.');
+  else if(dm2Active&&hasCkd&&!glp1) addPriority('Avaliar AR GLP-1 com benefício cardiorrenal demonstrado na DM2 com DRC, conforme objetivos clínicos e perfil individual.');
+  if(!statin&&age>=50&&hasCkd) addPriority('Avaliar estatina para prevenção cardiovascular na DRC, individualizando em função da idade, fragilidade, risco e preferências.');
+  if(obesity) addPriority('Integrar a abordagem do peso e das comorbilidades relacionadas com a obesidade; esta, isoladamente, não determina indicação para AR GLP-1.');
 }
-else if(!raas&&acr<30&&(htn||hf)){
-  if(!kKnown) priorities.push('confirmar potássio antes de iniciar IECA/ARA pela comorbilidade');
-  else if(k>=6.0) priorities.push('tratar hipercaliemia antes de iniciar IECA/ARA pela comorbilidade');
-  else if(k>=5.5) priorities.push('controlar hipercaliemia antes de iniciar IECA/ARA pela comorbilidade');
-  else priorities.push('avaliar indicação de IECA/ARA pela comorbilidade');
-}
-if(!dm1&&!sglt2&&egfr>=20&&hasCkd&&(dm2Active||acr>=200||hf||egfr<=45)){
-  if(dm2Active) priorities.push('considerar início de SGLT2i (DM2 + DRC)');
-  else if(hf) priorities.push('considerar início de SGLT2i (IC + DRC)');
-  else if(acr>=200) priorities.push('considerar início de SGLT2i (ACR ≥200 mg/g)');
-  else priorities.push('considerar início de SGLT2i (TFGe 20–45)');
-}
-if(finer&&acr<30) maintenance.push('Finerenona: se iniciada segundo critérios de albuminúria ou outra indicação clínica aplicável, a redução atual para A1 não implica, por si só, perda da indicação para manutenção. Rever indicação inicial, evolução clínica, função renal, caliemia e tolerabilidade.');
-if(dm2Active&&acr>=30&&egfr>=25&&!finer){
-  if(!kKnown) priorities.push('confirmar potássio antes de avaliar finerenona');
-  else if(k>5.0) priorities.push('corrigir hipercaliemia antes de iniciar finerenona');
-  else if(k>4.8) priorities.push('considerar finerenona individualmente com monitorização precoce do K+');
-  else if(raas) priorities.push('avaliar elegibilidade para finerenona após otimização de IECA/ARA II');
-  else priorities.push('otimizar IECA/ARA II antes de avaliar finerenona');
-}
-if(dm2Active&&hasCkd&&!glp1) priorities.push('AR GLP-1: avaliar indicação e benefício cardiorrenal');
-if(dm2Active&&hasCkd&&glp1) maintenance.push('AR GLP-1 em curso: rever adequação do medicamento e da dose, adesão, tolerabilidade e resposta'+(obesity?'; avaliar também evolução do peso':'')+'.');
-if(!statin&&age>=50&&hasCkdPattern) priorities.push('estatina: avaliar indicação segundo KDIGO, individualizando em idade muito avançada ou fragilidade');
-if(!statin&&age>=50&&!hasCkdPattern) priorities.push('estatina: avaliar risco cardiovascular e indicação');
-// Ordenar prioridades terapêuticas pela sequência acordada; iSGLT2 em curso não gera prioridade baseada apenas na ACR A1.
-const priorityOrder=[/🚨 Serviço de Urgência|hipercaliemia importante|hipercaliemia|hipocaliemia/i,/IECA\/ARA/,/SGLT2i|iSGLT2/,/finerenona/,/AR GLP-1/,/estatina/,/caliemia|potássio|urgência|rever iSGLT2 na DM1|rever indicação de finerenona na DM1|rever indicação de AR GLP-1 na DM1/i];
-priorities.sort((a,b)=>{
- const rank=x=>{for(let i=0;i<priorityOrder.length;i++)if(priorityOrder[i].test(x))return i;return priorityOrder.length;};
- return rank(a)-rank(b);
-});
-if(priorities.length) summary.push('Prioridades clínicas: '+priorities.join('; ')+'.');
-if(maintenance.length) summary.push('Revisão da terapêutica em curso: '+maintenance.join(' '));
+if(egfr<15) addPriority('DRC G5: rever complicações, trajetória da função renal e plano de preparação para TSFR conforme contexto e preferências do doente.');
+// Evitar acumulação: mostrar até cinco prioridades não urgentes; nunca ocultar a primeira prioridade urgente.
+const urgencyFirst=summaryPriorities.filter(x=>/🚨|urgente|hipercaliemia \(K 6,0|hipocaliemia \(K 2,5/i.test(x));
+const otherPriorities=summaryPriorities.filter(x=>!urgencyFirst.includes(x));
+const finalPriorities=[...urgencyFirst,...otherPriorities.slice(0,Math.max(0,5-urgencyFirst.length))];
+if(finalPriorities.length) summary.push(`<div><strong>Prioridades clínicas</strong><ul>${finalPriorities.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`);
+else if(hasCkd) summary.push('<p><strong>Prioridades clínicas:</strong> não foi identificada uma nova intervenção específica a partir dos dados introduzidos. Confirmar se a terapêutica atual está otimizada e manter seguimento individualizado.</p>');
+// Manutenção só aparece quando há uma questão contextual relevante; não repetir a informação das caixas farmacológicas.
+const maintenanceSummary=[];
+if(raas&&acr<30) maintenanceSummary.push('IECA/ARA II: se iniciado por albuminúria A2/A3, a redução atual para A1 não implica, por si só, perda da indicação para manutenção. Considerar também HTA, insuficiência cardíaca e outras indicações; rever indicação inicial, evolução e segurança.');
+if(finer&&acr<30) maintenanceSummary.push('Finerenona: se iniciada segundo critérios de albuminúria ou outra indicação clínica aplicável, a redução para A1 não implica, por si só, perda da indicação para manutenção. Rever indicação inicial, evolução, função renal, caliemia e tolerabilidade.');
+if(sglt2&& !dm1 && (egfr<20||acr<30)) maintenanceSummary.push('iSGLT2: a redução da TFGe ou da albuminúria, isoladamente, não determina suspensão; rever tolerabilidade, estado volémico e precauções de segurança.');
+if(dm2Active&&hasCkd&&glp1) maintenanceSummary.push('AR GLP-1 em curso: rever adequação do fármaco/dose, adesão, tolerabilidade e resposta; se houver obesidade, avaliar também evolução ponderal.');
+if(maintenanceSummary.length) summary.push(`<div><strong>Manutenção</strong><ul>${maintenanceSummary.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`);
 if(currentReferralDecision){
   const rd=currentReferralDecision;
   if(rd.emergencyCriteria && rd.emergencyCriteria.length){
-    summary.push(`Referenciação segundo critérios do Serviço de Nefrologia da ULS Arrábida: Serviço de Urgência — ${rd.emergencyCriteria.map(x=>x.label).join('; ')}.`);
+    summary.push(`<p><strong>Referenciação:</strong> Serviço de Urgência — ${rd.emergencyCriteria.map(x=>esc(x.label)).join('; ')}.</p>`);
   }else{
-    summary.push(`Referenciação segundo critérios do Serviço de Nefrologia da ULS Arrábida: ${rd.finalName}.`);
     const reasons=[];
     if(rd.albuminReason) reasons.push(rd.albuminReason);
     (rd.otherCriteria||[]).forEach(x=>reasons.push(x.label));
-    if(reasons.length) summary.push(`Outro critério de referenciação: ${reasons.join(' · ')}.`);
+    summary.push(`<p><strong>Referenciação à Nefrologia (critérios ULS Arrábida):</strong> ${rd.finalName}${reasons.length?` — ${reasons.map(x=>esc(x)).join('; ')}.`:'.'} A prioridade resulta dos critérios locais; o KFRE é complementar.</p>`);
   }
   if(rd.age>80 && (rd.matrixIdx===1 || rd.matrixIdx===2) && !(rd.emergencyCriteria&&rd.emergencyCriteria.length)){
-    summary.push('Em doentes >80 anos com elevada dependência nas atividades da vida diária, síndromes demenciais avançadas ou elevada fragilidade, ponderar o benefício da referenciação à Nefrologia face ao estado basal, apesar da indicação da matriz.');
+    summary.push('<p><strong>Nota:</strong> em pessoas >80 anos com dependência importante, demência avançada ou fragilidade elevada, ponderar benefício da referenciação face ao estado basal, sem ignorar critérios de alarme.</p>');
   }
 }else if(egfr<15){
-  summary.push('Em G5, planear TSFR de acordo com a trajetória clínica e o contexto individual.');
+  summary.push('<p><strong>Referenciação/seguimento:</strong> assegurar seguimento nefrológico e planeamento de TSFR conforme trajetória, complicações, estado funcional e preferências.</p>');
 }
-get('clinicalSummary').innerHTML='<p>'+summary.join(' ')+'</p>';
+get('clinicalSummary').innerHTML=summary.join('');
 get('summarySection').classList.remove('hidden');
 get('checklist').innerHTML='';get('checklistSection')?.classList.add('hidden');
 get('evidence').innerHTML=`<div class="source"><strong>Estimativa da TFGe a partir da creatinina:</strong> Inker LA et al. New Creatinine- and Cystatin C-Based Equations to Estimate GFR without Race. <em>N Engl J Med</em>. 2021;385:1737–1749. Equação CKD-EPI 2021 baseada na creatinina, sem coeficiente racial; a estimativa usa creatinina sérica, idade e sexo e é apresentada arredondada à unidade. Consultar também o NIDDK, <em>eGFR Equations for Adults</em>.</div><div class="source"><strong>Doença renal crónica:</strong> KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease.</div><div class="source"><strong>Diabetes e doença renal:</strong> KDIGO 2022 Clinical Practice Guideline for Diabetes Management in Chronic Kidney Disease.</div><div class="source"><strong>Diabetes — recomendações terapêuticas:</strong> American Diabetes Association Professional Practice Committee. Standards of Care in Diabetes—2026. <em>Diabetes Care</em>. 2026.</div><div class="source"><strong>Doença poliquística renal autossómica dominante:</strong> KDIGO 2025 Clinical Practice Guideline for the Evaluation, Management, and Treatment of Autosomal Dominant Polycystic Kidney Disease.</div><div class="source"><strong>Risco de falência renal (KFRE):</strong> Tangri N et al. A Predictive Model for Progression of Chronic Kidney Disease to Kidney Failure. <em>JAMA</em>. 2011;305(15):1553–1559; Tangri N et al. Multinational Assessment of Accuracy of Equations for Predicting Risk of Kidney Failure. <em>JAMA</em>. 2016;315(2):164–174.</div><div class="source"><strong>iSGLT2 na DRC:</strong> Heerspink HJL et al. Dapagliflozin in Patients with Chronic Kidney Disease (DAPA-CKD). <em>N Engl J Med</em>. 2020;383:1436–1446; The EMPA-KIDNEY Collaborative Group. Empagliflozin in Patients with Chronic Kidney Disease. <em>N Engl J Med</em>. 2023;388:117–127.</div><div class="source"><strong>Finerenona na DRC associada à DM2:</strong> Bakris GL et al. Effect of Finerenone on Chronic Kidney Disease Outcomes in Type 2 Diabetes (FIDELIO-DKD). <em>N Engl J Med</em>. 2020;383:2219–2229.</div><div class="source"><strong>Agonista GLP-1 na DRC associada à DM2:</strong> Perkovic V et al. Effects of Semaglutide on Chronic Kidney Disease in Patients with Type 2 Diabetes (FLOW). <em>N Engl J Med</em>. 2024;391:109–121.</div><div class="source"><strong>Referenciação:</strong> critérios locais do Serviço de Nefrologia da ULS Arrábida, conforme matriz e orientações internas incorporadas na aplicação.</div>`;
