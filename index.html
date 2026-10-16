@@ -555,7 +555,7 @@ if(dm1&&sglt2) priorities.push('rever iSGLT2 na DM1 pelo risco de cetoacidose');
 }
 if(sglt2&&!dm1){
   if(egfr<20)rec.push({c:'green',t:'SGLT2i · manter se tolerado',p:'TFGe <20 mL/min/1,73 m²: não suspender automaticamente apenas pela descida da TFGe. Manter se tolerado, salvo intolerância ou início de terapêutica de substituição renal. Suspender temporariamente em jejum prolongado, cirurgia ou doença crítica/aguda grave.'});
-  else rec.push({c:'green',t:'SGLT2i · manter',p:'Manter o iSGLT2 se tolerado; a ACR atualmente em A1 não é, por si só, motivo para suspensão. '+(selectedSglt2Indications.length?'Indicações/critérios assinalados na aplicação: '+selectedSglt2Indications.join('; ')+'. ':'Confirmar a indicação inicial e os critérios clínicos aplicáveis. ')+'Rever função renal, estado volémico e tolerabilidade. Suspender temporariamente em jejum prolongado, cirurgia ou doença crítica/aguda grave.'});
+  else rec.push({c:'green',t:'SGLT2i · manter',p:'Manter o iSGLT2 se tolerado. Rever periodicamente a função renal, o estado volémico e a tolerabilidade. Suspender temporariamente em jejum prolongado, cirurgia ou doença crítica/aguda grave.'});
 }
 if(raas&&(acr>=30||htn||hf)){
   let p='';
@@ -692,7 +692,7 @@ else if(k<2.5) priorities.push('🚨 Serviço de Urgência imediato por hipocali
 else if(k<3.0) priorities.push('hipocaliemia moderada (K 2,5–2,9 mmol/L): avaliação clínica célere; se sintomática ou com alterações de gravidade no ECG, encaminhar para o Serviço de Urgência');
 else if(k<3.5) priorities.push('hipocaliemia ligeira (K 3,0–3,4 mmol/L): investigar causas, corrigir e monitorizar');
 if(raas&&acr>=30) priorities.push('manter/otimizar IECA/ARA II');
-else if(raas&&acr<30) priorities.push('IECA/ARA II em curso com ACR A1: confirmar indicação original e albuminúria pré-tratamento; não suspender automaticamente');
+else if(raas&&acr<30) priorities.push('IECA/ARA II em curso com ACR A1: confirmar indicação original e albuminúria pré-tratamento'+(selectedRaasIndications.length?'; considerar também '+selectedRaasIndications.join(' e '):'')+'; não suspender automaticamente apenas pela ACR atual');
 else if(!raas&&acr>=30&&egfr>=15){
   if(!kKnown) priorities.push('confirmar potássio antes de iniciar IECA/ARA');
   else if(k>=6.0) priorities.push('tratar hipercaliemia antes de iniciar IECA/ARA');
@@ -711,7 +711,6 @@ if(!dm1&&!sglt2&&egfr>=20&&hasCkd&&(dm2Active||acr>=200||hf||egfr<=45)){
   else if(acr>=200) priorities.push('considerar início de SGLT2i (ACR ≥200 mg/g)');
   else priorities.push('considerar início de SGLT2i (TFGe 20–45)');
 }
-if(sglt2&&!dm1&&acr<30) priorities.push('iSGLT2 em curso com ACR A1: rever indicação e tolerabilidade; ACR atual, isoladamente, não justifica suspensão');
 if(finer&&dm2Active&&acr<30) priorities.push('finerenona em curso com ACR A1: confirmar indicação original e albuminúria pré-tratamento; não suspender automaticamente');
 if(dm2Active&&acr>=30&&egfr>=25&&!finer){
   if(!kKnown) priorities.push('confirmar potássio antes de avaliar finerenona');
@@ -724,7 +723,7 @@ if(dm2Active&&hasCkd&&!glp1) priorities.push('AR GLP-1: avaliar indicação e be
 if(dm2Active&&hasCkd&&glp1) priorities.push('AR GLP-1 em curso: rever indicação, adesão, tolerabilidade e resposta'+(obesity?'; avaliar evolução do peso':'') );
 if(!statin&&age>=50&&hasCkdPattern) priorities.push('estatina: avaliar indicação segundo KDIGO, individualizando em idade muito avançada ou fragilidade');
 if(!statin&&age>=50&&!hasCkdPattern) priorities.push('estatina: avaliar risco cardiovascular e indicação');
-// Ordenar prioridades terapêuticas pela sequência acordada e apresentar todas as aplicáveis, sem lista redundante de medicação atual.
+// Ordenar prioridades terapêuticas pela sequência acordada; iSGLT2 em curso não gera prioridade baseada apenas na ACR A1.
 const priorityOrder=[/🚨 Serviço de Urgência|hipercaliemia importante|hipercaliemia|hipocaliemia/i,/IECA\/ARA/,/SGLT2i|iSGLT2/,/finerenona/,/AR GLP-1/,/estatina/,/caliemia|potássio|urgência|rever iSGLT2 na DM1|rever indicação de finerenona na DM1|rever indicação de AR GLP-1 na DM1/i];
 priorities.sort((a,b)=>{
  const rank=x=>{for(let i=0;i<priorityOrder.length;i++)if(priorityOrder[i].test(x))return i;return priorityOrder.length;};
