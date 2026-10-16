@@ -730,8 +730,8 @@ if(!severeK&&!urgentK){
 // Prevenção cardiovascular secundária: a DCVA é relevante mesmo sem DRC e não deve depender da TFGe/ACR.
 // Evitar duplicação: se já existe estatina, rever adequação/intensidade em manutenção; caso contrário, avaliar terapêutica hipolipemiante.
 if(ascvd){
-  if(!statin) addPriority('DCVA estabelecida: avaliar/iniciar terapêutica hipolipemiante de prevenção secundária, geralmente com estatina de intensidade adequada, considerando contraindicações, tolerabilidade e tratamento atual.');
-  else addPriority('DCVA estabelecida: confirmar se a terapêutica hipolipemiante e a intensidade são adequadas para prevenção secundária; não duplicar estatina já instituída.');
+  if(!statin) addPriority('Prevenção cardiovascular secundária: perante DCVA estabelecida, avaliar terapêutica hipolipemiante, incluindo estatina de intensidade adequada, tendo em conta LDL-C, objetivos terapêuticos, contraindicações e tolerabilidade.');
+  else addPriority('Prevenção cardiovascular secundária: confirmar se a intensidade da terapêutica hipolipemiante e o LDL-C estão de acordo com os objetivos recomendados; intensificar ou associar terapêutica adicional se indicado.');
 }
 // Estatina: incluir no resumo quando existe indicação baseada na DRC segundo KDIGO, sem duplicar a mensagem específica de DCVA.
 if(!statin&&hasCkd&&!ascvd){
