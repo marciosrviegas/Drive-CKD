@@ -535,6 +535,7 @@ const g=egfr>=90?'G1':egfr>=60?'G2':egfr>=45?'G3a':egfr>=30?'G3b':egfr>=15?'G4':
 let pills=[];if(dm1)pills.push('DM1');if(dm2)pills.push('DM2');if(hf)pills.push('IC');if(ascvd)pills.push('DCV aterosclerótica');if(obesity)pills.push('Obesidade');if(acr>=300)pills.push('A3');else if(acr>=30)pills.push('A2');if(kKnown&&k>=5)pills.push('K elevado');get('riskPills').innerHTML=pills.map(x=>`<span class="pill">${esc(x)}</span>`).join('');
 let rec=[];
  let priorities=[];
+ let maintenance=[];
 if(egfr<15)rec.push({c:'amber',t:'G5: foco adicional em preparação de TSFR',p:'Reavaliar sintomas urémicos, complicações da DRC, trajetória da TFGe e plano de transplante/acesso. Não extrapolar automaticamente RCTs de TFGe ≥20–25 para G5 avançada.'});
 const hasCkd=egfr<60||acr>=30; if(dm1&&dm2) rec.push({c:'red',t:'Diabetes · confirmar tipo',p:'DM1 e DM2 foram selecionadas simultaneamente. Confirmar a classificação da diabetes antes de interpretar as recomendações farmacológicas.'}); if(dm1&&sglt2) rec.push({c:'red',t:'DM1 + iSGLT2 · rever terapêutica',p:'Os iSGLT2 não são aprovados para utilização na diabetes tipo 1 e aumentam o risco de cetoacidose diabética, incluindo cetoacidose euglicémica. Rever a indicação e considerar suspensão em articulação com a equipa de Diabetes. Perante náuseas, vómitos, dor abdominal, mal-estar ou dispneia, considerar cetoacidose mesmo sem hiperglicemia marcada.'}); if(dm1&&finer) rec.push({c:'amber',t:'DM1 + finerenona · rever indicação',p:'A evidência que sustenta a utilização de finerenona na DRC albuminúrica diabética corresponde à DM2. A aplicação não deve extrapolar automaticamente essa indicação para DM1; rever individualmente.'}); if(dm1&&glp1) rec.push({c:'amber',t:'DM1 + AR GLP-1 · rever indicação',p:'As recomendações cardiorrenais desta aplicação para AR GLP-1 são dirigidas à DM2 com DRC e não devem ser extrapoladas automaticamente para DM1. Rever a indicação clínica individual.'});
 if(dm1&&sglt2) priorities.push('rever iSGLT2 na DM1 pelo risco de cetoacidose'); if(dm1&&finer) priorities.push('rever indicação de finerenona na DM1'); if(dm1&&glp1) priorities.push('rever indicação de AR GLP-1 na DM1'); if(!dm1&&!sglt2&&egfr>=20&&hasCkd&&(dm2Active||acr>=200||hf||egfr<=45)){
@@ -554,8 +555,8 @@ if(dm1&&sglt2) priorities.push('rever iSGLT2 na DM1 pelo risco de cetoacidose');
   rec.push({c:'green',t:'SGLT2i · considerar/iniciar',p:p});
 }
 if(sglt2&&!dm1){
-  if(egfr<20)rec.push({c:'green',t:'SGLT2i · manter se tolerado',p:'TFGe <20 mL/min/1,73 m²: não suspender automaticamente apenas pela descida da TFGe. Manter se tolerado, salvo intolerância ou início de terapêutica de substituição renal. Suspender temporariamente em jejum prolongado, cirurgia ou doença crítica/aguda grave.'});
-  else rec.push({c:'green',t:'SGLT2i · manter',p:'Manter o iSGLT2 se tolerado. Rever periodicamente a função renal, o estado volémico e a tolerabilidade. Suspender temporariamente em jejum prolongado, cirurgia ou doença crítica/aguda grave.'});
+  if(egfr<20)rec.push({c:'green',t:'iSGLT2 · manutenção',p:'TFGe <20 mL/min/1,73 m²: não suspender automaticamente apenas pela descida da TFGe. Manter se tolerado, salvo intolerância ou início de terapêutica de substituição renal. Suspender temporariamente em jejum prolongado, cirurgia ou doença crítica/aguda grave.'});
+  else rec.push({c:'green',t:'iSGLT2 · manutenção',p:'Manter o iSGLT2 se tolerado. Rever periodicamente a função renal, o estado volémico e a tolerabilidade. Suspender temporariamente em jejum prolongado, cirurgia ou doença crítica/aguda grave.'});
 }
 if(raas&&(acr>=30||htn||hf)){
   let p='';
@@ -572,29 +573,29 @@ if(raas&&(acr>=30||htn||hf)){
     if(!kKnown)p+='Potássio não introduzido: confirmar K+ para avaliar segurança e monitorização. ';else if(k>=5.5)p+='K+ ≥5,5 mmol/L: avaliar e corrigir hipercaliemia; não suspender automaticamente sem ponderar gravidade, causas reversíveis e indicação cardiovascular. ';
   }
   p+='Reavaliar TA, creatinina e K cerca de 2–4 semanas após iniciar ou aumentar a dose. Um aumento de creatinina >30% nas primeiras 4 semanas exige avaliação de causas reversíveis e reavaliação da terapêutica.';
-  rec.push({c:!kKnown?'amber':k>=5.5?'amber':'green',t:'IECA/ARA · indicação e monitorização',p:p});
+  rec.push({c:!kKnown?'amber':k>=5.5?'amber':'green',t:'IECA/ARA II · manutenção e monitorização',p:p});
 }
 
-if(raas&&acr<30&&!htn&&!hf){rec.push({c:'amber',t:'IECA/ARA · confirmar indicação de manutenção',p:'ACR atualmente em A1 durante tratamento. Se o IECA/ARA II foi iniciado perante albuminúria A2/A3, a redução para A1 pode refletir resposta terapêutica e não significa, por si só, perda da indicação para manter. Como não foram assinaladas outras indicações nesta avaliação, confirmar a indicação original e individualizar a decisão segundo a evolução clínica, TA, função renal, caliemia e tolerabilidade. Não suspender automaticamente com base na ACR atual.'});}
+if(raas&&acr<30&&!htn&&!hf){rec.push({c:'amber',t:'IECA/ARA II · manutenção',p:'ACR atualmente em A1 durante tratamento. Se o IECA/ARA II foi iniciado por albuminúria A2/A3, a redução para A1 pode refletir resposta terapêutica e não implica, por si só, perda da indicação para manutenção. Considerar também HTA, insuficiência cardíaca e outras indicações clínicas. Rever a indicação inicial, a evolução, a TA, a função renal, a caliemia e a tolerabilidade; não suspender apenas com base na ACR atual.'});}
 
 if(!raas&&acr>=30&&egfr>=15){
  const raasIndication=(dm1||dm2)?'Na DRC com diabetes e albuminúria A2/A3, a KDIGO recomenda IECA ou ARA, incluindo em G1–G4.':acr>=300?'Na DRC com albuminúria A3, a KDIGO recomenda IECA ou ARA mesmo sem diabetes, incluindo em G1–G4.':'Na DRC não diabética com albuminúria A2, a KDIGO sugere iniciar IECA ou ARA, incluindo em G1–G4.';
  if(!kKnown){
-  rec.push({c:'amber',t:'IECA/ARA · confirmar potássio antes de iniciar',p:`${raasIndication} O potássio não foi introduzido; confirmar K+ e avaliar contraindicações antes de iniciar. Após início ou titulação, monitorizar TA, creatinina e potássio em 2–4 semanas.`});
+  rec.push({c:'amber',t:'IECA/ARA II · confirmar caliemia antes de iniciar',p:`${raasIndication} O potássio não foi introduzido; confirmar K+ e avaliar contraindicações antes de iniciar. Após início ou titulação, monitorizar TA, creatinina e potássio em 2–4 semanas.`});
  }else if(k>=6.0){
-  rec.push({c:'red',t:'IECA/ARA · indicação presente, mas adiar perante hipercaliemia',p:`${raasIndication} Contudo, com K+ ≥6,0 mmol/L, priorizar avaliação e tratamento da hipercaliemia antes de iniciar o IECA/ARA. Após controlo do K+, reavaliar a introdução, titulando para a maior dose tolerada e monitorizando TA, creatinina e potássio.`});
+  rec.push({c:'red',t:'IECA/ARA II · iniciar após controlo da hipercaliemia',p:`${raasIndication} Contudo, com K+ ≥6,0 mmol/L, priorizar avaliação e tratamento da hipercaliemia antes de iniciar o IECA/ARA. Após controlo do K+, reavaliar a introdução, titulando para a maior dose tolerada e monitorizando TA, creatinina e potássio.`});
  }else if(k>=5.5){
-  rec.push({c:'amber',t:'IECA/ARA · indicação presente, mas controlar hipercaliemia antes de iniciar',p:`${raasIndication} Com K+ 5,5–5,9 mmol/L, controlar a hipercaliemia antes de iniciar o IECA/ARA. Após controlo do K+, reavaliar a introdução e monitorizar TA, creatinina e potássio 2–4 semanas após iniciar ou aumentar a dose. Consultar o cartão “Hipercaliemia · abordagem” para as medidas gerais.`});
+  rec.push({c:'amber',t:'IECA/ARA II · controlar hipercaliemia antes de iniciar',p:`${raasIndication} Com K+ 5,5–5,9 mmol/L, controlar a hipercaliemia antes de iniciar o IECA/ARA. Após controlo do K+, reavaliar a introdução e monitorizar TA, creatinina e potássio 2–4 semanas após iniciar ou aumentar a dose. Consultar o cartão “Hipercaliemia · abordagem” para as medidas gerais.`});
  }else if(((dm1||dm2)&&!(dm1&&dm2))||acr>=300){
-  rec.push({c:'green',t:'IECA/ARA · iniciar/avaliar',p:`${raasIndication} Titular para a maior dose aprovada tolerada. Monitorizar TA, creatinina e potássio 2–4 semanas após iniciar ou aumentar a dose.`});
+  rec.push({c:'green',t:'IECA/ARA II · iniciar/otimizar',p:`${raasIndication} Titular para a maior dose aprovada tolerada. Monitorizar TA, creatinina e potássio 2–4 semanas após iniciar ou aumentar a dose.`});
  }else{
-  rec.push({c:'amber',t:'IECA/ARA · considerar',p:`${raasIndication} Titular para a maior dose aprovada tolerada e monitorizar TA, creatinina e potássio.`});
+  rec.push({c:'amber',t:'IECA/ARA II · considerar',p:`${raasIndication} Titular para a maior dose aprovada tolerada e monitorizar TA, creatinina e potássio.`});
  }
 }
 if(!raas&&acr<30&&(htn||hf)){
-  if(!kKnown)rec.push({c:'amber',t:'IECA/ARA · confirmar potássio antes de iniciar',p:'Existe possível indicação por HTA ou insuficiência cardíaca, mas o potássio não foi introduzido. Confirmar K+ e avaliar contraindicações antes de iniciar.'});
-  else if(k>=6.0)rec.push({c:'red',t:'IECA/ARA · adiar perante hipercaliemia',p:'Mesmo com A1, um IECA ou ARA pode estar indicado para tratamento da HTA ou da insuficiência cardíaca com fração de ejeção reduzida. Contudo, com K+ ≥6,0 mmol/L, priorizar avaliação e tratamento da hipercaliemia antes de iniciar IECA/ARA. Após controlo do K+, reavaliar a indicação clínica.'});
-  else if(k>=5.5)rec.push({c:'amber',t:'IECA/ARA · controlar hipercaliemia antes de iniciar',p:'Mesmo com A1, um IECA ou ARA pode estar indicado para tratamento da HTA ou da insuficiência cardíaca com fração de ejeção reduzida. Com K+ 5,5–5,9 mmol/L, procurar e corrigir fatores reversíveis e controlar a hipercaliemia antes de iniciar. Após controlo do K+, reavaliar a indicação clínica.'});
+  if(!kKnown)rec.push({c:'amber',t:'IECA/ARA II · confirmar caliemia antes de iniciar',p:'Existe possível indicação por HTA ou insuficiência cardíaca, mas o potássio não foi introduzido. Confirmar K+ e avaliar contraindicações antes de iniciar.'});
+  else if(k>=6.0)rec.push({c:'red',t:'IECA/ARA II · adiar perante hipercaliemia',p:'Mesmo com A1, um IECA ou ARA pode estar indicado para tratamento da HTA ou da insuficiência cardíaca com fração de ejeção reduzida. Contudo, com K+ ≥6,0 mmol/L, priorizar avaliação e tratamento da hipercaliemia antes de iniciar IECA/ARA. Após controlo do K+, reavaliar a indicação clínica.'});
+  else if(k>=5.5)rec.push({c:'amber',t:'IECA/ARA II · controlar hipercaliemia antes de iniciar',p:'Mesmo com A1, um IECA ou ARA pode estar indicado para tratamento da HTA ou da insuficiência cardíaca com fração de ejeção reduzida. Com K+ 5,5–5,9 mmol/L, procurar e corrigir fatores reversíveis e controlar a hipercaliemia antes de iniciar. Após controlo do K+, reavaliar a indicação clínica.'});
   else rec.push({c:'amber',t:'IECA/ARA · avaliar indicação clínica',p:'Mesmo com A1, um IECA ou ARA pode estar indicado para tratamento da HTA ou da insuficiência cardíaca com fração de ejeção reduzida. A decisão deve seguir a indicação clínica específica.'});
 }
 
@@ -610,25 +611,15 @@ if(dm2Active&&acr>=30&&egfr>=25&&!finer){
   }
 }
 if(finer){
- if(egfr<15){
-  rec.push({c:'red',t:'Finerenona · rever terapêutica',p:'TFGe <15 mL/min/1,73 m²: rever a terapêutica e seguir o RCM/protocolo aplicável; não manter automaticamente nesta faixa.'});
- }else if(!kKnown){
-  rec.push({c:'amber',t:'Finerenona · confirmar caliemia',p:'A caliemia não foi introduzida, pelo que não é possível confirmar a segurança atual da finerenona. Obter K+ recente e rever a terapêutica segundo o RCM e o contexto clínico.'});
- }else if(k>5.5){
-  rec.push({c:'red',t:'Finerenona · hipercaliemia',p:'K+ >5,5 mmol/L: suspender temporariamente e reavaliar a caliemia, seguindo o RCM e o protocolo local. Corrigir fatores reversíveis e ponderar reintrodução quando clinicamente apropriado.'});
- }else if(k>5.0){
-  rec.push({c:'amber',t:'Finerenona · vigilância da caliemia',p:'K+ >5,0–5,5 mmol/L: não aumentar a dose; monitorizar de perto, corrigir fatores reversíveis e reavaliar a manutenção segundo o RCM e o contexto clínico.'});
- }else if(!dm2Active){
-  if(hf){
-   rec.push({c:'amber',t:'Finerenona · confirmar indicação de manutenção',p:'A finerenona tem indicação aprovada na União Europeia para insuficiência cardíaca crónica sintomática com FEVE ≥40% em adultos. Se a IC selecionada corresponder a este perfil, confirmar o fenótipo e os critérios do RCM; verificar separadamente as condições de utilização e financiamento em Portugal. Individualizar a decisão segundo a indicação inicial, a evolução clínica, a função renal, a caliemia e a tolerabilidade.'});
-  }else{
-   rec.push({c:'amber',t:'Finerenona · confirmar indicação de manutenção',p:'Confirmar a indicação inicial e o contexto clínico em que a finerenona foi instituída. A elegibilidade para DRC associada a DM2 depende dos critérios específicos dessa indicação; a ausência de DM2 não permite, por si só, concluir sobre a adequação da manutenção noutros contextos. Rever a indicação aplicável, a função renal, a caliemia e a tolerabilidade.'});
-  }
+ if(!dm2Active){
+  rec.push({c:'amber',t:'Finerenona · rever indicação e manutenção',p:'A avaliação da finerenona nesta aplicação contempla a DRC albuminúrica associada a DM2, mas a ausência de DM2 selecionada não exclui outras indicações clínicas aprovadas aplicáveis. Confirmar a indicação inicial e regulamentar, o benefício esperado, a função renal, a caliemia, a tolerabilidade e o plano de monitorização; não suspender ou manter automaticamente sem revisão clínica.'});
  }else if(acr<30){
-  rec.push({c:'amber',t:'Finerenona · confirmar indicação de manutenção',p:'Se a finerenona foi iniciada perante DM2 com DRC albuminúrica A2/A3, a redução atual da ACR para A1 pode refletir resposta terapêutica e não implica, por si só, perda da indicação para manter. '+(hf?'Se estiver presente IC crónica sintomática com FEVE ≥40%, considerar também esta indicação aprovada na União Europeia e confirmar separadamente as condições de utilização e financiamento em Portugal. ':'')+'Confirmar a albuminúria pré-tratamento e a indicação inicial; individualizar a decisão segundo a evolução clínica, a função renal, a caliemia, a tolerabilidade e o plano de monitorização.'});
- }else{
-  rec.push({c:'green',t:'Finerenona · manter e monitorizar',p:'Manter se persistir indicação clínica e o tratamento for tolerado. '+(hf?'Se estiver presente IC crónica sintomática com FEVE ≥40%, considerar também esta indicação aprovada na União Europeia e confirmar separadamente as condições de utilização e financiamento em Portugal. ':'')+'Rever periodicamente função renal e caliemia, habitualmente cerca de 4 semanas após início, reinício ou alteração da dose, e depois conforme o RCM e o contexto clínico.'});
- }
+  rec.push({c:'amber',t:'Finerenona · manutenção',p:'Se a finerenona foi iniciada segundo critérios de albuminúria ou outra indicação clínica aplicável, a redução atual da ACR para A1 não implica, por si só, perda da indicação para manutenção. Confirmar a indicação inicial e rever a evolução clínica, a função renal, a caliemia, a tolerabilidade e o plano de monitorização. Não suspender apenas com base na ACR atual.'});
+ }else if(egfr<15)rec.push({c:'red',t:'Finerenona · rever/descontinuar',p:'TFGe <15 mL/min/1,73 m²: rever a terapêutica e seguir o RCM/protocolo local; a utilização não deve ser mantida automaticamente nesta faixa.'});
+ else if(!kKnown)rec.push({c:'amber',t:'Finerenona · confirmar potássio',p:'O potássio não foi introduzido; não é possível confirmar a segurança de manutenção. Obter K+ recente e seguir o RCM/protocolo local. Não suspender automaticamente apenas por falta deste dado, mas rever a decisão clínica.'});
+ else if(k>5.5)rec.push({c:'red',t:'Finerenona · suspender temporariamente por hipercaliemia',p:'K+ >5,5 mmol/L: suspender temporariamente a finerenona e reavaliar o K+. Corrigir a hipercaliemia; ponderar reintrodução quando K+ ≤5,0 mmol/L, segundo o RCM e o protocolo local.'});
+ else if(k>5.0)rec.push({c:'amber',t:'Finerenona · vigilância do K+',p:'K+ >5,0–5,5 mmol/L: não aumentar a dose; monitorizar de perto, corrigir fatores reversíveis e seguir o RCM/protocolo local. Reavaliar a necessidade de manter conforme tendência do K+.'});
+ else rec.push({c:'green',t:'Finerenona · manutenção e monitorização',p:'Manter se houver indicação válida e for tolerada. Confirmar albuminúria persistente e monitorizar K+ e TFGe, habitualmente cerca de 4 semanas após início, reinício ou alteração da dose.'});
 }
 if(dm2Active&&hasCkd&&!glp1)rec.push({c:'amber',t:'AR GLP-1 · avaliar indicação',p:'Na DM2 com DRC, considerar um agonista do recetor GLP-1 com benefício cardiovascular ou renal demonstrado, de acordo com o objetivo clínico e o perfil do doente. Pode ser pertinente mesmo com HbA1c no alvo. Confirmar indicação aprovada, contraindicações, tolerabilidade e preferências; não é obrigatório ter usado previamente um iSGLT2. A indicação clínica e a comparticipação pelo SNS são distintas: confirmar as condições específicas do medicamento e da indicação terapêutica.'});
 if(dm2Active&&hasCkd&&glp1)rec.push({c:'green',t:'AR GLP-1 em curso · rever tratamento',p:'Confirmar se o medicamento e a dose continuam adequados; rever adesão, tolerabilidade e resposta glicémica. Se houver obesidade, avaliar também a evolução do peso e integrar alimentação, atividade física e apoio comportamental. A indicação clínica e a comparticipação pelo SNS são distintas; confirmar as condições específicas do medicamento e da indicação terapêutica.'});
@@ -702,7 +693,7 @@ else if(k<2.5) priorities.push('🚨 Serviço de Urgência imediato por hipocali
 else if(k<3.0) priorities.push('hipocaliemia moderada (K 2,5–2,9 mmol/L): avaliação clínica célere; se sintomática ou com alterações de gravidade no ECG, encaminhar para o Serviço de Urgência');
 else if(k<3.5) priorities.push('hipocaliemia ligeira (K 3,0–3,4 mmol/L): investigar causas, corrigir e monitorizar');
 if(raas&&acr>=30) priorities.push('manter/otimizar IECA/ARA II');
-else if(raas&&acr<30) priorities.push('IECA/ARA II em curso com ACR A1: confirmar indicação original e albuminúria pré-tratamento'+(selectedRaasIndications.length?'; considerar também '+selectedRaasIndications.join(' e '):'')+'; não suspender automaticamente apenas pela ACR atual');
+else if(raas&&acr<30) maintenance.push('IECA/ARA II: se iniciado por albuminúria A2/A3, a redução atual para A1 não implica, por si só, perda da indicação para manutenção. Considerar também HTA, insuficiência cardíaca e outras indicações clínicas; rever indicação inicial, evolução e segurança.');
 else if(!raas&&acr>=30&&egfr>=15){
   if(!kKnown) priorities.push('confirmar potássio antes de iniciar IECA/ARA');
   else if(k>=6.0) priorities.push('tratar hipercaliemia antes de iniciar IECA/ARA');
@@ -721,7 +712,7 @@ if(!dm1&&!sglt2&&egfr>=20&&hasCkd&&(dm2Active||acr>=200||hf||egfr<=45)){
   else if(acr>=200) priorities.push('considerar início de SGLT2i (ACR ≥200 mg/g)');
   else priorities.push('considerar início de SGLT2i (TFGe 20–45)');
 }
-if(finer&&((dm2Active&&acr<30)||hf)) priorities.push('finerenona em curso: confirmar indicação inicial e contexto clínico'+(dm2Active&&acr<30?'; a redução da ACR para A1 não implica, por si só, perda da indicação':'')+(hf?'; se IC sintomática com FEVE ≥40%, considerar também a indicação aprovada na UE e confirmar condições de utilização/financiamento em Portugal':'')+'; rever função renal, caliemia e tolerabilidade');
+if(finer&&acr<30) maintenance.push('Finerenona: se iniciada segundo critérios de albuminúria ou outra indicação clínica aplicável, a redução atual para A1 não implica, por si só, perda da indicação para manutenção. Rever indicação inicial, evolução clínica, função renal, caliemia e tolerabilidade.');
 if(dm2Active&&acr>=30&&egfr>=25&&!finer){
   if(!kKnown) priorities.push('confirmar potássio antes de avaliar finerenona');
   else if(k>5.0) priorities.push('corrigir hipercaliemia antes de iniciar finerenona');
@@ -730,7 +721,7 @@ if(dm2Active&&acr>=30&&egfr>=25&&!finer){
   else priorities.push('otimizar IECA/ARA II antes de avaliar finerenona');
 }
 if(dm2Active&&hasCkd&&!glp1) priorities.push('AR GLP-1: avaliar indicação e benefício cardiorrenal');
-if(dm2Active&&hasCkd&&glp1) priorities.push('AR GLP-1 em curso: rever indicação, adesão, tolerabilidade e resposta'+(obesity?'; avaliar evolução do peso':'') );
+if(dm2Active&&hasCkd&&glp1) maintenance.push('AR GLP-1 em curso: rever adequação do medicamento e da dose, adesão, tolerabilidade e resposta'+(obesity?'; avaliar também evolução do peso':'')+'.');
 if(!statin&&age>=50&&hasCkdPattern) priorities.push('estatina: avaliar indicação segundo KDIGO, individualizando em idade muito avançada ou fragilidade');
 if(!statin&&age>=50&&!hasCkdPattern) priorities.push('estatina: avaliar risco cardiovascular e indicação');
 // Ordenar prioridades terapêuticas pela sequência acordada; iSGLT2 em curso não gera prioridade baseada apenas na ACR A1.
@@ -740,6 +731,7 @@ priorities.sort((a,b)=>{
  return rank(a)-rank(b);
 });
 if(priorities.length) summary.push('Prioridades clínicas: '+priorities.join('; ')+'.');
+if(maintenance.length) summary.push('Revisão da terapêutica em curso: '+maintenance.join(' '));
 if(currentReferralDecision){
   const rd=currentReferralDecision;
   if(rd.emergencyCriteria && rd.emergencyCriteria.length){
@@ -760,7 +752,7 @@ if(currentReferralDecision){
 get('clinicalSummary').innerHTML='<p>'+summary.join(' ')+'</p>';
 get('summarySection').classList.remove('hidden');
 get('checklist').innerHTML='';get('checklistSection')?.classList.add('hidden');
-get('evidence').innerHTML=`<div class="source"><strong>Estimativa da TFGe a partir da creatinina:</strong> Inker LA et al. New Creatinine- and Cystatin C-Based Equations to Estimate GFR without Race. <em>N Engl J Med</em>. 2021;385:1737–1749. Equação CKD-EPI 2021 baseada na creatinina, sem coeficiente racial; a estimativa usa creatinina sérica, idade e sexo e é apresentada arredondada à unidade. Consultar também o NIDDK, <em>eGFR Equations for Adults</em>.</div><div class="source"><strong>Doença renal crónica:</strong> KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease.</div><div class="source"><strong>Diabetes e doença renal:</strong> KDIGO 2022 Clinical Practice Guideline for Diabetes Management in Chronic Kidney Disease.</div><div class="source"><strong>Diabetes — recomendações terapêuticas:</strong> American Diabetes Association Professional Practice Committee. Standards of Care in Diabetes—2026. <em>Diabetes Care</em>. 2026.</div><div class="source"><strong>Doença poliquística renal autossómica dominante:</strong> KDIGO 2025 Clinical Practice Guideline for the Evaluation, Management, and Treatment of Autosomal Dominant Polycystic Kidney Disease.</div><div class="source"><strong>Risco de falência renal (KFRE):</strong> Tangri N et al. A Predictive Model for Progression of Chronic Kidney Disease to Kidney Failure. <em>JAMA</em>. 2011;305(15):1553–1559; Tangri N et al. Multinational Assessment of Accuracy of Equations for Predicting Risk of Kidney Failure. <em>JAMA</em>. 2016;315(2):164–174.</div><div class="source"><strong>iSGLT2 na DRC:</strong> Heerspink HJL et al. Dapagliflozin in Patients with Chronic Kidney Disease (DAPA-CKD). <em>N Engl J Med</em>. 2020;383:1436–1446; The EMPA-KIDNEY Collaborative Group. Empagliflozin in Patients with Chronic Kidney Disease. <em>N Engl J Med</em>. 2023;388:117–127.</div><div class="source"><strong>Finerenona na DRC associada à DM2:</strong> Bakris GL et al. Effect of Finerenone on Chronic Kidney Disease Outcomes in Type 2 Diabetes (FIDELIO-DKD). <em>N Engl J Med</em>. 2020;383:2219–2229.</div><div class="source"><strong>Finerenona na insuficiência cardíaca com FEVE ≥40%:</strong> Solomon SD et al. Finerenone in Heart Failure with Mildly Reduced or Preserved Ejection Fraction (FINEARTS-HF). <em>N Engl J Med</em>. 2024;391:1475–1485. Indicação aprovada na União Europeia; confirmar critérios do RCM e condições de utilização/financiamento em Portugal.</div><div class="source"><strong>Agonista GLP-1 na DRC associada à DM2:</strong> Perkovic V et al. Effects of Semaglutide on Chronic Kidney Disease in Patients with Type 2 Diabetes (FLOW). <em>N Engl J Med</em>. 2024;391:109–121.</div><div class="source"><strong>Referenciação:</strong> critérios locais do Serviço de Nefrologia da ULS Arrábida, conforme matriz e orientações internas incorporadas na aplicação.</div>`;
+get('evidence').innerHTML=`<div class="source"><strong>Estimativa da TFGe a partir da creatinina:</strong> Inker LA et al. New Creatinine- and Cystatin C-Based Equations to Estimate GFR without Race. <em>N Engl J Med</em>. 2021;385:1737–1749. Equação CKD-EPI 2021 baseada na creatinina, sem coeficiente racial; a estimativa usa creatinina sérica, idade e sexo e é apresentada arredondada à unidade. Consultar também o NIDDK, <em>eGFR Equations for Adults</em>.</div><div class="source"><strong>Doença renal crónica:</strong> KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease.</div><div class="source"><strong>Diabetes e doença renal:</strong> KDIGO 2022 Clinical Practice Guideline for Diabetes Management in Chronic Kidney Disease.</div><div class="source"><strong>Diabetes — recomendações terapêuticas:</strong> American Diabetes Association Professional Practice Committee. Standards of Care in Diabetes—2026. <em>Diabetes Care</em>. 2026.</div><div class="source"><strong>Doença poliquística renal autossómica dominante:</strong> KDIGO 2025 Clinical Practice Guideline for the Evaluation, Management, and Treatment of Autosomal Dominant Polycystic Kidney Disease.</div><div class="source"><strong>Risco de falência renal (KFRE):</strong> Tangri N et al. A Predictive Model for Progression of Chronic Kidney Disease to Kidney Failure. <em>JAMA</em>. 2011;305(15):1553–1559; Tangri N et al. Multinational Assessment of Accuracy of Equations for Predicting Risk of Kidney Failure. <em>JAMA</em>. 2016;315(2):164–174.</div><div class="source"><strong>iSGLT2 na DRC:</strong> Heerspink HJL et al. Dapagliflozin in Patients with Chronic Kidney Disease (DAPA-CKD). <em>N Engl J Med</em>. 2020;383:1436–1446; The EMPA-KIDNEY Collaborative Group. Empagliflozin in Patients with Chronic Kidney Disease. <em>N Engl J Med</em>. 2023;388:117–127.</div><div class="source"><strong>Finerenona na DRC associada à DM2:</strong> Bakris GL et al. Effect of Finerenone on Chronic Kidney Disease Outcomes in Type 2 Diabetes (FIDELIO-DKD). <em>N Engl J Med</em>. 2020;383:2219–2229.</div><div class="source"><strong>Agonista GLP-1 na DRC associada à DM2:</strong> Perkovic V et al. Effects of Semaglutide on Chronic Kidney Disease in Patients with Type 2 Diabetes (FLOW). <em>N Engl J Med</em>. 2024;391:109–121.</div><div class="source"><strong>Referenciação:</strong> critérios locais do Serviço de Nefrologia da ULS Arrábida, conforme matriz e orientações internas incorporadas na aplicação.</div>`;
 }
 ['renalModeEgfr','renalModeCreatinine'].forEach(id=>get(id)?.addEventListener('change',updateRenalInputMode));
 ['creatinine','creatinineUnit','age','sex'].forEach(id=>get(id)?.addEventListener('input',updateEgfrEstimate));
