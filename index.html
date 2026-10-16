@@ -725,14 +725,23 @@ if(!severeK&&!urgentK){
   }
   if(dm1&&glp1) addPriority('Rever a indicação de AR GLP-1 na DM1; as recomendações cardiorrenais desta ferramenta destinam-se à DM2.');
   else if(dm2Active&&hasCkd&&!glp1) addPriority('Avaliar AR GLP-1 com benefício cardiorrenal demonstrado na DM2 com DRC, conforme objetivos clínicos e perfil individual.');
-  if(!statin&&age>=50&&hasCkd) addPriority('Avaliar estatina para prevenção cardiovascular na DRC, individualizando em função da idade, fragilidade, risco e preferências.');
   if(obesity) addPriority('Integrar a abordagem do peso e das comorbilidades relacionadas com a obesidade; esta, isoladamente, não determina indicação para AR GLP-1.');
 }
+// Estatina: incluir no resumo quando existe uma indicação baseada na DRC ou uma situação que justifica consideração segundo KDIGO.
+// Esta recomendação é independente das prioridades relacionadas com a caliemia e não deve desaparecer por existir outra alteração laboratorial.
+if(!statin&&hasCkd){
+  if(age>=50){
+    if(egfr>=60) addPriority('Estatina: recomendada pela KDIGO em adultos ≥50 anos com DRC G1–G2; aplica-se quando A2/A3 persistente estabelece DRC. Individualizar perante fragilidade, prognóstico limitado ou comorbilidade elevada.');
+    else addPriority('Estatina: recomendada pela KDIGO em adultos ≥50 anos com DRC G3a–G5 (estatina ou estatina/ezetimiba); individualizar perante fragilidade, prognóstico limitado ou comorbilidade elevada.');
+  }else if(age>=18&&(dm1||dm2||ascvd)){
+    addPriority('Estatina: considerar em adultos 18–49 anos com DRC e diabetes ou doença cardiovascular relevante, segundo KDIGO e o contexto clínico.');
+  }
+}
 if(egfr<15) addPriority('DRC G5: rever complicações, trajetória da função renal e plano de preparação para TSFR conforme contexto e preferências do doente.');
-// Evitar acumulação: mostrar até cinco prioridades não urgentes; nunca ocultar a primeira prioridade urgente.
+// Evitar acumulação: mostrar até seis prioridades clínicas, sem ocultar situações urgentes nem uma indicação relevante para estatina.
 const urgencyFirst=summaryPriorities.filter(x=>/🚨|urgente|hipercaliemia \(K 6,0|hipocaliemia \(K 2,5/i.test(x));
 const otherPriorities=summaryPriorities.filter(x=>!urgencyFirst.includes(x));
-const finalPriorities=[...urgencyFirst,...otherPriorities.slice(0,Math.max(0,5-urgencyFirst.length))];
+const finalPriorities=[...urgencyFirst,...otherPriorities.slice(0,Math.max(0,6-urgencyFirst.length))];
 if(finalPriorities.length) summary.push(`<div class="summary-subsection"><strong>Prioridades clínicas</strong><ul>${finalPriorities.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`);
 else if(hasCkd) summary.push('<p><strong>Prioridades clínicas:</strong> não foi identificada uma nova intervenção específica a partir dos dados introduzidos. Confirmar se a terapêutica atual está otimizada e manter seguimento individualizado.</p>');
 // Manutenção só aparece quando há uma questão contextual relevante; não repetir a informação das caixas farmacológicas.
