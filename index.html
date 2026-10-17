@@ -611,7 +611,7 @@ if(dm2Active&&acr>=30&&egfr>=25&&!finer){
   }
 }
 if(finer){
- if(egfr<15){rec.push({c:'red',t:'Finerenona · descontinuar se TFGe <15',p:'Descontinuar se a TFGe for <15 mL/min/1,73 m². Confirmar a evolução da função renal e rever o plano terapêutico.'});
+ if(egfr<15){rec.push({c:'red',t:'Finerenona · descontinuar',p:'Descontinuar a finerenona. Confirmar a evolução da função renal e rever o plano terapêutico.'});
  }else if(!dm2Active){
   rec.push({c:'amber',t:'Finerenona · rever indicação e manutenção',p:'A avaliação da finerenona nesta aplicação contempla a DRC albuminúrica associada a DM2, mas a ausência de DM2 selecionada não exclui outras indicações clínicas aprovadas aplicáveis. Confirmar a indicação inicial e regulamentar, o benefício esperado, a função renal, a caliemia, a tolerabilidade e o plano de monitorização; não suspender ou manter automaticamente sem revisão clínica.'});
  }else if(acr<30){
