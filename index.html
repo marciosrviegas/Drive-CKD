@@ -102,6 +102,13 @@
 @media(max-width:850px){#creatinineField{grid-column:auto}}
 @media(max-width:420px){#creatinineField{grid-column:1/-1}.input-with-unit{grid-template-columns:minmax(0,1fr) 92px}}
 #egfrEstimate{margin-top:6px}
+
+/* Consentimento opcional para estatísticas agregadas de utilização */
+.consent-overlay.hidden{display:none}
+.consent-overlay{position:fixed;inset:0;z-index:9999;background:rgba(10,20,15,.62);display:flex;align-items:center;justify-content:center;padding:16px;overflow-y:auto}
+.consent-dialog{width:min(620px,100%);max-height:calc(100vh - 32px);overflow-y:auto;background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:18px;padding:22px;box-shadow:0 20px 70px rgba(0,0,0,.28)}
+.consent-dialog h2{font-size:21px;line-height:1.2;margin:0 0 5px}.consent-kicker{font-size:12px;color:var(--accent);font-weight:800;margin-bottom:13px}.consent-dialog p{font-size:13px;line-height:1.55;margin:9px 0}.consent-dialog strong{color:var(--text)}.consent-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px}.consent-actions button{flex:1 1 210px;min-height:42px;line-height:1.3}.consent-note{font-size:11px!important;color:var(--muted)}
+
 </style>
 </head>
 <body>
@@ -229,6 +236,36 @@
 </section></div>
 <section class="card footer"><h2>Notas de segurança</h2><div class="note">Esta ferramenta é um apoio educacional/organizacional para profissionais de saúde, não uma prescrição automática nem substitui avaliação clínica. Não introduza dados diretamente identificáveis de doentes. Os limiares são baseados principalmente em KDIGO 2024 e grandes RCTs. Nesta ferramenta, a KFRE é calculada para TFGe 15–59 mL/min/1,73 m² e deve ser interpretada no contexto clínico.</div><div class="note" style="margin-top:8px">Para Portugal, a aplicação inicia por defeito a calibração <strong>não norte-americana</strong>. A opção norte-americana pode ser selecionada para comparação ou quando clinicamente apropriado.</div></section><div class="app-credit"><div>Ferramenta desenvolvida por Márcio Viegas · Nefrologista, para apoio rápido à avaliação, estratificação de risco e otimização terapêutica na doença renal crónica.</div><div class="app-update">Última atualização da aplicação: 16/10/2026</div><details class="install-help" id="installHelp"><summary>📲 Instalar a Drive CKD / criar ícone no ecrã inicial</summary><div class="install-content"><p>A Drive CKD pode ser adicionada ao ecrã inicial para abrir como uma aplicação. É necessária ligação à Internet para aceder à versão atualizada.</p><button type="button" id="installAppButton" class="btn secondary install-button hidden">Instalar aplicação</button><div id="browserShortcuts" class="browser-shortcuts"><button type="button" id="openChromeButton" class="btn secondary install-button hidden">Abrir esta página no Chrome (Android)</button><button type="button" id="copyAppLinkButton" class="btn secondary install-button hidden">⬆ Abrir no Safari para instalar (iPhone/iPad)</button><p id="browserShortcutStatus" class="small" aria-live="polite"></p></div><h3>Android (Chrome)</h3><p>1. Abra esta página no <strong>Google Chrome</strong>.</p><p>2. Toque no menu <strong>⋮</strong> no canto superior direito.</p><p>3. Escolha <strong>“Instalar aplicação”</strong> ou <strong>“Adicionar ao ecrã principal”</strong> e confirme. A opção apresentada pode variar conforme o dispositivo.</p><h3>iPhone ou iPad (Safari)</h3><p>1. Se a Drive CKD estiver aberta como aplicação sem barra de endereço, toque no botão <strong>“Abrir no Safari para instalar”</strong>. Este botão tenta encaminhar a página para o Safari normal; o iOS pode bloquear esta passagem em alguns contextos.</p><p>2. No Safari normal, procure o botão <strong>Partilhar</strong> (quadrado com seta para cima). Se não estiver visível, toque nos <strong>três pontos (⋯)</strong> ou no menu de opções da barra de ferramentas e procure <strong>Partilhar</strong>. A posição do menu pode variar consoante a versão do iOS.</p><p>3. No menu Partilhar, deslize para cima para ver todas as opções e escolha <strong>“Adicionar ao ecrã principal”</strong>.</p><p>4. Confirme o nome <strong>Drive CKD</strong> e toque em <strong>Adicionar</strong>. O ícone ficará no ecrã inicial.</p><p id="installStatus" aria-live="polite"></p></div></details></div></section>
 </div></div>
+
+<div id="statsConsentOverlay" class="consent-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="statsConsentTitle" aria-describedby="statsConsentDescription">
+ <div class="consent-dialog">
+  <h2 id="statsConsentTitle">Ajude-nos a melhorar o Drive CKD</h2>
+  <div class="consent-kicker">Um projeto de melhoria contínua</div>
+  <div id="statsConsentDescription">
+   <p>O Drive CKD é uma ferramenta gratuita, desenvolvida sem fins lucrativos, para apoiar a avaliação da doença renal crónica e a tomada de decisão clínica.</p>
+   <p><strong>A sua experiência pode fazer a diferença.</strong></p>
+   <p>A recolha de estatísticas de utilização permitirá compreender como a aplicação é utilizada na prática clínica, identificar oportunidades de melhoria e orientar o desenvolvimento de futuras funcionalidades.</p>
+   <p>Os dados estatísticos agregados poderão também ser utilizados para fins científicos, nomeadamente para avaliar e demonstrar a utilidade da aplicação e divulgar os resultados da sua utilização.</p>
+   <p><strong>O que será contabilizado?</strong> O número de avaliações realizadas e a evolução da utilização ao longo do tempo.</p>
+   <p><strong>Privacidade e confidencialidade:</strong> A recolha proposta não inclui os valores clínicos introduzidos na aplicação nem dados identificativos dos doentes.</p>
+   <p>A participação é voluntária e não condiciona o acesso à aplicação nem a qualquer das suas funcionalidades.</p>
+   <p class="consent-note">Se recusar, a aplicação continuará a funcionar normalmente e não serão enviadas estatísticas de utilização.</p>
+  </div>
+  <div class="consent-actions"><button type="button" class="btn primary" id="acceptStatsConsent">Aceito a recolha de estatísticas de utilização para melhoria da app</button><button type="button" class="btn secondary" id="refuseStatsConsent">Recuso</button></div>
+ </div>
+</div>
+<div id="statsRefusalOverlay" class="consent-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="statsRefusalTitle" aria-describedby="statsRefusalDescription">
+ <div class="consent-dialog">
+  <h2 id="statsRefusalTitle">Confirma a sua decisão?</h2>
+  <div id="statsRefusalDescription">
+   <p>Respeitamos a sua decisão. A participação é voluntária e pode continuar a utilizar todas as funcionalidades da Drive CKD sem contribuir para estas estatísticas.</p>
+   <p>Ao contribuir para as estatísticas de utilização, poderá ajudar a melhorar uma ferramenta gratuita e sem fins lucrativos e a avaliar a sua utilidade na prática clínica.</p>
+   <p>Pretende continuar sem contribuir para estas estatísticas?</p>
+  </div>
+  <div class="consent-actions"><button type="button" class="btn secondary" id="confirmStatsRefusal">Sim, confirmo que recuso</button><button type="button" class="btn primary" id="backToStatsConsent">Voltar atrás</button></div>
+ </div>
+</div>
+
 <script>
 let deferredInstallPrompt=null;
 const installAppButton=get('installAppButton');
@@ -279,6 +316,34 @@ updateInstallUI();
 if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 function get(id){return document.getElementById(id)}
+
+// Estatísticas agregadas: apenas um POST sem dados clínicos, e só após consentimento explícito.
+const STATS_ENDPOINT='https://drive-ckd-counter.marciosrviegas.workers.dev';
+const STATS_CONSENT_KEY='driveCkdStatsConsentV1';
+let statsCounterPending=false;
+function showStatsConsentIfNeeded(){
+  let choice=null;try{choice=localStorage.getItem(STATS_CONSENT_KEY)}catch(e){}
+  if(choice!=='accepted'&&choice!=='refused')get('statsConsentOverlay')?.classList.remove('hidden');
+}
+function saveStatsConsent(choice){
+  try{localStorage.setItem(STATS_CONSENT_KEY,choice)}catch(e){}
+  get('statsConsentOverlay')?.classList.add('hidden');
+  get('statsRefusalOverlay')?.classList.add('hidden');
+}
+async function countEvaluation(){
+  let choice=null;try{choice=localStorage.getItem(STATS_CONSENT_KEY)}catch(e){}
+  if(choice!=='accepted'||statsCounterPending)return;
+  statsCounterPending=true;
+  try{
+    await fetch(STATS_ENDPOINT+'/count',{method:'POST',mode:'cors',headers:{'Content-Type':'application/json'},body:'{}',keepalive:true});
+  }catch(e){/* A falha estatística nunca deve impedir a avaliação clínica. */}
+  finally{statsCounterPending=false;}
+}
+get('acceptStatsConsent')?.addEventListener('click',()=>saveStatsConsent('accepted'));
+get('refuseStatsConsent')?.addEventListener('click',()=>{get('statsConsentOverlay')?.classList.add('hidden');get('statsRefusalOverlay')?.classList.remove('hidden')});
+get('confirmStatsRefusal')?.addEventListener('click',()=>saveStatsConsent('refused'));
+get('backToStatsConsent')?.addEventListener('click',()=>{get('statsRefusalOverlay')?.classList.add('hidden');get('statsConsentOverlay')?.classList.remove('hidden')});
+showStatsConsentIfNeeded();
 function renalInputMode(){return get('renalModeCreatinine')?.checked?'creatinine':'egfr'}
 function calculateEgfrFromCreatinine(){
  const crRaw=parseFloat(get('creatinine')?.value), age=parseFloat(get('age')?.value), sex=get('sex')?.value;
@@ -512,6 +577,8 @@ function showPotassiumAlertBeforeFullAssessment(k){
 }
 
 function calculate(){
+  // Contabilização opcional e sem dados clínicos; nunca bloqueia o cálculo.
+  countEvaluation();
   // Cada clique em "Avaliar" inicia um cálculo novo a partir do estado atual dos campos.
   const emergencyTopReset=get('emergencyTop'); if(emergencyTopReset){emergencyTopReset.classList.add('hidden');emergencyTopReset.innerHTML='';emergencyTopReset.className='recommend very hidden';}
   get('recommendations').innerHTML='';
