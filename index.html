@@ -725,7 +725,7 @@ let risk2=null,risk5=null;
 if(age>=18&&age<=100&&egfr>=15&&egfr<60&&acr>0){
 const male=sex==='male'?1:0;
 const acrMgMmol=acr/8.84; // A equação KFRE usa ACR em mg/mmol; a interface recebe mg/g.
-const lp=-0.2201*(age/10-7.036)+0.2467*(male-0.5642)-0.5567*(egfr/5-7.222)+0.4510*(Math.log(acrMgMmol)-5.137);
+const lp=0.2201*(age/10-7.036)+0.2467*(male-0.5642)-0.5567*(egfr/5-7.222)+0.4510*(Math.log(acrMgMmol)-5.137);
 const isNA=get('kfreCalibration').value==='na';
 const s02=isNA?0.9750:0.9832;
 const s05=isNA?0.9240:0.9365;
