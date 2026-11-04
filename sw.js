@@ -1,5 +1,4 @@
-const CACHE_NAME = 'drive-ckd-v2-20261007';
-
+const CACHE_NAME = 'drive-ckd-v3-20261104';
 const CORE_ASSETS = [
   './',
   './index.html',
@@ -20,36 +19,27 @@ self.addEventListener('install', event => {
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys()
-      .then(keys =>
-        Promise.all(
-          keys
-            .filter(key => key !== CACHE_NAME)
-            .map(key => caches.delete(key))
-        )
-      )
+      .then(keys => Promise.all(
+        keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
+      ))
       .then(() => self.clients.claim())
   );
 });
 
 self.addEventListener('fetch', event => {
   const request = event.request;
-
-  if (
-    request.method !== 'GET' ||
-    new URL(request.url).origin !== self.location.origin
-  ) return;
+  if (request.method !== 'GET' ||
+      new URL(request.url).origin !== self.location.origin) return;
 
   const url = new URL(request.url);
-
-  const isHtml =
-    request.mode === 'navigate' ||
+  const isHtml = request.mode === 'navigate' ||
     request.destination === 'document' ||
     url.pathname.endsWith('/') ||
     url.pathname.endsWith('/index.html');
 
   if (isHtml) {
     event.respondWith(
-      fetch(request)
+      fetch(request, { cache: 'no-store' })
         .then(response => {
           if (response && response.ok) {
             const copy = response.clone();
@@ -57,26 +47,19 @@ self.addEventListener('fetch', event => {
           }
           return response;
         })
-        .catch(() =>
-          caches.match(request).then(cached =>
-            cached || caches.match('./index.html')
-          )
-        )
+        .catch(() => caches.match(request)
+          .then(cached => cached || caches.match('./index.html')))
     );
     return;
   }
 
   event.respondWith(
-    caches.match(request)
-      .then(cached =>
-        cached || fetch(request).then(response => {
-          if (response && response.ok) {
-            const copy = response.clone();
-            caches.open(CACHE_NAME).then(cache => cache.put(request, copy));
-          }
-          return response;
-        })
-      )
-      .catch(() => caches.match('./index.html'))
+    caches.match(request).then(cached => cached || fetch(request).then(response => {
+      if (response && response.ok) {
+        const copy = response.clone();
+        caches.open(CACHE_NAME).then(cache => cache.put(request, copy));
+      }
+      return response;
+    })).catch(() => caches.match('./index.html'))
   );
 });
