@@ -724,15 +724,16 @@ get('recommendations').innerHTML=rec.map(r=>`<div class="recommend ${r.c}"><h3>$
 let risk2=null,risk5=null;
 if(age>=18&&age<=100&&egfr>=15&&egfr<60&&acr>0){
 const male=sex==='male'?1:0;
-const acrMgMmol=acr/8.84; // A equação KFRE usa ACR em mg/mmol; a interface recebe mg/g.
-const lp=0.2201*(age/10-7.036)+0.2467*(male-0.5642)-0.5567*(egfr/5-7.222)+0.4510*(Math.log(acrMgMmol)-5.137);
+// KFRE 4 variáveis: ACR introduzida diretamente em mg/g.
+// Coeficientes e escala de ACR conforme a equação não norte-americana original.
+const lp=-0.2201*(age/10-7.036)+0.2467*(male-0.5642)-0.5567*(egfr/5-7.222)+0.4510*(Math.log(acr)-5.137);
 const isNA=get('kfreCalibration').value==='na';
 const s02=isNA?0.9750:0.9832;
 const s05=isNA?0.9240:0.9365;
 risk2=1-Math.pow(s02,Math.exp(lp));risk5=1-Math.pow(s05,Math.exp(lp));
 const label=isNA?'Norte-americana':'Não norte-americana';
 get('kfre').className='recommend '+(risk2>=.10||risk5>=.05?'amber':'green');
-get('kfre').innerHTML='<h3>KFRE 4 variáveis · calibração '+label+'</h3><p>Risco de falência renal tratada (diálise ou transplante): <strong>'+((risk2*100).toFixed(1))+'% em 2 anos</strong> e <strong>'+((risk5*100).toFixed(1))+'% em 5 anos</strong>.</p><p style="margin-top:6px">Idade, sexo, TFGe e ACR. Introduza ACR em mg/g; conversão interna para mg/mmol antes do cálculo (logaritmo natural).</p>';
+get('kfre').innerHTML='<h3>KFRE 4 variáveis · calibração '+label+'</h3><p>Risco de falência renal tratada (diálise ou transplante): <strong>'+((risk2*100).toFixed(1))+'% em 2 anos</strong> e <strong>'+((risk5*100).toFixed(1))+'% em 5 anos</strong>.</p><p style="margin-top:6px">Idade, sexo, TFGe e ACR. Introduza ACR diretamente em mg/g (logaritmo natural; sem conversão de unidades).</p>';
 }else if(egfr>=60){get('kfre').className='recommend';get('kfre').innerHTML='<h3>KFRE · não aplicável em G1–G2</h3><p>Nesta ferramenta, a KFRE é calculada para TFGe 15–59 mL/min/1,73 m² (G3–G4). Para TFGe <15, o cálculo não é apresentado; avaliar o contexto clínico e o planeamento de TSFR.</p>'}else if(egfr<15){get('kfre').className='recommend amber';get('kfre').innerHTML='<h3>KFRE · fora do intervalo de cálculo desta ferramenta</h3><p>Para TFGe &lt;15 mL/min/1,73 m², esta ferramenta não calcula o KFRE. Avaliar a trajetória clínica, complicações da DRC e planeamento de TSFR.</p>'}else{get('kfre').className='recommend amber';get('kfre').innerHTML='<h3>KFRE · dados insuficientes</h3><p>Introduza idade, sexo, TFGe e ACR (ACR &gt;0) para calcular o risco.</p>'}
 // Resumo clínico integrado: informação renal, risco, prioridades acionáveis, manutenção e referenciação.
 let summary=[];
