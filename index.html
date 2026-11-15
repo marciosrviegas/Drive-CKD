@@ -525,14 +525,14 @@ function calculateReferral(){
 
  let referralHtml='<h3>'+finalName+'</h3>';
  if(allAdditionalReasons.length){
-   referralHtml+='<p><strong>Outro critério de referenciação:</strong> '+allAdditionalReasons.join(' · ')+'</p>';
-   if(albuminReason){
-     referralHtml+='<p style="margin-top:7px;font-size:12px"><strong>Matriz de referenciação não aplicada:</strong> foi identificado um critério adicional de albuminúria. A orientação segue os critérios definidos no protocolo do Serviço de Nefrologia da ULS Arrábida.</p>';
+   referralHtml+='<p><strong>Critério(s) adicional(is) identificado(s):</strong> '+allAdditionalReasons.join(' · ')+'</p>';
+   referralHtml+='<p style="margin-top:7px;font-size:12px"><strong>Resultado da matriz TFGe + ACR + idade:</strong> '+matrixName+'.</p>';
+   if(finalIdx>matrixIdx){
+     referralHtml+='<p style="margin-top:7px;font-size:12px"><strong>Como se determina a prioridade final:</strong> o(s) critério(s) adicional(is) aumenta(m) a prioridade de '+matrixName.toLowerCase()+' para '+finalName.toLowerCase()+'. Prevalece sempre o nível de referenciação mais elevado entre a matriz e os critérios adicionais.</p>';
+   }else if(finalIdx===matrixIdx){
+     referralHtml+='<p style="margin-top:7px;font-size:12px"><strong>Como se determina a prioridade final:</strong> a matriz e o(s) critério(s) adicional(is) apontam para o mesmo nível. Mantém-se '+finalName.toLowerCase()+'.</p>';
    }else{
-     referralHtml+='<p style="margin-top:7px;font-size:12px"><strong>Matriz de base:</strong> '+matrixName+'.</p>';
-   }
-   if(finalIdx>matrixIdx && !albuminReason){
-     referralHtml+='<p style="margin-top:7px;font-size:11px"><strong>A prioridade é elevada pelo(s) critério(s) adicional(is).</strong></p>';
+     referralHtml+='<p style="margin-top:7px;font-size:12px"><strong>Como se determina a prioridade final:</strong> prevalece a prioridade da matriz ('+matrixName.toLowerCase()+'), por ser superior à indicada pelo(s) critério(s) adicional(is).</p>';
    }
    if(diabetic && acr>3000){
      referralHtml+='<p style="margin-top:7px;font-size:11px"><strong>Nota:</strong> em doente diabético, ACR &gt;3000 mg/g é orientado pela matriz; se houver apresentação de novo, considerar referenciação muito urgente.</p>';
