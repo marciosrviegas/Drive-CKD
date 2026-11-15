@@ -135,8 +135,8 @@
 <summary>➕ Outros critérios de referenciação <span>opcional</span></summary>
 <div class="other-referral-inner">
   <div class="other-referral-group"><strong>1. Proteinúria / albuminúria relevante</strong>
-    <label class="check"><input id="refAlbuminuria700" type="checkbox" disabled><span>Albuminúria (RAC) de 700–3000 mg/g em doente não diabético</span></label>
-    <label class="check"><input id="refAlbuminuria3000" type="checkbox" disabled><span>Albuminúria (RAC) &gt;3000 mg/g em doente não diabético</span></label>
+    <label class="check"><input id="refAlbuminuria700" type="checkbox"><span>Albuminúria (RAC) de 700–3000 mg/g em doente não diabético</span></label>
+    <label class="check"><input id="refAlbuminuria3000" type="checkbox"><span>Albuminúria (RAC) &gt;3000 mg/g em doente não diabético</span></label>
     <div class="other-referral-note">Em doentes diabéticos ou com apresentação crónica, a referenciação deve ser orientada pela matriz TFGe + ACR + idade.</div>
   </div>
   <div class="other-referral-group"><strong>2. Progressão rápida da função renal</strong>
@@ -440,13 +440,18 @@ function calculateReferral(){
  let finalIdx=matrixIdx;
  const diabetic=get('dm1').checked || get('dm2').checked;
 
- // Critérios adicionais de albuminúria: seleção automática na secção "Outros critérios".
+ // Critérios adicionais de albuminúria: seleção automática pelo ACR,
+ // mantendo também a possibilidade de seleção manual como nos restantes critérios.
+ const albumin700Auto = acr>=700 && acr<=3000 && !diabetic;
+ const albuminAbove3000Auto = acr>3000 && !diabetic;
+ const albumin700Box=get('refAlbuminuria700');
+ const albumin3000Box=get('refAlbuminuria3000');
+ const albumin700to3000 = albumin700Auto || albumin700Box.dataset.manualSelected==='true';
+ const albuminAbove3000 = albuminAbove3000Auto || albumin3000Box.dataset.manualSelected==='true';
+ albumin700Box.checked=albumin700to3000;
+ albumin3000Box.checked=albuminAbove3000;
+ if(albumin700to3000||albuminAbove3000) get('other-referral-panel').open=true;
  let albuminExtraIdx=null;
- const albumin700to3000 = acr>=700 && acr<=3000 && !diabetic;
- const albuminAbove3000 = acr>3000 && !diabetic;
- get('refAlbuminuria700').checked=albumin700to3000;
- get('refAlbuminuria3000').checked=albuminAbove3000;
- get('other-referral-panel').open=albumin700to3000||albuminAbove3000;
  if(albuminAbove3000) albuminExtraIdx=4;
  else if(albumin700to3000) albuminExtraIdx=3;
  if(albuminExtraIdx!==null) finalIdx=Math.max(finalIdx,albuminExtraIdx);
@@ -456,8 +461,8 @@ function calculateReferral(){
  const addOther=(id,label,priority,type='referral')=>{
    if(get(id)?.checked) otherCriteria.push({id,label,priority,type});
  };
- if(albumin700to3000) otherCriteria.push({id:'refAlbuminuria700',label:'Albuminúria (RAC) de 700–3000 mg/g em doente não diabético',priority:3,type:'automatic'});
- if(albuminAbove3000) otherCriteria.push({id:'refAlbuminuria3000',label:'Albuminúria (RAC) >3000 mg/g em doente não diabético',priority:4,type:'automatic'});
+ addOther('refAlbuminuria700','Albuminúria (RAC) de 700–3000 mg/g em doente não diabético',3);
+ addOther('refAlbuminuria3000','Albuminúria (RAC) >3000 mg/g em doente não diabético',4);
  addOther('refRapidEgfr','Diminuição >30% da TFGe em <6 meses',3);
  addOther('refHemaProtein','Hematoproteinúria associada à deterioração renal',4);
  addOther('refMicroHematuria','Hematúria microscópica de causa não urológica',2);
@@ -489,9 +494,9 @@ function calculateReferral(){
 
  const matrixName=referralLabels[matrixIdx];
  const finalName=referralLabels[finalIdx];
- const albuminReason=albuminExtraIdx===4
+ const albuminReason=albuminAbove3000
    ? 'ACR >3000 mg/g em doente não diabético.'
-   : albuminExtraIdx===3 && (acr>=700 && acr<=3000 && !diabetic)
+   : albumin700to3000
      ? 'ACR 700–3000 mg/g em doente não diabético.'
      : null;
 
@@ -875,9 +880,10 @@ get('evidence').innerHTML=`<div class="source"><strong>Estimativa da TFGe a part
 ['renalModeEgfr','renalModeCreatinine'].forEach(id=>get(id)?.addEventListener('change',updateRenalInputMode));
 ['creatinine','creatinineUnit','age','sex'].forEach(id=>get(id)?.addEventListener('input',updateEgfrEstimate));
 get('sex')?.addEventListener('change',updateEgfrEstimate);
+['refAlbuminuria700','refAlbuminuria3000'].forEach(id=>get(id)?.addEventListener('change',e=>{e.currentTarget.dataset.manualSelected=e.currentTarget.checked?'true':'false';}));
 updateRenalInputMode();
 
-function resetForm(){['egfr','acr','age','k','creatinine'].forEach(id=>get(id).value='');get('creatinineUnit').value='mgdl';get('renalModeEgfr').checked=true;updateRenalInputMode();get('sex').value='';updateEgfrEstimate();get('kfreCalibration').value='non-na';['dm1','dm2','hf','ascvd','htn','obesity','sglt2','raas','finer','statin','glp1','refRapidEgfr','refHemaProtein','refMicroHematuria','refNormoglyGlyco','refAminoaciduria','refCystinuria','refHydroStable','refHydroUrgent','refCysticDisease','refNephrocalcinosis','refHereditary','refStoneRecurrent','refStoneSolitary','refStoneObstructive','refResistantHTN','refYoungHTN','refHTNHypoK','refHTNCrRise','refHTNAbdBruit','refMalignantHTN','refAlbuminuria700','refAlbuminuria3000'].forEach(id=>get(id).checked=false);get('other-referral-panel')?.removeAttribute('open');get('referralTitle').textContent='🩺 Referenciação segundo critérios do Serviço de Nefrologia da ULS Arrábida';get('emergencyTop')?.classList.add('hidden');get('emergencyTop').innerHTML='';get('stage').textContent='—';get('heroSub').textContent='Introduza os dados para classificar a DRC';get('riskPills').innerHTML='';get('urgent').classList.add('hidden');get('recommendations').innerHTML='';get('therapyTitle').classList.add('hidden');get('initialMessage').classList.remove('hidden');get('resultsContent').classList.add('hidden');get('referralSection').classList.add('hidden');get('summarySection').classList.add('hidden');get('clinicalSummary').innerHTML=''}
+function resetForm(){['egfr','acr','age','k','creatinine'].forEach(id=>get(id).value='');get('creatinineUnit').value='mgdl';get('renalModeEgfr').checked=true;updateRenalInputMode();get('sex').value='';updateEgfrEstimate();get('kfreCalibration').value='non-na';['dm1','dm2','hf','ascvd','htn','obesity','sglt2','raas','finer','statin','glp1','refRapidEgfr','refHemaProtein','refMicroHematuria','refNormoglyGlyco','refAminoaciduria','refCystinuria','refHydroStable','refHydroUrgent','refCysticDisease','refNephrocalcinosis','refHereditary','refStoneRecurrent','refStoneSolitary','refStoneObstructive','refResistantHTN','refYoungHTN','refHTNHypoK','refHTNCrRise','refHTNAbdBruit','refMalignantHTN','refAlbuminuria700','refAlbuminuria3000'].forEach(id=>{get(id).checked=false;get(id).dataset.manualSelected='false'});get('other-referral-panel')?.removeAttribute('open');get('referralTitle').textContent='🩺 Referenciação segundo critérios do Serviço de Nefrologia da ULS Arrábida';get('emergencyTop')?.classList.add('hidden');get('emergencyTop').innerHTML='';get('stage').textContent='—';get('heroSub').textContent='Introduza os dados para classificar a DRC';get('riskPills').innerHTML='';get('urgent').classList.add('hidden');get('recommendations').innerHTML='';get('therapyTitle').classList.add('hidden');get('initialMessage').classList.remove('hidden');get('resultsContent').classList.add('hidden');get('referralSection').classList.add('hidden');get('summarySection').classList.add('hidden');get('clinicalSummary').innerHTML=''}
 </script>
 </body>
 </html>
