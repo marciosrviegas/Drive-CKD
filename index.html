@@ -527,12 +527,19 @@ function calculateReferral(){
  if(allAdditionalReasons.length){
    referralHtml+='<p><strong>Critério(s) adicional(is) identificado(s):</strong> '+allAdditionalReasons.join(' · ')+'</p>';
    referralHtml+='<p style="margin-top:7px;font-size:12px"><strong>Resultado da matriz TFGe + ACR + idade:</strong> '+matrixName+'.</p>';
-   if(finalIdx>matrixIdx){
-     referralHtml+='<p style="margin-top:7px;font-size:12px"><strong>Como se determina a prioridade final:</strong> o(s) critério(s) adicional(is) aumenta(m) a prioridade de '+matrixName.toLowerCase()+' para '+finalName.toLowerCase()+'. Prevalece sempre o nível de referenciação mais elevado entre a matriz e os critérios adicionais.</p>';
-   }else if(finalIdx===matrixIdx){
-     referralHtml+='<p style="margin-top:7px;font-size:12px"><strong>Como se determina a prioridade final:</strong> a matriz e o(s) critério(s) adicional(is) apontam para o mesmo nível. Mantém-se '+finalName.toLowerCase()+'.</p>';
+   const additionalMax=otherCriteria.reduce((m,x)=>Math.max(m,x.priority),albuminExtraIdx===null?-1:albuminExtraIdx);
+   const additionalName=additionalMax>=0?referralLabels[additionalMax]:null;
+   if(additionalMax<0){
+     referralHtml+='<p style="margin-top:7px;font-size:12px"><strong>Como se determina a prioridade final:</strong> não foi identificado um critério adicional com prioridade própria. Mantém-se a prioridade da matriz: '+finalName.toLowerCase()+'.</p>';
+   }else if(matrixIdx>additionalMax){
+     referralHtml+='<p style="margin-top:7px;font-size:12px"><strong>Prioridade do critério adicional:</strong> '+additionalName+'.</p>';
+     referralHtml+='<p style="margin-top:7px;font-size:12px"><strong>Como se determina a prioridade final:</strong> a matriz indica '+matrixName.toLowerCase()+' e o critério adicional indica '+additionalName.toLowerCase()+'. Prevalece a matriz, por corresponder ao nível mais elevado. A prioridade final é '+finalName.toLowerCase()+'.</p>';
+   }else if(additionalMax>matrixIdx){
+     referralHtml+='<p style="margin-top:7px;font-size:12px"><strong>Prioridade do critério adicional:</strong> '+additionalName+'.</p>';
+     referralHtml+='<p style="margin-top:7px;font-size:12px"><strong>Como se determina a prioridade final:</strong> a matriz indica '+matrixName.toLowerCase()+' e o critério adicional indica '+additionalName.toLowerCase()+'. Prevalece o critério adicional, por corresponder ao nível mais elevado. A prioridade final é '+finalName.toLowerCase()+'.</p>';
    }else{
-     referralHtml+='<p style="margin-top:7px;font-size:12px"><strong>Como se determina a prioridade final:</strong> prevalece a prioridade da matriz ('+matrixName.toLowerCase()+'), por ser superior à indicada pelo(s) critério(s) adicional(is).</p>';
+     referralHtml+='<p style="margin-top:7px;font-size:12px"><strong>Prioridade do critério adicional:</strong> '+additionalName+'.</p>';
+     referralHtml+='<p style="margin-top:7px;font-size:12px"><strong>Como se determina a prioridade final:</strong> a matriz e o critério adicional indicam o mesmo nível ('+finalName.toLowerCase()+').</p>';
    }
    if(diabetic && acr>3000){
      referralHtml+='<p style="margin-top:7px;font-size:11px"><strong>Nota:</strong> em doente diabético, ACR &gt;3000 mg/g é orientado pela matriz; se houver apresentação de novo, considerar referenciação muito urgente.</p>';
@@ -864,7 +871,12 @@ if(currentReferralDecision){
     const reasons=[];
     (rd.otherCriteria||[]).forEach(x=>reasons.push(x.label));
     const uniqueReasons=[...new Set(reasons)];
-    summary.push(`<p><strong>Referenciação à Nefrologia (critérios ULS Arrábida):</strong> ${rd.finalName}${uniqueReasons.length?` — ${uniqueReasons.map(x=>esc(x)).join('; ').replace(/[.。]+$/,'')}.`:'.'} A prioridade resulta dos critérios locais; o KFRE é complementar.</p>`);
+    const additionalMax=(rd.otherCriteria||[]).reduce((m,x)=>Math.max(m,x.priority),rd.albuminExtraIdx===null?-1:rd.albuminExtraIdx);
+    const additionalName=additionalMax>=0?referralLabels[additionalMax]:null;
+    const priorityExplanation=additionalName
+      ? ` Matriz: ${esc(rd.matrixName.toLowerCase())}. Critério(s) adicional(is): ${esc(additionalName.toLowerCase())}. Prevalece o nível mais elevado: ${esc(rd.finalName.toLowerCase())}.`
+      : ` Prioridade determinada pela matriz: ${esc(rd.finalName.toLowerCase())}.`;
+    summary.push(`<p><strong>Referenciação à Nefrologia (critérios ULS Arrábida):</strong> ${rd.finalName}${uniqueReasons.length?` — ${uniqueReasons.map(x=>esc(x)).join('; ').replace(/[.。]+$/,'')}.`:'.'}${priorityExplanation} O KFRE é complementar.</p>`);
   }
   if(rd.age>80 && (rd.matrixIdx===1 || rd.matrixIdx===2) && !(rd.emergencyCriteria&&rd.emergencyCriteria.length)){
     summary.push('<p><strong>Nota:</strong> em pessoas >80 anos com dependência importante, demência avançada ou fragilidade elevada, ponderar benefício da referenciação face ao estado basal, sem ignorar critérios de alarme.</p>');
