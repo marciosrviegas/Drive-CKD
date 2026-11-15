@@ -136,7 +136,7 @@
 <div class="other-referral-inner">
   <div class="other-referral-group"><strong>1. Proteinúria / albuminúria relevante</strong>
     <label class="check"><input id="refAlbuminuria700" type="checkbox" disabled><span>Albuminúria (RAC) de 700–3000 mg/g em doente não diabético</span></label>
-    <label class="check"><input id="refAlbuminuria3000" type="checkbox" disabled><span>Albuminúria (RAC) &gt;3000 mg/g em doente não diabético — prioridade muito urgente</span></label>
+    <label class="check"><input id="refAlbuminuria3000" type="checkbox" disabled><span>Albuminúria (RAC) &gt;3000 mg/g em doente não diabético</span></label>
     <div class="other-referral-note">Em doentes diabéticos ou com apresentação crónica, a referenciação deve ser orientada pela matriz TFGe + ACR + idade.</div>
   </div>
   <div class="other-referral-group"><strong>2. Progressão rápida da função renal</strong>
@@ -448,7 +448,7 @@ function calculateReferral(){
  get('refAlbuminuria3000').checked=albuminAbove3000;
  get('other-referral-panel').open=albumin700to3000||albuminAbove3000;
  if(albuminAbove3000) albuminExtraIdx=4;
- else if(albumin700to3000) albuminExtraIdx=2;
+ else if(albumin700to3000) albuminExtraIdx=3;
  if(albuminExtraIdx!==null) finalIdx=Math.max(finalIdx,albuminExtraIdx);
 
  // Outros critérios de referenciação selecionados pelo utilizador.
@@ -456,7 +456,7 @@ function calculateReferral(){
  const addOther=(id,label,priority,type='referral')=>{
    if(get(id)?.checked) otherCriteria.push({id,label,priority,type});
  };
- if(albumin700to3000) otherCriteria.push({id:'refAlbuminuria700',label:'Albuminúria (RAC) de 700–3000 mg/g em doente não diabético',priority:2,type:'automatic'});
+ if(albumin700to3000) otherCriteria.push({id:'refAlbuminuria700',label:'Albuminúria (RAC) de 700–3000 mg/g em doente não diabético',priority:3,type:'automatic'});
  if(albuminAbove3000) otherCriteria.push({id:'refAlbuminuria3000',label:'Albuminúria (RAC) >3000 mg/g em doente não diabético',priority:4,type:'automatic'});
  addOther('refRapidEgfr','Diminuição >30% da TFGe em <6 meses',3);
  addOther('refHemaProtein','Hematoproteinúria associada à deterioração renal',4);
@@ -491,7 +491,7 @@ function calculateReferral(){
  const finalName=referralLabels[finalIdx];
  const albuminReason=albuminExtraIdx===4
    ? 'ACR >3000 mg/g em doente não diabético.'
-   : albuminExtraIdx===2 && (acr>=700 && acr<=3000 && !diabetic)
+   : albuminExtraIdx===3 && (acr>=700 && acr<=3000 && !diabetic)
      ? 'ACR 700–3000 mg/g em doente não diabético.'
      : null;
 
@@ -512,8 +512,7 @@ function calculateReferral(){
  get('referralSection').classList.remove('hidden');
  get('referralTitle').textContent='🩺 Referenciação segundo critérios do Serviço de Nefrologia da ULS Arrábida';
 
- const allAdditionalReasons=[];
- otherCriteria.forEach(x=>allAdditionalReasons.push(x.label));
+ const allAdditionalReasons=[...new Set(otherCriteria.map(x=>x.label))];
 
  const over80Caveat=(age>80 && (matrixIdx===1 || matrixIdx===2))
    ? '<p style="margin-top:9px;font-size:11px"><strong>Nota em doentes &gt;80 anos:</strong> perante elevada dependência nas atividades da vida diária, síndromes demenciais avançadas ou elevada fragilidade, deve ser ponderado o benefício da referenciação à Nefrologia face ao estado basal do doente, apesar da indicação da matriz.</p>'
@@ -858,9 +857,9 @@ if(currentReferralDecision){
     summary.push(`<p><strong>Referenciação:</strong> Serviço de Urgência — ${rd.emergencyCriteria.map(x=>esc(x.label)).join('; ')}.</p>`);
   }else{
     const reasons=[];
-    if(rd.albuminReason) reasons.push(rd.albuminReason);
     (rd.otherCriteria||[]).forEach(x=>reasons.push(x.label));
-    summary.push(`<p><strong>Referenciação à Nefrologia (critérios ULS Arrábida):</strong> ${rd.finalName}${reasons.length?` — ${reasons.map(x=>esc(x)).join('; ').replace(/[.。]+$/,'')}.`:'.'} A prioridade resulta dos critérios locais; o KFRE é complementar.</p>`);
+    const uniqueReasons=[...new Set(reasons)];
+    summary.push(`<p><strong>Referenciação à Nefrologia (critérios ULS Arrábida):</strong> ${rd.finalName}${uniqueReasons.length?` — ${uniqueReasons.map(x=>esc(x)).join('; ').replace(/[.。]+$/,'')}.`:'.'} A prioridade resulta dos critérios locais; o KFRE é complementar.</p>`);
   }
   if(rd.age>80 && (rd.matrixIdx===1 || rd.matrixIdx===2) && !(rd.emergencyCriteria&&rd.emergencyCriteria.length)){
     summary.push('<p><strong>Nota:</strong> em pessoas >80 anos com dependência importante, demência avançada ou fragilidade elevada, ponderar benefício da referenciação face ao estado basal, sem ignorar critérios de alarme.</p>');
