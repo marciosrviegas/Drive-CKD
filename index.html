@@ -879,9 +879,9 @@ if(currentReferralDecision){
     const additionalMax=(rd.otherCriteria||[]).reduce((m,x)=>Math.max(m,x.priority),rd.albuminExtraIdx===null?-1:rd.albuminExtraIdx);
     const additionalName=additionalMax>=0?referralLabels[additionalMax]:null;
     const priorityExplanation=additionalName
-      ? ` Matriz: ${esc(rd.matrixName.toLowerCase())}. Critério(s) adicional(is): ${esc(additionalName.toLowerCase())}. Prevalece o nível mais elevado: ${esc(rd.finalName.toLowerCase())}.`
-      : ` Prioridade determinada pela matriz: ${esc(rd.finalName.toLowerCase())}.`;
-    summary.push(`<p><strong>Referenciação à Nefrologia (critérios ULS Arrábida):</strong> ${rd.finalName}${uniqueReasons.length?` — ${uniqueReasons.map(x=>esc(x)).join('; ').replace(/[.。]+$/,'')}.`:'.'}${priorityExplanation} O KFRE é complementar.</p>`);
+      ? `<br><strong>Resultado da matriz TFGe + ACR + idade:</strong> ${esc(rd.matrixName.toLowerCase())}.<br><strong>Prioridade do(s) critério(s) adicional(is):</strong> ${esc(additionalName.toLowerCase())}.<br><strong>Prioridade final:</strong> ${esc(rd.finalName.toLowerCase())}, prevalecendo o nível mais elevado entre a matriz e os critérios adicionais.`
+      : `<br><strong>Prioridade determinada pela matriz TFGe + ACR + idade:</strong> ${esc(rd.finalName.toLowerCase())}.`;
+    summary.push(`<p><strong>Referenciação à Nefrologia (critérios ULS Arrábida):</strong> ${rd.finalName}. ${uniqueReasons.length?`<br><strong>Critério(s) adicional(is) identificado(s):</strong> ${uniqueReasons.map(x=>esc(x)).join('; ').replace(/[.。]+$/,'')}.`:''}${priorityExplanation}<br>O KFRE é complementar.</p>`);
   }
   if(rd.age>80 && (rd.matrixIdx===1 || rd.matrixIdx===2) && !(rd.emergencyCriteria&&rd.emergencyCriteria.length)){
     summary.push('<p><strong>Nota:</strong> em pessoas >80 anos com dependência importante, demência avançada ou fragilidade elevada, ponderar benefício da referenciação face ao estado basal, sem ignorar critérios de alarme.</p>');
