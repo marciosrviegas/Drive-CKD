@@ -618,7 +618,7 @@ function calculate(){
 
   calculateReferral();
   const egfr=getEffectiveEgfr(),acr=+get('acr').value||0,age=+get('age').value||0,sex=get('sex').value,kRaw=get('k').value.trim(),kKnown=kRaw!=='',k=kKnown?Number(kRaw):NaN;
-const dm1=get('dm1').checked,dm2=get('dm2').checked,dm2Active=dm2&&!dm1,hf=get('hf').checked,ascvd=get('ascvd').checked,htn=get('htn').checked,obesity=get('obesity').checked,sglt2=get('sglt2').checked,raas=get('raas').checked,finer=get('finer').checked,statin=get('statin').checked,glp1=get('glp1').checked;
+const dm1=get('dm1').checked,dm2=get('dm2').checked,dm2Active=dm2&&!dm1,hf=get('hf').checked,ascvd=get('ascvd').checked,htn=get('htn').checked,obesity=get('obesity').checked,sglt2=get('sglt2').checked,raas=get('raas').checked,finer=get('finer').checked,statin=get('statin').checked,glp1=get('glp1').checked,adpkd=get('refCysticDisease').checked;
 const selectedRaasIndications=[htn?'HTA':null,hf?'insuficiência cardíaca (conforme o fenótipo, incluindo IC com fração de ejeção reduzida)':''].filter(Boolean);
 const selectedSglt2Indications=[dm2Active?'DM2':null,hf?'insuficiência cardíaca':null,acr>=200?'ACR ≥200 mg/g':null,(egfr>=20&&egfr<=45)?'TFGe 20–45 mL/min/1,73 m²':null].filter(Boolean);
 if(!Number.isFinite(egfr)||!Number.isFinite(acr)||!Number.isFinite(age)||!sex||(renalInputMode()==='egfr'&&get('egfr').value.trim()==='')||(renalInputMode()==='creatinine'&&get('creatinine').value.trim()==='')||get('acr').value.trim()===''||get('age').value.trim()===''){get('stage').textContent='—';get('heroSub').textContent='Introduza TFGe ou creatinina, ACR, idade e sexo para iniciar a avaliação';get('riskPills').innerHTML='';get('urgent').classList.add('hidden');get('recommendations').innerHTML='';get('therapyTitle').classList.add('hidden');get('initialMessage').classList.remove('hidden');get('resultsContent').classList.add('hidden');get('referralSection').classList.add('hidden');get('summarySection').classList.add('hidden');get('clinicalSummary').innerHTML='';if(showPotassiumAlertBeforeFullAssessment(k))return;return}
@@ -631,7 +631,8 @@ let rec=[];
  let maintenance=[];
 if(egfr<15)rec.push({c:'amber',t:'G5: foco adicional em preparação de TSFR',p:'Reavaliar sintomas urémicos, complicações da DRC, trajetória da TFGe e plano de transplante/acesso. Não extrapolar automaticamente RCTs de TFGe ≥20–25 para G5 avançada.'});
 const hasCkd=egfr<60||acr>=30; if(dm1&&dm2) rec.push({c:'red',t:'Diabetes · confirmar tipo',p:'DM1 e DM2 foram selecionadas simultaneamente. Confirmar a classificação da diabetes antes de interpretar as recomendações farmacológicas.'}); if(dm1&&sglt2) rec.push({c:'red',t:'DM1 + iSGLT2 · rever terapêutica',p:'Os iSGLT2 não são aprovados para utilização na diabetes tipo 1 e aumentam o risco de cetoacidose diabética, incluindo cetoacidose euglicémica. Rever a indicação e considerar suspensão em articulação com a equipa de Diabetes. Perante náuseas, vómitos, dor abdominal, mal-estar ou dispneia, considerar cetoacidose mesmo sem hiperglicemia marcada.'}); if(dm1&&finer) rec.push({c:'amber',t:'DM1 + finerenona · rever indicação',p:'A evidência que sustenta a utilização de finerenona na DRC albuminúrica diabética corresponde à DM2. A aplicação não deve extrapolar automaticamente essa indicação para DM1; rever individualmente.'}); if(dm1&&glp1) rec.push({c:'amber',t:'DM1 + AR GLP-1 · rever indicação',p:'As recomendações cardiorrenais desta aplicação para AR GLP-1 são dirigidas à DM2 com DRC e não devem ser extrapoladas automaticamente para DM1. Rever a indicação clínica individual.'});
-if(dm1&&sglt2) priorities.push('rever iSGLT2 na DM1 pelo risco de cetoacidose'); if(dm1&&finer) priorities.push('rever indicação de finerenona na DM1'); if(dm1&&glp1) priorities.push('rever indicação de AR GLP-1 na DM1'); if(!dm1&&!sglt2&&egfr>=20&&hasCkd&&(dm2Active||acr>=200||hf||egfr<=45)){
+if(adpkd&&sglt2) priorities.push('reavaliar iSGLT2 na ADPKD: não recomendado atualmente para nefroproteção; ponderar individualmente se coexistir insuficiência cardíaca'); if(dm1&&sglt2) priorities.push('rever iSGLT2 na DM1 pelo risco de cetoacidose'); if(dm1&&finer) priorities.push('rever indicação de finerenona na DM1'); if(dm1&&glp1) priorities.push('rever indicação de AR GLP-1 na DM1'); if(adpkd&&!sglt2){rec.push({c:'amber',t:'ADPKD · iSGLT2 não recomendado para nefroproteção',p:'Na doença renal poliquística autossómica dominante (ADPKD), os iSGLT2 não são atualmente recomendados para atrasar a progressão da doença, mesmo na presença de diabetes tipo 2. Se coexistir insuficiência cardíaca, a eventual utilização deve ser ponderada individualmente, considerando benefícios e incertezas.'});}
+if(!adpkd&&!dm1&&!sglt2&&egfr>=20&&hasCkd&&(dm2Active||acr>=200||hf||egfr<=45)){
   let p='';
   if(dm2Active){
     p='DM2 + DRC: iSGLT2 recomendado com TFGe ≥20 mL/min/1,73 m², independentemente da albuminúria.';
@@ -647,7 +648,9 @@ if(dm1&&sglt2) priorities.push('rever iSGLT2 na DM1 pelo risco de cetoacidose');
   p+=' Antecipar pequena queda inicial da TFGe e rever estado volémico.';
   rec.push({c:'green',t:'SGLT2i · considerar/iniciar',p:p});
 }
-if(sglt2&&!dm1){
+if(adpkd&&sglt2){
+  rec.push({c:'amber',t:'ADPKD + iSGLT2 · reavaliar terapêutica',p:'Na ADPKD, os iSGLT2 não são atualmente recomendados para nefroproteção ou para atrasar a progressão da doença, mesmo quando existe diabetes tipo 2. Reavaliar a indicação se o doente já estiver medicado. Se coexistir insuficiência cardíaca, poderá existir uma indicação independente: ponderar individualmente o benefício/risco com a equipa assistente. Não suspender automaticamente sem essa avaliação.'});
+}else if(sglt2&&!dm1){
   if(egfr<20)rec.push({c:'green',t:'iSGLT2 · manutenção',p:'TFGe <20 mL/min/1,73 m²: não suspender automaticamente apenas pela descida da TFGe. Manter se tolerado, salvo intolerância ou início de terapêutica de substituição renal. Suspender temporariamente em jejum prolongado, cirurgia ou doença crítica/aguda grave.'});
   else rec.push({c:'green',t:'iSGLT2 · manutenção',p:'Manter o iSGLT2 se tolerado. Rever periodicamente a função renal, o estado volémico e a tolerabilidade. Suspender temporariamente em jejum prolongado, cirurgia ou doença crítica/aguda grave.'});
 }
@@ -805,8 +808,9 @@ if(!severeK&&!urgentK){
     if(!kKnown) addPriority('Confirmar caliemia e indicação clínica antes de iniciar IECA/ARA II por HTA/insuficiência cardíaca.');
     else if(k<5.5) addPriority('Avaliar IECA/ARA II se indicado para HTA ou insuficiência cardíaca, considerando o fenótipo clínico e a segurança.');
   }
+  if(adpkd&&sglt2) addPriority('Reavaliar iSGLT2 na ADPKD: não recomendado atualmente para nefroproteção; ponderar individualmente se coexistir insuficiência cardíaca.');
   if(dm1&&sglt2) addPriority('Rever iSGLT2 na DM1 pelo risco de cetoacidose; articular decisão com a equipa assistente.');
-  else if(!sglt2&&egfr>=20&&hasCkd&&(dm2Active||acr>=200||hf||egfr<=45)){
+  else if(!adpkd&&!sglt2&&egfr>=20&&hasCkd&&(dm2Active||acr>=200||hf||egfr<=45)){
     if(dm2Active) addPriority('Avaliar início de iSGLT2 na DM2 com DRC, independentemente da albuminúria, se não houver contraindicações.');
     else if(hf) addPriority('Avaliar iSGLT2 na insuficiência cardíaca com DRC, independentemente da albuminúria, se clinicamente apropriado.');
     else if(acr>=200) addPriority('Avaliar iSGLT2 na DRC com ACR ≥200 mg/g, se não houver contraindicações.');
@@ -858,7 +862,8 @@ else if(hasCkd) summary.push('<p><strong>Prioridades clínicas:</strong> não fo
 const maintenanceSummary=[];
 if(!severeEmergency&&raas&&acr<30) maintenanceSummary.push('IECA/ARA II: se iniciado por albuminúria A2/A3, a redução atual para A1 não implica, por si só, perda da indicação para manutenção. Considerar também HTA, insuficiência cardíaca e outras indicações; rever indicação inicial, evolução e segurança.');
 if(!severeEmergency&&finer&&acr<30) maintenanceSummary.push('Finerenona: se iniciada segundo critérios de albuminúria ou outra indicação clínica aplicável, a redução para A1 não implica, por si só, perda da indicação para manutenção. Rever indicação inicial, evolução, função renal, caliemia e tolerabilidade.');
-if(!severeEmergency&&sglt2&& !dm1 && (egfr<20||acr<30)) maintenanceSummary.push('iSGLT2: a redução da TFGe ou da albuminúria, isoladamente, não determina suspensão; rever tolerabilidade, estado volémico e precauções de segurança.');
+if(!severeEmergency&&adpkd&&sglt2) maintenanceSummary.push('iSGLT2 em contexto de ADPKD: reavaliar a indicação, pois não é atualmente recomendado para nefroproteção ou para atrasar a progressão da ADPKD. Se coexistir insuficiência cardíaca, ponderar individualmente uma indicação cardiovascular independente; não suspender automaticamente sem avaliação clínica.');
+else if(!severeEmergency&&sglt2&& !dm1 && (egfr<20||acr<30)) maintenanceSummary.push('iSGLT2: a redução da TFGe ou da albuminúria, isoladamente, não determina suspensão; rever tolerabilidade, estado volémico e precauções de segurança.');
 if(!severeEmergency&&glp1&&dm1) maintenanceSummary.push('AR GLP-1 em curso com DM1: confirmar a indicação específica, uma vez que as recomendações cardiorrenais desta ferramenta não se aplicam automaticamente à DM1; rever benefício esperado, segurança e plano com a equipa assistente.');
 else if(!severeEmergency&&glp1&&!dm2Active&&!obesity) maintenanceSummary.push('AR GLP-1 em curso — confirmar indicação: verificar o medicamento, a indicação clínica e os critérios aprovados aplicáveis em Portugal, incluindo as condições de comparticipação, quando relevante. Os dados introduzidos não permitem confirmar a elegibilidade. Reavaliar o benefício/risco com o prescritor; não suspender automaticamente sem avaliação clínica.');
 else if(!severeEmergency&&glp1&&obesity) maintenanceSummary.push('AR GLP-1 em curso, com obesidade: avaliar a resposta ponderal, a adequação da dose, a tolerabilidade e a estratégia global de controlo do peso.');
