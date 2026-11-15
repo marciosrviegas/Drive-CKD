@@ -873,15 +873,24 @@ if(currentReferralDecision){
   if(rd.emergencyCriteria && rd.emergencyCriteria.length){
     summary.push(`<p><strong>Referenciação:</strong> Serviço de Urgência — ${rd.emergencyCriteria.map(x=>esc(x.label)).join('; ')}.</p>`);
   }else{
-    const reasons=[];
-    (rd.otherCriteria||[]).forEach(x=>reasons.push(x.label));
-    const uniqueReasons=[...new Set(reasons)];
+    const reasons=[...new Set((rd.otherCriteria||[]).map(x=>x.label))];
     const additionalMax=(rd.otherCriteria||[]).reduce((m,x)=>Math.max(m,x.priority),rd.albuminExtraIdx===null?-1:rd.albuminExtraIdx);
     const additionalName=additionalMax>=0?referralLabels[additionalMax]:null;
-    const priorityExplanation=additionalName
-      ? `<br><strong>Resultado da matriz TFGe + ACR + idade:</strong> ${esc(rd.matrixName.toLowerCase())}.<br><strong>Prioridade do(s) critério(s) adicional(is):</strong> ${esc(additionalName.toLowerCase())}.<br><strong>Prioridade final:</strong> ${esc(rd.finalName.toLowerCase())}, prevalecendo o nível mais elevado entre a matriz e os critérios adicionais.`
-      : `<br><strong>Prioridade determinada pela matriz TFGe + ACR + idade:</strong> ${esc(rd.finalName.toLowerCase())}.`;
-    summary.push(`<p><strong>Referenciação à Nefrologia (critérios ULS Arrábida):</strong> ${rd.finalName}. ${uniqueReasons.length?`<br><strong>Critério(s) adicional(is) identificado(s):</strong> ${uniqueReasons.map(x=>esc(x)).join('; ').replace(/[.。]+$/,'')}.`:''}${priorityExplanation}<br>O KFRE é complementar.</p>`);
+    let referralSummary=`<p><strong>Referenciação à Nefrologia:</strong> ${esc(rd.finalName)}.`;
+    if(additionalName){
+      referralSummary+=`<br><span class="small">Matriz: ${esc(rd.matrixName.toLowerCase())}. Critério adicional (${reasons.map(x=>esc(x)).join('; ')}): ${esc(additionalName.toLowerCase())}. `;
+      if(rd.matrixIdx>additionalMax){
+        referralSummary+=`Prevalece a matriz.</span>`;
+      }else if(additionalMax>rd.matrixIdx){
+        referralSummary+=`Prevalece o critério adicional.</span>`;
+      }else{
+        referralSummary+=`Matriz e critério adicional coincidem.</span>`;
+      }
+    }else{
+      referralSummary+=` <span class="small">Determinada pela matriz TFGe + ACR + idade.</span>`;
+    }
+    referralSummary+=`<br><span class="small">O KFRE é complementar e não determina a prioridade da referenciação.</span></p>`;
+    summary.push(referralSummary);
   }
   if(rd.age>80 && (rd.matrixIdx===1 || rd.matrixIdx===2) && !(rd.emergencyCriteria&&rd.emergencyCriteria.length)){
     summary.push('<p><strong>Nota:</strong> em pessoas >80 anos com dependência importante, demência avançada ou fragilidade elevada, ponderar benefício da referenciação face ao estado basal, sem ignorar critérios de alarme.</p>');
