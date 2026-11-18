@@ -33,6 +33,20 @@
 
  
 
+/* Bloco de segurança: sempre visível dentro da informação complementar */
+.urgent-referral-card{margin:8px 0 12px;padding:13px;border:1.5px solid #e05252;border-radius:14px;background:light-dark(#fff5f5,#2b1c21);color:var(--text)}
+.urgent-referral-heading{display:flex;align-items:center;gap:10px;margin-bottom:10px;color:light-dark(#991b1b,#ff858b);font-size:12px;font-weight:900;line-height:1.3}
+.urgent-referral-icon{display:flex;align-items:center;justify-content:center;flex:0 0 34px;width:34px;height:34px;border-radius:9px;background:light-dark(#fee2e2,#48242b);font-size:22px}
+.urgent-referral-badge{margin-left:auto;flex:0 0 auto;padding:6px 10px;border-radius:999px;background:#dc3038;color:#fff;font-size:10px;font-weight:900;letter-spacing:.04em}
+.urgent-referral-intro{margin:0 0 8px;padding:8px 10px;border-radius:9px;background:light-dark(#fee8e8,#42252b);color:light-dark(#7f1d1d,#ffd1d3);font-size:11.5px;font-weight:750;line-height:1.45}
+.urgent-referral-card ul{list-style:none;margin:0;padding:0;border-top:1px solid light-dark(#edb7b7,#674047)}
+.urgent-referral-card li{display:flex;align-items:flex-start;gap:9px;margin:0;padding:8px 2px;border-bottom:1px solid light-dark(#edb7b7,#674047);font-size:11.5px;line-height:1.45;color:var(--text)}
+.urgent-referral-card li:last-child{border-bottom:0}
+.urgent-referral-card li strong{color:light-dark(#991b1b,#ff9a9e)}
+.urgent-item-icon{display:flex;align-items:center;justify-content:center;flex:0 0 20px;width:20px;height:20px;margin-top:1px;border-radius:6px;background:light-dark(#fee2e2,#48242b);color:light-dark(#b42318,#ff858b);font-size:15px;font-weight:900}
+.urgent-referral-note{margin:9px 0 0;padding:9px 10px;border:1px solid light-dark(#efc1c1,#70434a);border-radius:9px;background:light-dark(#fee8e8,#42252b);color:light-dark(#7f1d1d,#ffd1d3);font-size:11px;line-height:1.45}
+@media(max-width:520px){.urgent-referral-card{padding:10px}.urgent-referral-heading{gap:7px;font-size:11px}.urgent-referral-badge{padding:5px 7px;font-size:9px}.urgent-referral-card li{font-size:11px}}
+
 .guidance-details{margin-top:10px;border:1px solid var(--border);border-radius:12px;background:var(--surface);overflow:hidden}
 .guidance-details summary{cursor:pointer;padding:11px 13px;font-size:12px;font-weight:850;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:10px}
 .guidance-details summary::-webkit-details-marker{display:none}
@@ -196,23 +210,20 @@
 <div id="urgent" class="alert hidden"></div>
 <div id="recommendations"></div>
 <div class="hidden" aria-hidden="true"><table><tbody id="checklist"></tbody></table></div>
-<details style="margin-top:18px"><summary style="cursor:pointer;font-size:13px;font-weight:900;color:var(--text)">📚 Evidência e metodologia</summary><div id="evidence" class="note" style="margin-top:8px"></div></details>
 <details class="guidance-details supplementary-guidance"><summary>ℹ️ Informação complementar sobre referenciação</summary><div class="guidance-body">
-<details class="guidance-details" style="margin-bottom:10px">
- <summary>🚑 Outros critérios para avaliação no Serviço de Urgência</summary>
- <div class="guidance-body">
-  <p>Encaminhar para avaliação urgente no próprio dia perante suspeita de situação aguda grave, incluindo:</p>
-  <ul>
-   <li><strong>Hipercaliemia:</strong> K⁺ &gt;6,5 mmol/L mesmo sem alterações no ECG, ou K⁺ &gt;6,0 mmol/L com alterações eletrocardiográficas sugestivas. Sintomas, alterações no ECG ou instabilidade justificam avaliação urgente independentemente do valor isolado.</li>
-   <li>Sintomatologia urémica relevante em doente com DRC conhecida.</li>
-   <li>Sobrecarga hídrica clinicamente significativa.</li>
-   <li>Pielonefrite aguda em rim único.</li>
-   <li>Lesão renal aguda KDIGO estádio 3 ou deterioração rapidamente progressiva de novo, sem avaliação nefrológica.</li>
-   <li>Hipertensão arterial maligna.</li>
-  </ul>
-  <p style="margin-top:8px"><strong>Nota:</strong> seguir o protocolo local; não atrasar a avaliação urgente para completar a ferramenta.</p>
- </div>
-</details>
+<div class="urgent-referral-card" role="note" aria-label="Critérios para avaliação urgente no Serviço de Urgência">
+ <div class="urgent-referral-heading"><span class="urgent-referral-icon" aria-hidden="true">⚠</span><strong>OUTROS CRITÉRIOS PARA AVALIAÇÃO<br class="urgent-title-break"> NO SERVIÇO DE URGÊNCIA</strong><span class="urgent-referral-badge">URGENTE</span></div>
+ <p class="urgent-referral-intro">Encaminhar para avaliação urgente no próprio dia perante suspeita de situação aguda grave, incluindo:</p>
+ <ul>
+  <li><span class="urgent-item-icon" aria-hidden="true">⌁</span><div><strong>Hipercaliemia:</strong> K⁺ &gt;6,5 mmol/L mesmo sem alterações no ECG, ou K⁺ &gt;6,0 mmol/L com alterações eletrocardiográficas sugestivas. Sintomas, alterações no ECG ou instabilidade justificam avaliação urgente independentemente do valor isolado.</div></li>
+  <li><span class="urgent-item-icon" aria-hidden="true">✚</span><div>Sintomatologia urémica relevante em doente com DRC conhecida.</div></li>
+  <li><span class="urgent-item-icon" aria-hidden="true">♧</span><div>Sobrecarga hídrica clinicamente significativa.</div></li>
+  <li><span class="urgent-item-icon" aria-hidden="true">♧</span><div>Pielonefrite aguda em rim único.</div></li>
+  <li><span class="urgent-item-icon" aria-hidden="true">↗</span><div>Lesão renal aguda KDIGO estádio 3 ou deterioração rapidamente progressiva de novo, sem avaliação nefrológica.</div></li>
+  <li><span class="urgent-item-icon" aria-hidden="true">⊙</span><div>Hipertensão arterial maligna.</div></li>
+ </ul>
+ <p class="urgent-referral-note"><strong>Nota:</strong> seguir o protocolo local; não atrasar a avaliação urgente para completar a ferramenta.</p>
+</div>
 
 <details class="guidance-details">
  <summary>ℹ️ Situações que geralmente não justificam referenciação nefrológica de rotina</summary>
@@ -236,6 +247,7 @@
 <label><input type="checkbox">MCDT disponíveis: hemograma, urina II, RAC urinária (ou equivalente), ionograma e ecografia renal.</label>
 </div><p style="margin-top:8px">A ausência de um exame não deve atrasar uma referenciação clinicamente urgente; indicar os exames em falta e o motivo, se relevante.</p></div></details>
 </div></details>
+<details style="margin-top:18px"><summary style="cursor:pointer;font-size:13px;font-weight:900;color:var(--text)">📚 Evidência e metodologia</summary><div id="evidence" class="note" style="margin-top:8px"></div></details>
 
 </div>
 </section></div>
