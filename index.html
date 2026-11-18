@@ -94,9 +94,9 @@
   .referral-legend span:last-child{grid-column:1/-1}
 }
 
-/* Informação complementar: discreta e no final dos resultados */
-.supplementary-guidance{margin-top:18px;border:1px solid var(--line);border-radius:12px;background:transparent;opacity:.92}
-.supplementary-guidance>summary{font-size:12px!important;font-weight:700!important;color:var(--muted)!important;padding:10px 12px;cursor:pointer}
+/* Informação complementar: o bloco de urgência fica visível após a avaliação */
+.supplementary-guidance{display:block;margin-top:18px;border:1px solid var(--border);border-radius:12px;background:var(--surface);overflow:hidden}
+.supplementary-heading{padding:11px 13px;font-size:12px;font-weight:800;color:var(--muted);border-bottom:1px solid var(--border)}
 .supplementary-guidance>.guidance-body{padding:0 12px 12px}
 .supplementary-guidance .guidance-details{margin-top:8px}
 .supplementary-guidance .guidance-details>summary{font-size:12px;font-weight:700;color:var(--muted)}
@@ -210,17 +210,18 @@
 <div id="urgent" class="alert hidden"></div>
 <div id="recommendations"></div>
 <div class="hidden" aria-hidden="true"><table><tbody id="checklist"></tbody></table></div>
-<details class="guidance-details supplementary-guidance"><summary>ℹ️ Informação complementar sobre referenciação</summary><div class="guidance-body">
+<section class="supplementary-guidance" aria-label="Informação complementar sobre referenciação"><div class="supplementary-heading">ℹ️ Informação complementar sobre referenciação</div><div class="guidance-body">
 <div class="urgent-referral-card" role="note" aria-label="Critérios para avaliação urgente no Serviço de Urgência">
  <div class="urgent-referral-heading"><span class="urgent-referral-icon" aria-hidden="true">⚠</span><strong>OUTROS CRITÉRIOS PARA AVALIAÇÃO<br class="urgent-title-break"> NO SERVIÇO DE URGÊNCIA</strong><span class="urgent-referral-badge">URGENTE</span></div>
  <p class="urgent-referral-intro">Encaminhar para avaliação urgente no próprio dia perante suspeita de situação aguda grave, incluindo:</p>
  <ul>
-  <li><span class="urgent-item-icon" aria-hidden="true">⌁</span><div><strong>Hipercaliemia:</strong> K⁺ &gt;6,5 mmol/L mesmo sem alterações no ECG, ou K⁺ &gt;6,0 mmol/L com alterações eletrocardiográficas sugestivas. Sintomas, alterações no ECG ou instabilidade justificam avaliação urgente independentemente do valor isolado.</div></li>
   <li><span class="urgent-item-icon" aria-hidden="true">✚</span><div>Sintomatologia urémica relevante em doente com DRC conhecida.</div></li>
   <li><span class="urgent-item-icon" aria-hidden="true">♧</span><div>Sobrecarga hídrica clinicamente significativa.</div></li>
   <li><span class="urgent-item-icon" aria-hidden="true">♧</span><div>Pielonefrite aguda em rim único.</div></li>
   <li><span class="urgent-item-icon" aria-hidden="true">↗</span><div>Lesão renal aguda KDIGO estádio 3 ou deterioração rapidamente progressiva de novo, sem avaliação nefrológica.</div></li>
-  <li><span class="urgent-item-icon" aria-hidden="true">⊙</span><div>Hipertensão arterial maligna.</div></li>
+  <li><span class="urgent-item-icon" aria-hidden="true">⚗</span><div><strong>Alterações hidro-eletrolíticas / ácido-base:</strong> alteração grave e/ou sintomática.</div></li>
+  <li><span class="urgent-item-icon" aria-hidden="true">♧</span><div><strong>Litíase renal obstrutiva:</strong> avaliação urgente no Serviço de Urgência / Urologia.</div></li>
+  <li><span class="urgent-item-icon" aria-hidden="true">⊙</span><div><strong>Hipertensão arterial maligna:</strong> encaminhamento imediato para o Serviço de Urgência, com início precoce de terapêutica anti-hipertensora adequada, se possível antes da transferência, sem atrasar o encaminhamento. Evitar reduções bruscas e não monitorizadas da TA.</div></li>
  </ul>
  <p class="urgent-referral-note"><strong>Nota:</strong> seguir o protocolo local; não atrasar a avaliação urgente para completar a ferramenta.</p>
 </div>
@@ -246,7 +247,7 @@
 <label><input type="checkbox">Exame objetivo: tensão arterial, auscultação pulmonar e presença de edema.</label>
 <label><input type="checkbox">MCDT disponíveis: hemograma, urina II, RAC urinária (ou equivalente), ionograma e ecografia renal.</label>
 </div><p style="margin-top:8px">A ausência de um exame não deve atrasar uma referenciação clinicamente urgente; indicar os exames em falta e o motivo, se relevante.</p></div></details>
-</div></details>
+</div></section>
 <details style="margin-top:18px"><summary style="cursor:pointer;font-size:13px;font-weight:900;color:var(--text)">📚 Evidência e metodologia</summary><div id="evidence" class="note" style="margin-top:8px"></div></details>
 
 </div>
